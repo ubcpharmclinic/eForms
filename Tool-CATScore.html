@@ -1,0 +1,802 @@
+<!-- CAT SCORE eForm created by Richard Ng on March 18, 2021. Modified from CAT Score by John Yap. Improvements to save functionality.-->
+<!-- eForm DISCLAIMER: As is: eForms are shared as-is, free of charge on a share-alike basis with absolutely no guarantee or warranty.
+ No Quality Control: The author does not vet any eForms and does not purport to apply any manner of quality control.
+ Responsibility: The responsibility for the clinical and medical-legal consequences of any and all eForms, rest with the clinical OSCAR end-users themselves, not with the author of the eForm.
+ This applies to both eForms shared by others, and those created by users themselves.
+ Attribution: eForms are shared freely among the user community, with attribution to the original author of the eForm.
+ Free: eForms so shared may not be sold or purchased.
+ Provincial validation:  eForms are optional and non-essential add-ons, separate from OSCAR, and with their own license terms.
+ eForms are not part of the OSCAR core program functionality and code base.
+ For this reason eForms are not subject to provincial validation testing and conformance criteria. 
+ eForms are also not subject to the ISO production process for OSCAR.-->
+<html>
+<head>
+
+<title>CAT Score</title>
+<style type="text/css" media="print">
+    @page 
+    { 
+        size: auto; 
+        margin: 10mm; 
+    }
+    .DoNotPrint {
+        display: none;
+    }
+    .noborder {
+        border: 0px;
+        background: transparent;
+        scrollbar-3dlight-color: transparent;
+        scrollbar-3dlight-color: transparent;
+        scrollbar-arrow-color: transparent;
+        scrollbar-base-color: transparent;
+        scrollbar-darkshadow-color: transparent;
+        scrollbar-face-color: transparent;
+        scrollbar-highlight-color: transparent;
+        scrollbar-shadow-color: transparent;
+        scrollbar-track-color: transparent;
+        overflow: hidden;
+    }
+    .Show {
+       visibility:visible;
+       display:inline;
+    }
+   .Hide {
+       visibility:hidden;
+       display:none;
+    }
+</style>
+
+<style type="text/css">
+    .noborder {
+         background:transparent;
+     }
+    .Show{
+        visibility:visible;
+        display:inline;
+    }
+    .Hide{
+        visibility:hidden;
+        display:none;
+    }
+ </style>
+
+
+<script language="javascript" type="text/javascript">
+    /****************************
+    startup functions 
+    ****************************/
+    function startUp() {
+
+        setDocumentTitle('CAT',document.getElementById('PatientSurname').value);
+        changeImage("CATest.png", "BGImage");
+        changeImage("CAT_Reference.png", "Reference");
+
+        setDefaults();
+        //optimize window size/width
+        top.window.resizeTo(1030, screen.availHeight) ;
+    }
+
+    function resourceLink(resource, extension) {
+        // Takes two arguments -- the base filename and its extension -- and
+        // returns a string depending on whether the page has been opened
+        // locally or if it has been uploaded to OSCAR.
+        //
+        // Example usage: resourceLink('image1', 'png')
+        // Return value: 'image1.png' or '${oscar_image_path}image1.png'
+
+        var prefix = (window.location.href.toLowerCase().indexOf("http") != -1) ? '${oscar_image_path}' : '';
+
+        if (typeof extension === "undefined") {
+            var extension = '';
+        } else {
+            var extension = '.' + extension;
+        }
+        return prefix + resource + extension;
+    }
+
+    function selectorValue(selectId) {
+        return selectId.value;
+    }
+
+    function changeImage(img, imgId) {
+        // Changes the src value of an <img>.
+        document.getElementById(imgId).src = resourceLink(img)
+        document.getElementById(imgId).href = resourceLink(img)
+        }
+
+    function setDocumentTitle(Title,PatientSurname) {
+        // set document title
+        document.title = Title + '_' + PatientSurname;					
+    }
+    
+    function setDefaults() {	            
+        // check the newform flag to ensure this is the initial load of the form
+        if (document.getElementById("newForm").value == 'True')
+        {
+            //document.getElementById('').value = 'X';	
+        }   
+    }
+
+    /****************************
+        submit and print functions 
+    ****************************/
+    function printSubmit() {
+        printLetter();
+        releaseDirtyFlag();			
+        submission();
+    }
+
+    function printLetter() {
+        // hide the bottom buttons
+        if (document.getElementById('BottomButtons').style.display == '')
+            document.getElementById('BottomButtons').style.display = 'none';
+        // print the letter
+        window.print();
+    } 
+
+    function submission() {
+        setFlag();
+        setTimeout('document.FormName.submit()',1000);			
+    }
+
+    function setFlag() {
+    // indicate that the form has been submitted
+    if (document.getElementById("newForm").value == 'True')
+    document.getElementById("newForm").value = 'False';
+    }
+    
+    function showButtons() {
+        //show the bottom buttons if they are hidden
+        if (document.getElementById('BottomButtons').style.display == 'none')
+            document.getElementById('BottomButtons').style.display = '';
+    }
+    
+    /****************************
+        checkbox functions 
+    ****************************/
+    function changeValue(x) {
+        if (document.getElementById(x).value == '')
+            document.getElementById(x).value = 'X';
+        else
+            document.getElementById(x).value = '';
+    }
+
+    function displayKeyCode(evt,x) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        // any key press except tab will constitute a value change to the checkbox
+        if (charCode != 9)
+        {
+            changeValue(x);
+            return false;
+        }
+    }
+</script>
+
+<script type="text/javascript" language="javascript">
+//keypress events trigger dirty flag
+var needToConfirm = false;
+document.onkeyup=setDirtyFlag;
+
+function setDirtyFlag() {
+    needToConfirm = true;
+}
+
+function releaseDirtyFlag() {
+    needToConfirm = false; //Call this function if does not require an alert.
+//this could be called when save button is clicked
+}
+window.onbeforeunload = confirmExit;
+
+function confirmExit() {
+ if (needToConfirm) {
+     return "You have attempted to leave this page. If you have made any changes to the fields without clicking the Save button, your changes will be lost. Are you sure you want to exit this page?";
+     }
+}
+</script>
+
+<script type="text/javascript" language="javascript">
+function Cough() {
+var Cough_Score = 0;
+
+Cough_Score += checkedScore("Cough_0", 0);
+Cough_Score += checkedScore("Cough_1", 1);
+Cough_Score += checkedScore("Cough_2", 2);
+Cough_Score += checkedScore("Cough_3", 3);
+Cough_Score += checkedScore("Cough_4", 4);
+Cough_Score += checkedScore("Cough_5", 5);
+
+document.getElementById("Cough_Score").value = Cough_Score;
+}
+
+function Phlegm() {
+var Phlegm_Score = 0;
+
+Phlegm_Score += checkedScore("Phlegm_0", 0);
+Phlegm_Score += checkedScore("Phlegm_1", 1);
+Phlegm_Score += checkedScore("Phlegm_2", 2);
+Phlegm_Score += checkedScore("Phlegm_3", 3);
+Phlegm_Score += checkedScore("Phlegm_4", 4);
+Phlegm_Score += checkedScore("Phlegm_5", 5);
+
+document.getElementById("Phlegm_Score").value = Phlegm_Score;
+}
+
+function Tight() {
+var Tight_Score = 0;
+
+Tight_Score += checkedScore("Tight_0", 0);
+Tight_Score += checkedScore("Tight_1", 1);
+Tight_Score += checkedScore("Tight_2", 2);
+Tight_Score += checkedScore("Tight_3", 3);
+Tight_Score += checkedScore("Tight_4", 4);
+Tight_Score += checkedScore("Tight_5", 5);
+
+document.getElementById("Tight_Score").value = Tight_Score;
+}
+
+function Breathless() {
+var Breathless_Score = 0;
+
+Breathless_Score += checkedScore("Breathless_0", 0);
+Breathless_Score += checkedScore("Breathless_1", 1);
+Breathless_Score += checkedScore("Breathless_2", 2);
+Breathless_Score += checkedScore("Breathless_3", 3);
+Breathless_Score += checkedScore("Breathless_4", 4);
+Breathless_Score += checkedScore("Breathless_5", 5);
+
+document.getElementById("Breathless_Score").value = Breathless_Score;
+}
+
+function Activities() {
+var Activities_Score = 0;
+
+Activities_Score += checkedScore("Activities_0", 0);
+Activities_Score += checkedScore("Activities_1", 1);
+Activities_Score += checkedScore("Activities_2", 2);
+Activities_Score += checkedScore("Activities_3", 3);
+Activities_Score += checkedScore("Activities_4", 4);
+Activities_Score += checkedScore("Activities_5", 5);
+
+document.getElementById("Activities_Score").value = Activities_Score;
+}
+
+function Confident() {
+var Confident_Score = 0;
+
+Confident_Score += checkedScore("Confident_0", 0);
+Confident_Score += checkedScore("Confident_1", 1);
+Confident_Score += checkedScore("Confident_2", 2);
+Confident_Score += checkedScore("Confident_3", 3);
+Confident_Score += checkedScore("Confident_4", 4);
+Confident_Score += checkedScore("Confident_5", 5);
+
+document.getElementById("Confident_Score").value = Confident_Score;
+}
+
+function Sleep() {
+var Sleep_Score = 0;
+
+Sleep_Score += checkedScore("Sleep_0", 0);
+Sleep_Score += checkedScore("Sleep_1", 1);
+Sleep_Score += checkedScore("Sleep_2", 2);
+Sleep_Score += checkedScore("Sleep_3", 3);
+Sleep_Score += checkedScore("Sleep_4", 4);
+Sleep_Score += checkedScore("Sleep_5", 5);
+
+document.getElementById("Sleep_Score").value = Sleep_Score;
+}
+
+function Energy() {
+var Energy_Score = 0;
+
+Energy_Score += checkedScore("Energy_0", 0);
+Energy_Score += checkedScore("Energy_1", 1);
+Energy_Score += checkedScore("Energy_2", 2);
+Energy_Score += checkedScore("Energy_3", 3);
+Energy_Score += checkedScore("Energy_4", 4);
+Energy_Score += checkedScore("Energy_5", 5);
+
+document.getElementById("Energy_Score").value = Energy_Score;
+}
+
+function checkedScore(id, score) {
+// Returns either score or 0 depending on whether id is checked or not.
+// ex. checkedScore("foo", 1) will return 1 if foo is checked but 0 if it is not
+
+return (document.getElementById(id).value != '') ? score : 0;
+}
+
+function totalCAT() {
+var totalCAT = 0;
+
+var ids =  ["Cough_Score",
+            "Phlegm_Score",
+            "Tight_Score",
+            "Breathless_Score",
+            "Activities_Score",
+            "Confident_Score",
+            "Sleep_Score",
+            "Energy_Score",
+            ];
+
+for (var n in ids) {
+    totalCAT += parseInt(document.getElementById(ids[n]).value);
+}
+document.getElementById("Total_Score").value = totalCAT;
+//document.getElementById("CATa").value = totalCAT;
+
+document.FormName.subject.value = 'CAT Score = ' + totalCAT;
+
+if (totalCAT >= 10) {
+document.getElementById("CAT_Warning").className = 'Show';
+}
+else {
+document.getElementById("CAT_Warning").className = 'Hide';
+}
+}
+
+function TotalSCORE() {
+Cough();
+Phlegm();
+Tight();
+Breathless();
+Activities();
+Confident();
+Sleep();
+Energy();
+totalCAT();
+}
+</script>
+
+</head>
+
+<body onload="startUp();" onMouseDown="showButtons();">
+<form method="post" action="" name="FormName" id="">
+
+
+<img id="BGImage1" src="${oscar_image_path}CATest.png" style="position: relative;left: 0px; top:0px; width: 750px">
+
+<!-- Patient Information -->
+<input name="PatientName" type="text" class="noborder" style="position:absolute; left:55px; top:80px; width:370px; font-family:Arial; font-size:18px; background:transparent;" oscarDB=patient_name>
+<input name="TodaysDate" type="text" class="noborder" style="position:absolute; left:440px; top:80px; width:135px; font-family:Arial; font-size:18px; text-align:center; background:transparent;" oscardb=today>
+
+<!-- CAT Questionnaire -->
+<!-- Cough -->
+<input name="Cough_0" id="Cough_0" type="text" style="position:absolute; left: 245px; top:340px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Cough_1.value='';
+	document.FormName.Cough_2.value='';
+	document.FormName.Cough_3.value='';
+	document.FormName.Cough_4.value='';
+	document.FormName.Cough_5.value='';
+	TotalSCORE();">
+
+<input name="Cough_1" id="Cough_1" type="text" style="position:absolute; left:280px; top:340px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Cough_0.value='';
+	document.FormName.Cough_2.value='';
+	document.FormName.Cough_3.value='';
+	document.FormName.Cough_4.value='';
+	document.FormName.Cough_5.value='';
+	TotalSCORE();">
+
+<input name="Cough_2" id="Cough_2" type="text" style="position:absolute; left:313px; top:340px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Cough_0.value='';
+	document.FormName.Cough_1.value='';
+	document.FormName.Cough_3.value='';
+	document.FormName.Cough_4.value='';
+	document.FormName.Cough_5.value='';
+	TotalSCORE();">
+
+<input name="Cough_3" id="Cough_3" type="text" style="position:absolute; left:348px; top:340px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Cough_0.value='';
+	document.FormName.Cough_1.value='';
+	document.FormName.Cough_2.value='';
+	document.FormName.Cough_4.value='';
+	document.FormName.Cough_5.value='';
+	TotalSCORE();">
+
+<input name="Cough_4" id="Cough_4" type="text" style="position:absolute; left:383px; top:340px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Cough_0.value='';
+	document.FormName.Cough_1.value='';
+	document.FormName.Cough_2.value='';
+	document.FormName.Cough_3.value='';
+	document.FormName.Cough_5.value='';
+	TotalSCORE();">
+
+<input name="Cough_5" id="Cough_5" type="text" style="position:absolute; left:418px; top:340px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Cough_0.value='';
+	document.FormName.Cough_1.value='';
+	document.FormName.Cough_2.value='';
+	document.FormName.Cough_3.value='';
+	document.FormName.Cough_4.value='';
+	TotalSCORE();">
+
+<input name="Cough_Score" id="Cough_Score" type="text" style="position:absolute; left:650px; top:340px; width:50px; border:0px; font-family:sans-serif; font-size:26px; background:transparent; text-align:center;">
+
+<!-- Phlegm -->
+<input name="Phlegm_0" id="Phlegm_0" type="text" style="position:absolute; left:245px; top:408px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Phlegm_1.value='';
+	document.FormName.Phlegm_2.value='';
+	document.FormName.Phlegm_3.value='';
+	document.FormName.Phlegm_4.value='';
+	document.FormName.Phlegm_5.value='';
+	TotalSCORE();">
+
+<input name="Phlegm_1" id="Phlegm_1" type="text" style="position:absolute; left:280px; top:408px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Phlegm_0.value='';
+	document.FormName.Phlegm_2.value='';
+	document.FormName.Phlegm_3.value='';
+	document.FormName.Phlegm_4.value='';
+	document.FormName.Phlegm_5.value='';
+	TotalSCORE();">
+
+<input name="Phlegm_2" id="Phlegm_2" type="text" style="position:absolute; left:313px; top:408px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Phlegm_0.value='';
+	document.FormName.Phlegm_1.value='';
+	document.FormName.Phlegm_3.value='';
+	document.FormName.Phlegm_4.value='';
+	document.FormName.Phlegm_5.value='';
+	TotalSCORE();">
+
+<input name="Phlegm_3" id="Phlegm_3" type="text" style="position:absolute; left:348px; top:408px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Phlegm_0.value='';
+	document.FormName.Phlegm_1.value='';
+	document.FormName.Phlegm_2.value='';
+	document.FormName.Phlegm_4.value='';
+	document.FormName.Phlegm_5.value='';
+	TotalSCORE();">
+
+<input name="Phlegm_4" id="Phlegm_4" type="text" style="position:absolute; left:383px; top:408px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Phlegm_0.value='';
+	document.FormName.Phlegm_1.value='';
+	document.FormName.Phlegm_2.value='';
+	document.FormName.Phlegm_3.value='';
+	document.FormName.Phlegm_5.value='';
+	TotalSCORE();">
+
+<input name="Phlegm_5" id="Phlegm_5" type="text" style="position:absolute; left:418px; top:408px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Phlegm_0.value='';
+	document.FormName.Phlegm_1.value='';
+	document.FormName.Phlegm_2.value='';
+	document.FormName.Phlegm_3.value='';
+	document.FormName.Phlegm_4.value='';
+	TotalSCORE();">
+
+<input name="Phlegm_Score" id="Phlegm_Score" type="text" style="position:absolute; left:650px; top:408px; width:50px; border:0px; font-family:sans-serif; font-size:26px; background:transparent; text-align:center;">
+
+<!-- Tight -->
+<input name="Tight_0" id="Tight_0" type="text" style="position:absolute; left:245px; top:479px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Tight_1.value='';
+	document.FormName.Tight_2.value='';
+	document.FormName.Tight_3.value='';
+	document.FormName.Tight_4.value='';
+	document.FormName.Tight_5.value='';
+	TotalSCORE();">
+
+<input name="Tight_1" id="Tight_1" type="text" style="position:absolute; left:280px; top:479px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Tight_0.value='';
+	document.FormName.Tight_2.value='';
+	document.FormName.Tight_3.value='';
+	document.FormName.Tight_4.value='';
+	document.FormName.Tight_5.value='';
+	TotalSCORE();">
+
+<input name="Tight_2" id="Tight_2" type="text" style="position:absolute; left:313px; top:479px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Tight_0.value='';
+	document.FormName.Tight_1.value='';
+	document.FormName.Tight_3.value='';
+	document.FormName.Tight_4.value='';
+	document.FormName.Tight_5.value='';
+	TotalSCORE();">
+
+<input name="Tight_3" id="Tight_3" type="text" style="position:absolute; left:348px; top:479px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Tight_0.value='';
+	document.FormName.Tight_1.value='';
+	document.FormName.Tight_2.value='';
+	document.FormName.Tight_4.value='';
+	document.FormName.Tight_5.value='';
+	TotalSCORE();">
+
+<input name="Tight_4" id="Tight_4" type="text" style="position:absolute; left:383px; top:479px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Tight_0.value='';
+	document.FormName.Tight_1.value='';
+	document.FormName.Tight_2.value='';
+	document.FormName.Tight_3.value='';
+	document.FormName.Tight_5.value='';
+	TotalSCORE();">
+
+<input name="Tight_5" id="Tight_5" type="text" style="position:absolute; left:418px; top:479px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Tight_0.value='';
+	document.FormName.Tight_1.value='';
+	document.FormName.Tight_2.value='';
+	document.FormName.Tight_3.value='';
+	document.FormName.Tight_4.value='';
+	TotalSCORE();">
+
+<input name="Tight_Score" id="Tight_Score" type="text" style="position:absolute; left:650px; top:479px; width:50px; border:0px; font-family:sans-serif; font-size:26px; background:transparent; text-align:center;">
+
+<!-- Breathless -->
+<input name="Breathless_0" id="Breathless_0" type="text" style="position:absolute; left:245px; top:550px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Breathless_1.value='';
+	document.FormName.Breathless_2.value='';
+	document.FormName.Breathless_3.value='';
+	document.FormName.Breathless_4.value='';
+	document.FormName.Breathless_5.value='';
+	TotalSCORE();">
+
+<input name="Breathless_1" id="Breathless_1" type="text" style="position:absolute; left:280px; top:550px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Breathless_0.value='';
+	document.FormName.Breathless_2.value='';
+	document.FormName.Breathless_3.value='';
+	document.FormName.Breathless_4.value='';
+	document.FormName.Breathless_5.value='';
+	TotalSCORE();">
+
+<input name="Breathless_2" id="Breathless_2" type="text" style="position:absolute; left:313px; top:550px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Breathless_0.value='';
+	document.FormName.Breathless_1.value='';
+	document.FormName.Breathless_3.value='';
+	document.FormName.Breathless_4.value='';
+	document.FormName.Breathless_5.value='';
+	TotalSCORE();">
+
+<input name="Breathless_3" id="Breathless_3" type="text" style="position:absolute; left:348px; top:550px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Breathless_0.value='';
+	document.FormName.Breathless_1.value='';
+	document.FormName.Breathless_2.value='';
+	document.FormName.Breathless_4.value='';
+	document.FormName.Breathless_5.value='';
+	TotalSCORE();">
+
+<input name="Breathless_4" id="Breathless_4" type="text" style="position:absolute; left:383px; top:550px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Breathless_0.value='';
+	document.FormName.Breathless_1.value='';
+	document.FormName.Breathless_2.value='';
+	document.FormName.Breathless_3.value='';
+	document.FormName.Breathless_5.value='';
+	TotalSCORE();">
+
+<input name="Breathless_5" id="Breathless_5" type="text" style="position:absolute; left:418px; top:550px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Breathless_0.value='';
+	document.FormName.Breathless_1.value='';
+	document.FormName.Breathless_2.value='';
+	document.FormName.Breathless_3.value='';
+	document.FormName.Breathless_4.value='';
+	TotalSCORE();">
+
+<input name="Breathless_Score" id="Breathless_Score" type="text" style="position:absolute; left:650px; top:550px; width:50px; border:0px; font-family:sans-serif; font-size:26px; background:transparent; text-align:center;">
+
+<!-- Activities -->
+<input name="Activities_0" id="Activities_0" type="text" style="position:absolute; left:245px; top:618px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Activities_1.value='';
+	document.FormName.Activities_2.value='';
+	document.FormName.Activities_3.value='';
+	document.FormName.Activities_4.value='';
+	document.FormName.Activities_5.value='';
+	TotalSCORE();">
+
+<input name="Activities_1" id="Activities_1" type="text" style="position:absolute; left:280px; top:618px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Activities_0.value='';
+	document.FormName.Activities_2.value='';
+	document.FormName.Activities_3.value='';
+	document.FormName.Activities_4.value='';
+	document.FormName.Activities_5.value='';
+	TotalSCORE();">
+
+<input name="Activities_2" id="Activities_2" type="text" style="position:absolute; left:313px; top:618px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Activities_0.value='';
+	document.FormName.Activities_1.value='';
+	document.FormName.Activities_3.value='';
+	document.FormName.Activities_4.value='';
+	document.FormName.Activities_5.value='';
+	TotalSCORE();">
+
+<input name="Activities_3" id="Activities_3" type="text" style="position:absolute; left:348px; top:618px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Activities_0.value='';
+	document.FormName.Activities_1.value='';
+	document.FormName.Activities_2.value='';
+	document.FormName.Activities_4.value='';
+	document.FormName.Activities_5.value='';
+	TotalSCORE();">
+
+<input name="Activities_4" id="Activities_4" type="text" style="position:absolute; left:383px; top:618px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Activities_0.value='';
+	document.FormName.Activities_1.value='';
+	document.FormName.Activities_2.value='';
+	document.FormName.Activities_3.value='';
+	document.FormName.Activities_5.value='';
+	TotalSCORE();">
+
+<input name="Activities_5" id="Activities_5" type="text" style="position:absolute; left:418px; top:618px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Activities_0.value='';
+	document.FormName.Activities_1.value='';
+	document.FormName.Activities_2.value='';
+	document.FormName.Activities_3.value='';
+	document.FormName.Activities_4.value='';
+	TotalSCORE();">
+
+<input name="Activities_Score" id="Activities_Score" type="text" style="position:absolute; left:650px; top:618px; width:50px; border:0px; font-family:sans-serif; font-size:26px; background:transparent; text-align:center;">
+
+<!-- Confident -->
+<input name="Confident_0" id="Confident_0" type="text" style="position:absolute; left:245px; top:684px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Confident_1.value='';
+	document.FormName.Confident_2.value='';
+	document.FormName.Confident_3.value='';
+	document.FormName.Confident_4.value='';
+	document.FormName.Confident_5.value='';
+	TotalSCORE();">
+
+<input name="Confident_1" id="Confident_1" type="text" style="position:absolute; left:280px; top:684px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Confident_0.value='';
+	document.FormName.Confident_2.value='';
+	document.FormName.Confident_3.value='';
+	document.FormName.Confident_4.value='';
+	document.FormName.Confident_5.value='';
+	TotalSCORE();">
+
+<input name="Confident_2" id="Confident_2" type="text" style="position:absolute; left:313px; top:684px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Confident_0.value='';
+	document.FormName.Confident_1.value='';
+	document.FormName.Confident_3.value='';
+	document.FormName.Confident_4.value='';
+	document.FormName.Confident_5.value='';
+	TotalSCORE();">
+
+<input name="Confident_3" id="Confident_3" type="text" style="position:absolute; left:348px; top:684px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Confident_0.value='';
+	document.FormName.Confident_1.value='';
+	document.FormName.Confident_2.value='';
+	document.FormName.Confident_4.value='';
+	document.FormName.Confident_5.value='';
+	TotalSCORE();">
+
+<input name="Confident_4" id="Confident_4" type="text" style="position:absolute; left:383px; top:684px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Confident_0.value='';
+	document.FormName.Confident_1.value='';
+	document.FormName.Confident_2.value='';
+	document.FormName.Confident_3.value='';
+	document.FormName.Confident_5.value='';
+	TotalSCORE();">
+
+<input name="Confident_5" id="Confident_5" type="text" style="position:absolute; left:418px; top:684px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Confident_0.value='';
+	document.FormName.Confident_1.value='';
+	document.FormName.Confident_2.value='';
+	document.FormName.Confident_3.value='';
+	document.FormName.Confident_4.value='';
+	TotalSCORE();">
+
+<input name="Confident_Score" id="Confident_Score" type="text" style="position:absolute; left:650px; top:684px; width:50px; border:0px; font-family:sans-serif; font-size:26px; background:transparent; text-align:center;">
+
+<!-- Sleep -->
+<input name="Sleep_0" id="Sleep_0" type="text" style="position:absolute; left:245px; top:758px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Sleep_1.value='';
+	document.FormName.Sleep_2.value='';
+	document.FormName.Sleep_3.value='';
+	document.FormName.Sleep_4.value='';
+	document.FormName.Sleep_5.value='';
+	TotalSCORE();">
+
+<input name="Sleep_1" id="Sleep_1" type="text" style="position:absolute; left:280px; top:758px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Sleep_0.value='';
+	document.FormName.Sleep_2.value='';
+	document.FormName.Sleep_3.value='';
+	document.FormName.Sleep_4.value='';
+	document.FormName.Sleep_5.value='';
+	TotalSCORE();">
+
+<input name="Sleep_2" id="Sleep_2" type="text" style="position:absolute; left:313px; top:758px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Sleep_0.value='';
+	document.FormName.Sleep_1.value='';
+	document.FormName.Sleep_3.value='';
+	document.FormName.Sleep_4.value='';
+	document.FormName.Sleep_5.value='';
+	TotalSCORE();">
+
+<input name="Sleep_3" id="Sleep_3" type="text" style="position:absolute; left:348px; top:758px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Sleep_0.value='';
+	document.FormName.Sleep_1.value='';
+	document.FormName.Sleep_2.value='';
+	document.FormName.Sleep_4.value='';
+	document.FormName.Sleep_5.value='';
+	TotalSCORE();">
+
+<input name="Sleep_4" id="Sleep_4" type="text" style="position:absolute; left:383px; top:758px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Sleep_0.value='';
+	document.FormName.Sleep_1.value='';
+	document.FormName.Sleep_2.value='';
+	document.FormName.Sleep_3.value='';
+	document.FormName.Sleep_5.value='';
+	TotalSCORE();">
+
+<input name="Sleep_5" id="Sleep_5" type="text" style="position:absolute; left:418px; top:758px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Sleep_0.value='';
+	document.FormName.Sleep_1.value='';
+	document.FormName.Sleep_2.value='';
+	document.FormName.Sleep_3.value='';
+	document.FormName.Sleep_4.value='';
+	TotalSCORE();">
+
+<input name="Sleep_Score" id="Sleep_Score" type="text" style="position:absolute; left:650px; top:758px; width:50px; border:0px; font-family:sans-serif; font-size:26px; background:transparent; text-align:center;">
+
+<!-- Energy -->
+<input name="Energy_0" id="Energy_0" type="text" style="position:absolute; left:245px; top:820px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Energy_1.value='';
+	document.FormName.Energy_2.value='';
+	document.FormName.Energy_3.value='';
+	document.FormName.Energy_4.value='';
+	document.FormName.Energy_5.value='';
+	TotalSCORE();">
+
+<input name="Energy_1" id="Energy_1" type="text" style="position:absolute; left:280px; top:820px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Energy_0.value='';
+	document.FormName.Energy_2.value='';
+	document.FormName.Energy_3.value='';
+	document.FormName.Energy_4.value='';
+	document.FormName.Energy_5.value='';
+	TotalSCORE();">
+
+<input name="Energy_2" id="Energy_2" type="text" style="position:absolute; left:313px; top:820px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Energy_0.value='';
+	document.FormName.Energy_1.value='';
+	document.FormName.Energy_3.value='';
+	document.FormName.Energy_4.value='';
+	document.FormName.Energy_5.value='';
+	TotalSCORE();">
+
+<input name="Energy_3" id="Energy_3" type="text" style="position:absolute; left:348px; top:820px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Energy_0.value='';
+	document.FormName.Energy_1.value='';
+	document.FormName.Energy_2.value='';
+	document.FormName.Energy_4.value='';
+	document.FormName.Energy_5.value='';
+	TotalSCORE();">
+
+<input name="Energy_4" id="Energy_4" type="text" style="position:absolute; left:383px; top:820px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Energy_0.value='';
+	document.FormName.Energy_1.value='';
+	document.FormName.Energy_2.value='';
+	document.FormName.Energy_3.value='';
+	document.FormName.Energy_5.value='';
+	TotalSCORE();">
+
+<input name="Energy_5" id="Energy_5" type="text" style="position:absolute; left:418px; top:820px; width: 25px; height:25px; border:0px; font-weight:bold; text-align:center; font-size:18px; background:transparent;" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onclick="
+	document.FormName.Energy_0.value='';
+	document.FormName.Energy_1.value='';
+	document.FormName.Energy_2.value='';
+	document.FormName.Energy_3.value='';
+	document.FormName.Energy_4.value='';
+	TotalSCORE();">
+
+<input name="Energy_Score" id="Energy_Score" type="text" style="position:absolute; left:650px; top:820px; width:50px; border:0px; font-family:sans-serif; font-size:26px; background:transparent; text-align:center;">
+
+<!-- Total Score -->
+<input name="Total_Score" id="Total_Score" type="text" style="position:absolute; left:650px; top:895px; width:50px; border:0px; font-family:sans-serif; font-size:26px; background:transparent; text-align:center;">
+	<!--<input type="hidden" name="m$CAT#value" id = "CATa">-->
+</div>
+
+<!-- Warning -->
+<div id="CAT_Warning" class="Hide" style="position:absolute; left:35px; top:915px; font-family:sans-serif; font-size:16px; font-weight:bold; color:red;">
+	<ul><li>CAT score &ge;10.  Suggests significant COPD symptoms. <br>GOLD Group B or D.  See COPD advisor for details. &nbsp;
+</div>
+
+
+<div class="DoNotPrint" id="BottomButtons" style="position: absolute; top:960px; left:0px;">
+	<table>
+    <tr>
+        <td class="subjectline">
+		<input type="hidden" id="newForm" name="newForm" value="True" />				
+		Subject: <input type="text" value="CAT Score" name="subject" value="CAT Score" size="40">&nbsp;
+		<input value="Submit" name="SubmitButton" id="SubmitButton" type="submit" onclick=" releaseDirtyFlag();"> 
+		<input value="Reset" name="ResetButton" id="ResetButton" type="reset"> 
+		<input value="Print" name="PrintButton" id="PrintButton" type="button" onclick="formPrint();"> 
+		<input id="saveAsEdoc" type="hidden" name="saveAsEdoc" value="false"> 
+		<input id="eDocument" name="eDocument" type="button" value="eDocument" onclick="document.getElementById('saveAsEdoc').value='true'; needToConfirm=false; SubmitButton.click();"> 
+	    </td>
+    </tr>
+    </table>
+</div>
+</div>
+</form>
+
+</body>
+</html>
