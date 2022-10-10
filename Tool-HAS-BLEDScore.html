@@ -1,0 +1,528 @@
+<!-- HAS-BLED Score: Created as a seperate eForm March 16 2021 by Richard Ng. Modified from Opioid Risk Tool created by John Yap, 2014. -->
+
+<!-- Do not use apostrophes in text, only in html-required coding - they do not allow for proper eForm zip inside Oscar.  Instead, use: &#8217; -->
+
+<html>
+<title>HAS-BLED Score</title>
+<head>
+<!-- Xbox styling -->
+<style type="text/css">
+	.box1 {
+		position:relative;
+		width: 23px;
+		height: 16px;
+		cursor: pointer;
+		font-weight: bold;
+		text-align: center;
+		background: transparent;
+	}
+
+	.box2 {
+		position: absolute;
+		border: 1px solid #000000;
+		cursor: pointer;
+		font-weight: bold;
+		text-align: center;
+		background: yellow;
+		font-size: 8px;
+		width:14px;
+		height:14px;
+	}
+</style>
+
+<!-- Text styling -->
+<style type="text/css">
+p.title{
+	text-transform: uppercase;
+	font-size: 16;
+	font-family: Arial;
+	font-weight: bolder;
+	text-align: left;
+	color: black;
+}
+p.heading{
+	font-weight: bolder;
+	text-decoration: underline;
+}
+
+td.heading1{
+	font-size: 12;
+	font-family: Arial;
+	font-weight: bold;
+	text-align: left;
+	vertical-align: top;
+	color: white;
+	background:black ;
+	border-width: 1;
+}
+td.heading2{
+	font-size: 12;
+	font-family: Arial;
+	font-weight: bold;
+	text-align: left;
+	vertical-align: top;
+	color: white;
+	background: #444444;
+	border-width: 1;
+}
+
+tr.even{
+	background-color: #ffffff;
+}
+tr.odd{
+	background-color: #dddddd;
+}
+td.question{
+	font-size: 12;
+	font-family: Arial;
+	font-weight: normal;
+	text-align: left;
+	vertical-align: top;
+	color: black;
+	border-width: 1;
+}
+td.answer{
+	font-size: 12;
+	font-family: Arial;
+	font-weight: normal;
+	text-align: center;
+	vertical-align: top;
+	color: black;
+	border-width: 1;
+}
+td.normaltext{
+	width: 100%;
+	font-size: 12;
+	font-family: Arial;
+	font-weight: normal;
+	text-align: left;
+	vertical-align: top;
+	color: black;
+	background-color: white;
+	border-width: 0;
+}
+input.formtext{
+	width: 100%;
+	height: 100%;
+	font-size: 12;
+	font-family: Arial;
+	font-weight: normal;
+	text-align: left;
+	vertical-align: top;
+	color: black;
+	background-color: white;
+	border-width: 1;
+	border-style: solid; 
+}
+textarea.formtext{
+	width: 100%;
+	height: auto;
+	font-size: 12;
+	font-family: Arial;
+	font-weight: normal;
+	text-align: left;
+	vertical-align: top;
+	color: black;
+	background-color: white;
+	border-width: 1;
+	border-style: solid;
+}
+
+</style>
+
+<!-- CSS Script that removes textarea and textbox borders when printing ---(put this inbetween <header></header>)----------------->
+<style type="text/css" media="print">
+div.DoNotPrint {
+	display: none;
+}
+
+input.noborder {
+	border : 0px;
+	background: transparent;
+}
+textarea.noborder {
+	scrollbar-3dlight-color: transparent;
+	scrollbar-3dlight-color: transparent;
+	scrollbar-arrow-color: transparent;
+	scrollbar-base-color: transparent;
+	scrollbar-darkshadow-color: transparent;
+	scrollbar-face-color: transparent;
+	scrollbar-highlight-color: transparent;
+	scrollbar-shadow-color: transparent;
+	scrollbar-track-color: transparent;
+	background: transparent;
+	overflow: hidden;
+	border : 0px;
+}
+</style>
+
+<!-- Standard form functions -->
+<script language="javascript" type="text/javascript">
+	/****************************
+	startup functions 
+	****************************/
+	function startUp() {			
+		// shows the forms on development machine from notepad ++ - saves you from uploading to the server to input alignments
+		var strLoc = window.location.href.toLowerCase();
+		if(strLoc.indexOf("https") == -1) {
+			// page1
+			//var src = document.getElementById('BGImage').src;
+			//document.getElementById('BGImage').src = src.replace('$%7Boscar_image_path%7D','');
+		}
+		setDocumentTitle('PHQ9 Score',document.getElementById('PatientName').value);
+		setDefaults();			
+	//optimize window size/width
+	top.window.resizeTo(910, screen.availHeight);
+	}
+	
+	function setDocumentTitle(Title,PatientName) {
+		// set document title
+		document.title = Title + ' - ' + PatientName;					
+	}
+	
+	function setDefaults() {	            
+		// check the newform flag to ensure this is the initial load of the form
+		if (document.getElementById("newForm").value == 'True') {
+			//document.getElementById('').value = 'X';	
+		}   
+	}
+
+	/****************************
+		submit and print functions 
+	****************************/
+	function printSubmit() {
+		printLetter();
+		releaseDirtyFlag();			
+		submission();
+	}
+
+	function printLetter() {
+		// print the letter
+		window.print();
+	} 
+
+	function submission() {
+		setFlag();
+		setTimeout('document.FormName.submit()',1000);			
+	}
+
+	function setFlag() {
+	// indicate that the form has been submitted
+	if (document.getElementById("newForm").value == 'True')
+		document.getElementById("newForm").value = 'False';
+	}
+	
+	function showButtons() {
+		//show the bottom buttons if they are hidden
+		if (document.getElementById('BottomButtons').style.display == 'none')
+			document.getElementById('BottomButtons').style.display = '';
+	}
+	
+	/****************************
+		checkbox functions 
+	****************************/
+	function changeValue(x) {
+		if (document.getElementById(x).value == '')
+			document.getElementById(x).value = 'X';
+		else
+			document.getElementById(x).value = '';
+	}
+
+	function displayKeyCode(evt,x) {
+		var charCode = (evt.which) ? evt.which :event.keyCode
+		// any key press except tab will constitute a value change to the checkbox
+		if (charCode != 9) {
+			changeValue(x);
+			return false;
+		}
+	}
+
+	/****************************
+		scripts to confirm closing of window if it has not been saved yet 
+	****************************/
+		//keypress events trigger dirty flag
+		var needToConfirm = false;
+		document.onkeyup=setDirtyFlag;
+	function setDirtyFlag() {
+		needToConfirm = true;
+	}
+
+	function releaseDirtyFlag() {
+		needToConfirm = false; 
+		//Call this function if does not require an alert.
+		//this could be called when save button is clicked
+	}
+		window.onbeforeunload = confirmExit;
+
+	function confirmExit() {
+		if (needToConfirm) {
+		return "You have attempted to leave this page. If you have made any changes to the fields without clicking the Save button, your changes will be lost. Are you sure you want to exit this page?";
+		}
+	}
+</script>
+
+<script type="text/javascript" language="javascript">
+		function getCheckedValue(checkboxObj) {
+			if(!checkboxObj)
+				return parseInt(0);
+			var checkboxLength = checkboxObj.length;
+			if(checkboxLength == undefined)
+				if(checkboxObj.checked)
+					return parseInt(checkboxObj.value);
+				else
+					return parseInt(value);
+			for(var i = 0; i < checkboxLength; i++) {
+				if(checkboxObj[i].checked) {
+					return parseInt(checkboxObj[i].value);
+				}
+			}
+			return parseInt(0);
+		}
+
+		function totalScore() {
+			var i = 0;  
+		
+			if (document.getElementById("Q1").value == ''){i += 0;}
+				else {i += 1;}
+			if (document.getElementById("Q2").value == ''){i += 0;}
+				else {i += 1;}
+			if (document.getElementById("Q3").value == ''){i += 0;}
+				else {i += 1;}
+			if (document.getElementById("Q4").value == ''){i += 0;}
+				else {i += 1;}
+			if (document.getElementById("Q5").value == ''){i += 0;}
+				else {i += 1;}
+			if (document.getElementById("Q6").value == ''){i += 0;}
+				else {i += 1;}
+			if (document.getElementById("Q7").value == ''){i += 0;}
+				else {i += 1;}
+			if (document.getElementById("Q8").value == ''){i += 0;}
+				else {i += 1;}
+			if (document.getElementById("Q9").value == ''){i += 0;}
+				else {i += 1;}
+			/*if (document.getElementById("Q10").value == ''){i += 0;}
+				else {i += 4;}
+			if (document.getElementById("Q11").value == ''){i += 0;}
+				else {i += 5;}
+			if (document.getElementById("Q12").value == ''){i += 0;}
+				else {i += 5;}
+			if (document.getElementById("Q13").value == ''){i += 0;}
+				else {i += 1;}
+			if (document.getElementById("Q14").value == ''){i += 0;}
+				else {i += 1;}
+			if (document.getElementById("Q15").value == ''){i += 0;}
+				else {i += 3;}
+			if (document.getElementById("Q16").value == ''){i += 0;}
+				else {i += 0;}
+			if (document.getElementById("Q17").value == ''){i += 0;}
+				else {i += 2;}
+			if (document.getElementById("Q18").value == ''){i += 0;}
+				else {i += 2;}
+			if (document.getElementById("Q19").value == ''){i += 0;}
+				else {i += 1;}
+			if (document.getElementById("Q20").value == ''){i += 0;}
+				else {i += 1;}*/
+
+			document.FormName.HASBLEDScore.value = i;
+			document.FormName.subject.value = 'HAS-BLED score = ' + i;
+
+            if (i<2) {
+				document.getElementById("low").style.background='lawngreen';
+				document.getElementById("medium").style.background='white';
+				document.getElementById("high").style.background='white';
+			}
+			else if (i==2) {
+				document.getElementById("low").style.background='white';
+				document.getElementById("medium").style.background='yellow';
+				document.getElementById("high").style.background='white';
+			}
+			else if (i>=3){
+				document.getElementById("low").style.background='white';
+				document.getElementById("medium").style.background='white';
+				document.getElementById("high").style.background='orange';
+			}
+		}
+
+		function resetColour() {
+			document.getElementById("low").style.background='white';
+			document.getElementById("medium").style.background='white';
+			document.getElementById("high").style.background='white';
+		}
+</script>
+</head>
+
+<body onload="startUp();" onMouseDown="showButtons();">
+<form method="post" action="" name="FormName" id="" >
+
+<p class="title">HAS-BLED Score - by Ron Pisters MD</p>
+
+<div name="demographics">
+    <table width="100%">
+        <tr>
+            <td class="heading1" style="width:20%">Patient name</td>
+            <td><input name="PatientName" id="PatientName" type="text" class="noborder" style="width: 400px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=patient_name></td>
+    
+        </tr>
+        <tr>
+            <td class="heading1" style="width:20%">Date</td>
+            <td><input name="Date" id="Date" type="text" class="noborder" style="width: 400px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;"  oscarDB=today></td>
+    
+        </tr>
+    </table>
+</div>
+
+<br>
+<div name="Questionnaire">
+	<table width="100%">
+		<tr><td class="heading2" style="text-align:left;" width=25%>ITEM</td>
+			<td class="heading2" width=30%> Patient</td>
+			<!--<td class="heading2" width=30%>Male Patient</td> -->
+		</tr>
+	<br>
+		<!--<tr class="even" class="formtext"><td class="question"> Q1. Family History of substance abuse:</td>
+			<td class="answer" id="Q1Female" style="background:transparent;">*******</td>
+			<td class="answer" id="Q1Male" style="background:transparent;">*******</td>
+		</tr>-->
+		<tr class="odd"><td class="question"><b>Hypertension (+1)</b> <br> &nbsp &nbsp &nbsp &nbsp Uncontrolled, >160 mmHg systolic </td>
+			<td class="answer" id="FQ1"><input name="Q1" id="Q1" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+			<!--<td class="answer" id="MQ2"><input name="Q2" id="Q2" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q1.value='';"></td>-->
+		</tr>
+		<tr class="odd"><td class="question"><b>Renal disease (+1)</b> <br> &nbsp &nbsp &nbsp &nbsp Dialysis, transplat, Cr >200 umol/L</td>
+			<td class="answer" id="FQ2"><input name="Q2" id="Q2" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+			<!--<td class="answer" id="MQ4"><input name="Q4" id="Q4" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q3.value='';"></td>-->
+		</tr>
+		<tr class="odd"><td class="question"><b>Liver disease (+1)</b> <br> &nbsp &nbsp &nbsp &nbsp Cirrhosis or bilirubin >2x normal with AST/ALT/AP >3x normal</td>
+			<td class="answer" id="FQ3"><input name="Q3" id="Q3" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+			<!--<td class="answer" id="MQ6"><input name="Q6" id="Q6" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q5.value='';"></td>-->
+		</tr>
+		<!--<tr class="even"><td class="question">Q2. Personal History of substance abuse:</td>
+			<td class="answer" id="Q2Female" style="background:transparent;">*******</td>
+			<td class="answer" id="Q2Male" style="background:transparent;">*******</td>
+		</tr>-->
+		<tr class="odd"><td class="question"><b> Stroke history (+1)</b></td>
+			<td class="answer" id="FQ4"><input name="Q4" id="Q4" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+			<!--<td class="answer" id="MQ8"><input name="Q8" id="Q8" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q7.value='';"></td>-->
+		</tr>
+		<tr class="odd"><td class="question"><b>Prior major bleeding or predisposition to bleeding (+1)</b></td>
+			<td class="answer" id="FQ5"><input name="Q5" id="Q5" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+			<!--<td class="answer" id="MQ10"><input name="Q10" id="Q10" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q9.value='';"></td>-->
+		</tr>
+		<tr class="odd"><td class="question"><b> Liable INR (+1)</b> <br> &nbsp &nbsp &nbsp &nbsp Unstable/high INRs, time in therapeutic range &#60;60% </td>
+			<td class="answer" id="FQ6"><input name="Q6" id="Q6" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q12.value='';"></td>
+			<!--<td class="answer" id="MQ12"><input name="Q12" id="Q12" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q11.value='';"></td>-->
+		</tr>
+        <tr class="odd"><td class="question"><b>Age (+1) </b> </td>
+			<td class="answer" id="FQ7"><input name="Q7" id="Q7" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q12.value='';"></td>
+			<!--<td class="answer" id="MQ12"><input name="Q12" id="Q12" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q11.value='';"></td>-->
+		</tr>
+        <tr class="odd"><td class="question"><b> Medication usage predisposing to bleeding (+1) </b><br> &nbsp &nbsp &nbsp &nbsp Aspirin, clopidogrel, NSAIDs</td>
+			<td class="answer" id="FQ8"><input name="Q8" id="Q8" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q12.value='';"></td>
+			<!--<td class="answer" id="MQ12"><input name="Q12" id="Q12" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q11.value='';"></td>-->
+		</tr>
+        <tr class="odd"><td class="question"><b> Alcohol use (+1) </b><br> &nbsp &nbsp &nbsp &nbsp &ge;8 drinks/week</td>
+			<td class="answer" id="FQ9"><input name="Q9" id="Q9" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q12.value='';"></td>
+			<!--<td class="answer" id="MQ12"><input name="Q12" id="Q12" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q11.value='';"></td>-->
+		</tr>
+		<!--<tr class="even"><td></td>
+			<td class="answer" id="Q3Female" style="background:transparent;">*******</td>
+			<td class="answer" id="Q3Male" style="background:transparent;">*******</td>
+		</tr>
+		<tr class="odd"><td class="question"> Q3. Age (between 16-45 years old)</td>
+			<td class="answer" id="FQ13"><input name="Q13" id="Q13" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q14.value='';"></td>
+			<td class="answer" id="MQ14"><input name="Q14" id="Q14" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q13.value='';"></td>
+		</tr>
+		<tr class="even"><td></td>
+			<td class="answer" id="Q4Female" style="background:transparent;">*******</td>
+			<td class="answer" id="Q4Male" style="background:transparent;">*******</td>
+		</tr>
+		<tr class="odd"><td class="question">Q4. Hx of preadolescent sexual abuse:</td>
+			<td class="answer" id="FQ15"><input name="Q15" id="Q15" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q16.value='';"></td>
+			<td class="answer" id="MQ16"><input name="Q16" id="Q16" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q15.value='';"></td>
+		</tr>
+		<tr class="even"><td class="question">Q5. Psychological Disease</td>
+			<td class="answer" id="Q5Female" style="background:transparent;">*******</td>
+			<td class="answer" id="Q5Male" style="background:transparent;">*******</td>
+		</tr>
+		<tr class="odd"><td class="question">&nbsp &nbsp &nbsp &nbsp ADHD, OCD, Bipolar, Schizophrenia</td>
+			<td class="answer" id="FQ17"><input name="Q17" id="Q17" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q18.value='';"></td>
+			<td class="answer" id="MQ18"><input name="Q18" id="Q18" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q17.value='';"></td>
+		</tr>
+		<tr class="odd"><td class="question">&nbsp &nbsp &nbsp &nbsp Depression</td>
+			<td class="answer" id="FQ19"><input name="Q19" id="Q19" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q20.value='';"></td>
+			<td class="answer" id="MQ20"><input name="Q20" id="Q20" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q19.value='';"></td>
+		</tr>-->
+	</table>
+
+    <table>
+		<tr><td><input type="button" onclick="totalScore()" style="width: 150px; height: 25px;" value="Calculate Total Score"></td>
+			<td><input name="HASBLEDScore" id="HASBLEDScore" type="text" style="width: 100px; height: 25px; text-align: left;"></td>
+		</tr>
+	</table>
+</div>
+
+<br>
+
+<div name="Instructions">
+
+	<table width="100%">
+        <tr><td class="heading2" style="text-align:left;">RISK ASSESSMENT AND SUGGESTIONS:</td></tr>
+        <tr><td>Scores greater than 5 were too rare to determine risk, but are likely over 10%.</td></tr>
+    </table>
+    
+	<table width="100%">
+		<tr width="30%"><td class="heading2">Score</td>
+			<td class="heading2" style="text-align:left;">Action</td>
+		</tr>
+		<tr id="low" style="background:white;"><td style="text-align:center;">0</td>
+			<td><b>Low risk of major bleeding. Consider anticoagulation.</b> 
+                <br> &nbsp &nbsp &nbsp &nbsp Score = 0 - 0.9% in one validation study (Lip 2011) and 1.13 bleeds per 100 patient-years in another 
+                <br> &nbsp &nbsp &nbsp &nbsp (Pisters 2010).
+            </td>
+		</tr>
+		<tr id="medium" style="background:white;"><td style="text-align:center;">1-2</td>
+			<td><b>Moderate risk of major bleeding. Consider anticoagulation.</b> 
+                <br> &nbsp &nbsp &nbsp &nbsp Score = 1 - 3.4% in one validation study (Lip 2011) and 1.02 bleeds per 100 patient-years in another 
+                <br> &nbsp &nbsp &nbsp &nbsp (Pisters 2010).
+                <br> &nbsp &nbsp &nbsp &nbsp Score = 2 - 4.1% in one validation study (Lip 2011) and 1.88 bleeds per 100 patient-years in another 
+                <br> &nbsp &nbsp &nbsp &nbsp (Pisters 2010).
+            </td>
+		</tr>
+		<tr id="high" style="background:white;"><td style="text-align:center;">3-9</td>
+            <td><b>HIGH RISK of major bleeding. Consider alternatives to anticoagulation.</b> 
+                <br> &nbsp &nbsp &nbsp &nbsp Score = 3 - 5.8% in one validation study (Lip 2011) and 3.72 bleeds per 100 patient-years in another 
+                <br> &nbsp &nbsp &nbsp &nbsp (Pisters 2010).
+                <br> &nbsp &nbsp &nbsp &nbsp Score = 4 - 8.9% in one validation study (Lip 2011) and 8.70 bleeds per 100 patient-years in another 
+                <br> &nbsp &nbsp &nbsp &nbsp (Pisters 2010).
+                <br> &nbsp &nbsp &nbsp &nbsp Score = 5 - 9.1% in one validation study (Lip 2011) and 12.50 bleeds per 100 patient-years in another 
+                <br> &nbsp &nbsp &nbsp &nbsp (Pisters 2010).
+                <br> &nbsp &nbsp &nbsp &nbsp Score = 6+ - >10% 
+            </td>		
+        </tr>
+	</table>
+    <table width="100%"> 
+        <tr><td> <a href="https://www.sparctool.com/">Click here for SPARC Tool</a></td></tr>
+    </table>
+</div><br>
+
+<!-- The submit/print/reset buttons ------------------------------------------------------------->
+<div name="FunctionButtons" class="DoNotPrint">
+    <table>
+    <tr>
+        <td class="subjectline">
+            <input type="hidden" id="newForm" name="newForm" value="True" />				
+			Subject: <input type="text" value="HAS-BLED Score" name="subject" value="HAS-BLED Score" size="40">&nbsp;
+            <input value="Submit" name="SubmitButton" type="submit">
+            <input value="Reset" name="ResetButton" type="reset">
+            <input value="Print" name="PrintButton" onclick="javascript:window.print()" type="button">
+            <input id="saveAsEdoc" type="hidden" name="saveAsEdoc" value="false"> 
+            <input id="eDocument" name="eDocument" type="button" value="eDocument" onclick="document.getElementById('saveAsEdoc').value='true'; needToConfirm=false; SubmitButton.click();">
+        </td>
+    </tr>
+    </table>
+    </div>
+
+</form>
+<!-- ------End of submit/print/reset buttons----------------------------------------------------->
+
+</body>
+</html>
