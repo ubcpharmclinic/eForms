@@ -1,0 +1,554 @@
+
+<!-- CHADS2 Score: Created as a seperate eForm March 11 2021 by Richard Ng. Modified from Opioid Risk Tool created by John Yap, 2014. 
+
+E-FORM DISCLAIMER: As is: E-Forms are shared as-is, free of charge on a share-alike basis with absolutely no guarantee or warranty. 
+No Quality Control: The author does not vet any E-Forms and does not purport to apply any manner of quality control. Responsibility: 
+The responsibility for the clinical and medical-legal consequences of any and all E-Forms, rest with the clinical OSCAR end-users themselves, 
+not with the author of the E-Form. This applies to both E-Forms shared by others, and those created by users themselves. Attribution: 
+E-Forms are shared freely among the user community, with attribution to the original author of the E-Form. Free: E-Forms so shared 
+may not be sold or purchased. Provincial validation:  E-Forms are optional and non-essential add-ons, separate from OSCAR, and with 
+their own license terms.E-Forms  are not part of the OSCAR core program functionality and code base. For this reason E-Forms are not 
+subject to provincial validation testing and conformance criteria. E-Forms are also not subject to the ISO production process for OSCAR. -->
+
+<!-- Do not use apostrophes in text, only in html-required coding - they do not allow for proper eForm zip inside Oscar.  Instead, use: &#8217; -->
+<html>
+<title>SCOFF Questionnaire</title>
+<head>
+<!-- Xbox styling -->
+<style type="text/css">
+	.box1 {
+		position:relative;
+		width: 23px;
+		height: 16px;
+		cursor: pointer;
+		font-weight: bold;
+		text-align: center;
+		background: transparent;
+	}
+
+	.box2 {
+		position: absolute;
+		border: 1px solid #000000;
+		cursor: pointer;
+		font-weight: bold;
+		text-align: center;
+		background: yellow;
+		font-size: 8px;
+		width:14px;
+		height:14px;
+	}
+</style>
+
+<!-- Text styling -->
+<style type="text/css">
+p.title{
+	text-transform: uppercase;
+	font-size: 16;
+	font-family: Arial;
+	font-weight: bolder;
+	text-align: left;
+	color: black;
+}
+p.heading{
+	font-weight: bolder;
+	text-decoration: underline;
+}
+
+td.heading1{
+	font-size: 12;
+	font-family: Arial;
+	font-weight: bold;
+	text-align: left;
+	vertical-align: top;
+	color: white;
+	background:black ;
+	border-width: 1;
+}
+td.heading2{
+	font-size: 12;
+	font-family: Arial;
+	font-weight: bold;
+	text-align: left;
+	vertical-align: top;
+	color: white;
+	background: #444444;
+	border-width: 1;
+}
+
+tr.even{
+	background-color: #ffffff;
+}
+tr.odd{
+	background-color: #dddddd;
+}
+td.question{
+	font-size: 12;
+	font-family: Arial;
+	font-weight: normal;
+	text-align: left;
+	vertical-align: top;
+	color: black;
+	border-width: 1;
+}
+td.answer{
+	font-size: 12;
+	font-family: Arial;
+	font-weight: normal;
+	text-align: center;
+	vertical-align: top;
+	color: black;
+	border-width: 1;
+}
+td.normaltext{
+	width: 100%;
+	font-size: 12;
+	font-family: Arial;
+	font-weight: normal;
+	text-align: left;
+	vertical-align: top;
+	color: black;
+	background-color: white;
+	border-width: 0;
+}
+input.formtext{
+	width: 100%;
+	height: 100%;
+	font-size: 12;
+	font-family: Arial;
+	font-weight: normal;
+	text-align: left;
+	vertical-align: top;
+	color: black;
+	background-color: white;
+	border-width: 1;
+	border-style: solid; 
+}
+textarea.formtext{
+	width: 100%;
+	height: auto;
+	font-size: 12;
+	font-family: Arial;
+	font-weight: normal;
+	text-align: left;
+	vertical-align: top;
+	color: black;
+	background-color: white;
+	border-width: 1;
+	border-style: solid;
+}
+
+</style>
+
+<!-- CSS Script that removes textarea and textbox borders when printing ---(put this inbetween <header></header>)----------------->
+<style type="text/css" media="print">
+div.DoNotPrint {
+	display: none;
+}
+
+input.noborder {
+	border : 0px;
+	background: transparent;
+}
+textarea.noborder {
+	scrollbar-3dlight-color: transparent;
+	scrollbar-3dlight-color: transparent;
+	scrollbar-arrow-color: transparent;
+	scrollbar-base-color: transparent;
+	scrollbar-darkshadow-color: transparent;
+	scrollbar-face-color: transparent;
+	scrollbar-highlight-color: transparent;
+	scrollbar-shadow-color: transparent;
+	scrollbar-track-color: transparent;
+	background: transparent;
+	overflow: hidden;
+	border : 0px;
+}
+</style>
+
+<!-- Standard form functions -->
+<script language="javascript" type="text/javascript">
+	/****************************
+	startup functions 
+	****************************/
+	function startUp() {			
+		// shows the forms on development machine from notepad ++ - saves you from uploading to the server to input alignments
+		var strLoc = window.location.href.toLowerCase();
+		if(strLoc.indexOf("https") == -1) {
+		}
+		setDocumentTitle('SCOFF Questionaire',document.getElementById('PatientName').value);
+		setDefaults();			
+	//optimize window size/width
+	top.window.resizeTo(910, screen.availHeight);
+	}
+	
+	function setDocumentTitle(Title,PatientName) {
+		// set document title
+		document.title = Title + ' - ' + PatientName;					
+	}
+	
+	function setDefaults() {	            
+		// check the newform flag to ensure this is the initial load of the form
+		if (document.getElementById("newForm").value == 'True') {
+			//document.getElementById('').value = 'X';	
+		}   
+	}
+
+	/****************************
+		submit and print functions 
+	****************************/
+	function printSubmit() {
+		printLetter();
+		releaseDirtyFlag();			
+		submission();
+	}
+
+	function printLetter() {
+		// print the letter
+		window.print();
+	} 
+
+	function submission() {
+		setFlag();
+		setTimeout('document.FormName.submit()',1000);			
+	}
+
+	function setFlag() {
+	// indicate that the form has been submitted
+	if (document.getElementById("newForm").value == 'True')
+		document.getElementById("newForm").value = 'False';
+	}
+	
+	function showButtons() {
+		//show the bottom buttons if they are hidden
+		if (document.getElementById('BottomButtons').style.display == 'none')
+			document.getElementById('BottomButtons').style.display = '';
+	}
+	
+	/****************************
+		checkbox functions 
+	****************************/
+    function changeValue(x) {
+        var relatedInputID;
+        switch (x) {
+            case "Q1":
+                relatedInputID = "Q1_No";
+                break;
+           case "Q1_No":
+                relatedInputID = "Q1";
+                break;
+            case "Q2":
+                relatedInputID = "Q2_No";
+                break;
+            case "Q2_No":
+                relatedInputID = "Q2";
+                break;
+            case "Q3": 
+                relatedInputID = "Q3_No"; 
+                break;
+            case "Q3_No":
+                relatedInputID = "Q3";
+                break;
+            case "Q4": 
+                relatedInputID = "Q4_No";
+                break;
+            case "Q4_No":
+                relatedInputID = "Q4";
+                break;
+            case "Q5": 
+                relatedInputID = "Q5_No";
+                break;
+            case "Q5_No":
+                relatedInputID = "Q5";
+                break;
+            default:
+                relatedInputID = "Q1_No";
+        }
+        if (document.getElementById(x).value == '') {
+            document.getElementById(x).value = 'X';
+            document.getElementById(relatedInputID).value = '';
+        }
+		else
+            document.getElementById(x).value = '';
+         
+	}
+
+	function displayKeyCode(evt,x) {
+		var charCode = (evt.which) ? evt.which :event.keyCode
+		// any key press except tab will constitute a value change to the checkbox
+		if (charCode != 9) {
+			changeValue(x);
+			return false;
+		}
+	}
+
+	/****************************
+		scripts to confirm closing of window if it has not been saved yet 
+	****************************/
+		//keypress events trigger dirty flag
+		var needToConfirm = false;
+		document.onkeyup=setDirtyFlag;
+	function setDirtyFlag() {
+		needToConfirm = true;
+	}
+
+	function releaseDirtyFlag() {
+		needToConfirm = false; 
+		//Call this function if does not require an alert.
+		//this could be called when save button is clicked
+	}
+		window.onbeforeunload = confirmExit;
+
+	function confirmExit() {
+		if (needToConfirm) {
+		return "You have attempted to leave this page. If you have made any changes to the fields without clicking the Save button, your changes will be lost. Are you sure you want to exit this page?";
+		}
+	}
+</script>
+
+<!--Checkbox calculation functions-->
+<script type="text/javascript" language="javascript">
+function getCheckedValue(checkboxObj) {
+			if(!checkboxObj)
+				return parseInt(0);
+			var checkboxLength = checkboxObj.length;
+			if(checkboxLength == undefined)
+				if(checkboxObj.checked)
+					return parseInt(checkboxObj.value);
+				else
+					return parseInt(value);
+			for(var i = 0; i < checkboxLength; i++) {
+				if(checkboxObj[i].checked) {
+					return parseInt(checkboxObj[i].value);
+				}
+			}
+			return parseInt(0);
+		}
+
+		function totalScore() {
+			var i = 0; var k = 0; 
+		
+			if (document.getElementById("Q1").value == ''){i += 0;}
+				else {i += 1;}
+			if (document.getElementById("Q2").value == ''){i += 0;}
+				else {i += 1;}
+			if (document.getElementById("Q3").value == ''){i += 0;}
+				else {i += 1;}
+			if (document.getElementById("Q4").value == ''){i += 0;}
+				else {i += 1;}
+			if (document.getElementById("Q5").value == ''){i += 0;}
+				else {i += 1; k +=1;} 
+
+			document.FormName.SCOFFScore.value = i;
+			document.FormName.subject.value = 'SCOFF score = ' + i;
+
+			if (i<2) {
+                document.getElementById("low").style.background ='yellow'; 
+                document.getElementById("high").style.background ='white';
+            }
+            else   {
+                document.getElementById("low").style.background ='white'; 
+                document.getElementById("high").style.background ='orange';
+			} 
+		}
+
+		function resetColour() {
+			document.getElementById("low").style.background='white'; 
+			document.getElementById("high").style.background='white';
+		}
+</script>
+</head>
+
+<body onload="startUp();" onMouseDown="showButtons();">
+<form method="post" action="" name="FormName" id="" >
+
+<p class="title">SCOFF Questionnaire - Screening tool for eating disorders</p>
+
+<div name="demographics">
+    <table width="100%">
+        <tr>
+            <td class="heading1" style="width:20%">Patient name</td>
+            <td><input name="PatientName" id="PatientName" type="text" class="noborder" style="width: 400px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=patient_name></td>
+    
+        </tr>
+        <tr>
+            <td class="heading1" style="width:20%">Date</td>
+            <td><input name="Date" id="Date" type="text" class="noborder" style="width: 400px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;"  oscarDB=today></td>
+    
+        </tr>
+    </table>
+</div>
+
+<br>
+
+<div name="Questionnaire">
+	<table width="100%">
+        <tr>
+            <td class="heading2" style="text-align:left;" width=40%>ITEM</td>
+            <td class="heading2" width=20% > Yes</td>
+            <td class="heading2" width=20%   > No</td>
+        </tr>
+	<br> 
+    <tr class="odd">
+        <td class="question">1.	Do you make yourself <b>S</b>ick* (vomit) because you feel uncomfortably full?</td>
+        <td class="answer" id="FQ1"><input name="Q1" id="Q1" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+        <td class="answer" id="FQ1_No"><input name="Q1_No" id="Q1_No" type="text" class="box1"  onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+    </tr>
+    <tr class="odd">
+        <td class="question">2.	Do you worry that you have lost <b>C</b>ontrol over how much you eat?</td>
+        <td class="answer" id="FQ2"><input name="Q2" id="Q2" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+        <td class="answer" id="FQ2_No"><input name="Q2_No" id="Q2_No" type="text" class="box1"  onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+        <!--<td class="answer" id="MQ4"><input name="Q4" id="Q4" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q3.value='';"></td>-->
+    </tr>
+    <tr class="odd">
+        <td class="question">3.	Have you recently lost more than 14lb/6kg (<b>O</b>ne stone*) in a 3-month period?</td>
+        <td class="answer" id="FQ3"><input name="Q3" id="Q3" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+        <td class="answer" id="FQ3_No"><input name="Q3_No" id="Q3_No" type="text" class="box1"  onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+        <!--<td class="answer" id="MQ6"><input name="Q6" id="Q6" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q5.value='';"></td>-->
+    </tr>
+		<!--<tr class="even"><td class="question">Q2. Personal History of substance abuse:</td>
+			<td class="answer" id="Q2Female" style="background:transparent;">*******</td>
+			<td class="answer" id="Q2Male" style="background:transparent;">*******</td>
+		</tr>-->
+    <tr class="odd">
+        <td class="question">4.	Do you believe yourself to be <b>F</b>at when others say you are too thin? </td>
+        <td class="answer" id="FQ4"><input name="Q4" id="Q4" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+        <td class="answer" id="FQ4_No"><input name="Q4_No" id="Q4_No" type="text" class="box1"  onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+        <!--<td class="answer" id="MQ8"><input name="Q8" id="Q8" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q7.value='';"></td>-->
+    </tr>
+    <tr class="odd">
+        <td class="question">5.	Would you say that <b>F</b>ood dominates your life?</td>
+        <td class="answer" id="FQ5"><input name="Q5" id="Q5" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+        <td class="answer" id="FQ5_No"><input name="Q5_No" id="Q5_No" type="text" class="box1"  onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+        <!--<td class="answer" id="MQ10"><input name="Q10" id="Q10" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="document.FormName.Q9.value='';"></td>-->
+    </tr>
+        <tr class="odd"><td class="question"><i>*Note: Each yes equals 1 point</i></td>
+		</tr>
+	</table>
+
+    <table>
+		<tr><td><input type="button" onclick="totalScore()" style="width: 150px; height: 25px;" value="Calculate Total Score"></td>
+			<td><input name="SCOFFScore" id="SCOFFScore" type="text" style="width: 100px; height: 25px; text-align: left;"></td>
+		</tr>
+	</table>
+</div>
+
+<br>
+
+<div name="Instructions">
+<!--	<table width="100%">
+        <tr><td class="heading2" style="text-align:left;">RISK ASSESSMENT AND SUGGESTIONS:</td></tr>
+        <tr><td>None</td></tr>
+    </table>
+    -->
+	<table width="100%">
+		<tr width="30%"><td class="heading2">Score</td>
+			<td class="heading2" style="text-align:left;">Action</td>
+		</tr>
+		<tr id="low" style="background:white;"><td style="text-align:center;">0-1</td>
+			<td><b>Low risk of anorexia nervosa or bulimia</b> 
+            </td>
+		</tr>
+		<tr id="high" style="background:white;"><td style="text-align:center;">2</td>
+			<td><b>Likely diagnosis of anorexia nervosa or bulimia</b> 
+            </td>
+		</tr> 
+	</table>
+    <table width="100%"> 
+        <tr><td> *In the original British version, <q>sick</q> is understood to be <q>vomit</q> and the <q>O</q> represents <q>one stone</q> of weight <br><br>
+For more information on the SCOFF please see - The SCOFF questionnaire: a new screening tool for eating disorders West J Med. 2000 March; 172 (3): 164–165. John F Morgan, Fiona Reid, and J Hubert Lacey. 
+</td></tr>
+    </table>
+</div><br>
+
+<!-- The submit/print/reset buttons ------------------------------------------------------------->
+<div name="FunctionButtons" class="DoNotPrint">
+    <table>
+    <tr>
+        <td class="subjectline">
+            <input type="hidden" id="newForm" name="newForm" value="True" />				
+			Subject: <input type="text" value="SCOFF Questionnaire" name="subject" value="SCOFF Questionnaire" size="40">&nbsp;
+            <input value="Submit" name="SubmitButton" type="submit">
+            <input value="Reset" name="ResetButton" type="reset">
+            <input value="Print" name="PrintButton" onclick="javascript:window.print()" type="button">
+            <input id="saveAsEdoc" type="hidden" name="saveAsEdoc" value="false"> 
+            <input id="eDocument" name="eDocument" type="button" value="eDocument" onclick="document.getElementById('saveAsEdoc').value='true'; needToConfirm=false; SubmitButton.click();">
+        </td>
+    </tr>
+    </table>
+    </div>
+
+</form>
+<!-- ------End of submit/print/reset buttons----------------------------------------------------->
+
+</body>
+</html>
+
+
+
+
+
+<div id="eform_floating_toolbar" class="no-print DoNotPrint hidden-print"> 
+	<nav id="eform_floating_toolbar_nav" class="navbar navbar-fixed-bottom navbar-default no-print DoNotPrint hidden-print">
+		<form class="navbar-form pull-left" >
+			<div class="input-group pull-left">			
+		  		<input type="text" class="form-control" aria-label="Subject" name="remote_eform_subject" id="remote_eform_subject" placeholder="Subject" required/>
+		  		<div class="input-group-btn">
+		  			<button type="button" class="btn btn-primary" value="Save" name="SubmitButton" title="Save only" id="remoteSubmitButton" onclick="remoteSave()" >
+		  				<span class="btn-label"><i class="glyphicon glyphicon-save"></i></span>
+		  				Save
+		  			</button>
+			   		<button type="button" class="btn btn-default" id="remotePrintButton" name="PrintButton" value="Print" title="Save and then print" onclick="remotePrint()">
+			   			<span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>
+			   			Print
+			   		</button>
+	
+			   		<button type="button" class="btn btn-default" id="remoteFaxButton" name="FaxButton" title="Save and then send by fax" onclick="remoteFax()">
+			   			<span class="btn-label"><i class="glyphicon glyphicon-send"></i></span>
+			   			Fax
+			   		</button>
+		
+			   		<button type="button" class="btn btn-default" id="remoteSaveEdocumentButton" name="saveEdocumentButton" value="eDocument" title="Save and then save as PDF" onclick="remoteEdocument()">
+			   			<span class="btn-label"><i class="glyphicon glyphicon-import"></i></span>
+			   			eDocument
+			   		</button>
+			   		<button type="button" class="btn btn-danger " id="remoteCloseEformWindow" name="closeEformWindow" value="Close" title="Close this eForm" onclick="remoteClose()">
+			   			<span class="btn-label"><i class="glyphicon glyphicon-remove-circle"></i></span>
+			   			Close
+			   		</button>
+		  		</div>
+			</div>
+			<div class="pull-left">
+				<span id="required-warning" style="color:red;display:none;margin:5px;">Subject required</span>
+			</div>
+		</form>
+		
+  		<div class="pull-right">
+			<div class="input-group-btn">
+		  		<button type="button" class="btn btn-default pull-right" id="closeToolbarButton" name="closeToolbarButton" title="Close this toolbar" onclick="closeToolbar()">
+		   			<span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>
+		   		</button>
+		   	</div>
+		</div>
+	</nav>
+	<div class="pull-right no-print DoNotPrint hidden-print" style="border-top: #e7e7e7 thin solid;">
+		<div class="input-group-btn">
+			<button type="button" style="display:none;" class="btn btn-default pull-right" id="openToolbarButton" name="openToolbarButton" title="Open toolbar" onclick="openToolbar()">
+				<span class="btn-label"><i class="glyphicon glyphicon-chevron-left"></i></span>
+			</button>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="/oscar/eform/eformFloatingToolbar/eform_floating_toolbar.js" ></script>
+
+
+<style type="text/css"><!--
+.yesprint {
+	display: none;        
+}
+@media print {
+	.yesprint {
+		display:block;
+	}
+}
+--></style><p class="yesprint"><b>
+</b><br/><b>END OF PRINTED DOCUMENT</b></p>
