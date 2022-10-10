@@ -1,0 +1,146 @@
+<!-- Created by Ambrose Wong -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css" media="print">
+@page 
+	{ 
+		size: auto;
+		margin: 10mm;
+	}
+
+div.DoNotPrint {
+	display: none;
+}
+
+input.noborderinfo {
+	border : 0px;
+    width : 100px;
+	background: transparent;
+}
+input.noborder {
+	border : 0px;
+	background: transparent;
+}
+textarea.noborder {
+	scrollbar-3dlight-color: transparent;
+	scrollbar-3dlight-color: transparent;
+	scrollbar-arrow-color: transparent;
+	scrollbar-base-color: transparent;
+	scrollbar-darkshadow-color: transparent;
+	scrollbar-face-color: transparent;
+	scrollbar-highlight-color: transparent;
+	scrollbar-shadow-color: transparent;
+	scrollbar-track-color: transparent;
+	background: transparent;
+	overflow: hidden;
+	border : 0px;
+}
+td{
+	font-size: 12;
+	font-family: Arial;
+}
+input.checkboxinfo{
+    transform: scale(2.0);
+    
+}
+</style>
+
+    
+</head>
+
+<title>Notice of Change in Referral Process</title>
+<body>
+<script type="text/javascript">
+	function printForm(){
+		window.print();
+	}
+</script>
+
+<script type="text/javascript">
+	//keypress events trigger dirty flag
+	var confirmClose = false;
+	document.onkeyup=setDirtyFlag;
+
+	function setDirtyFlag(){
+		confirmClose = true;
+	}
+	function releaseDirtyFlag(){
+		confirmClose = false; // call to prevent an alert // call when submit buttom clicked
+	}
+	window.onbeforeunload = confirmExit;
+	function confirmExit(){
+		if (confirmClose){
+			return "You have made changes to this form without submitting. If you leave, your changes will be lost. Are you sure you want to exit?";
+		}
+	}
+</script>
+    
+    <!-- <img id="PCNoticeImg" src="${oscar_image_path}notice_of_appointment_fax_template.png" style="position: absolute;left: 0px; top:0px; width: 750px">  -->
+
+    <form method="post" action="" name="NCRrequest" id="NCRrequest" >    
+        <div id="page1">
+            <img id="BGPage1" src="${oscar_image_path}Fax_Change_Document.png" style="position: absolute;left: 0px; top:0px; width: 750px"> 
+
+            <input name="MOAPhone" id= "MOAPhone" type="text" class="noborder" style="position: absolute; left: 562px; top: 67px; width: 93px; height: 13px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB="current_user_phone">           
+            
+            <input name="MOAFax" id= "MOAFax" type="text" class="noborder" style="position: absolute; left: 555px; top: 87px; width: 100px; height: 13px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB="current_user_fax">    
+            
+            <input name="MOAEmail" id= "MOAEmail" type="text" class="noborder" style="position: absolute; left: 536px; top: 110px; width: 119px; height: 13px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" >                
+            
+            <input name="Date" id= "Date" type="text" class="noborder" style="position: absolute; left: 147px; top: 164px; width: 175px; height: 15px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 14px; text-align: left; background-color: transparent;">           
+            
+            <input name="Sendto" id= "Sendto" type="text" class="noborder" style="position: absolute; left: 147px; top: 186px; width: 175px; height: 15px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 14px; text-align: left; background-color: transparent;">
+
+            <input name="Fax" id= "Fax" type="text" class="noborder" style="position: absolute; left: 147px; top: 209px; width: 175px; height: 15px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 14px; text-align: left; background-color: transparent;">
+            
+            
+           <input name="clientName" id= "clientName" type="text" class="noborder" style="position: absolute; left: 93px; top: 280px; width: 370px; height: 30px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 14px; text-align: left; background-color: transparent;" oscarDB=patient_name>
+            
+           <input name="sex" id= "sex" type="text" class="noborder" style="position: absolute; left: 475px; top: 280px; width: 176px; height: 30px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 14px; text-align: left; background-color: transparent;" oscarDB=sex>
+
+            <input name="phn" id= "phn" type="text" class="noborder" style="position: absolute; left: 93px; top: 338px; width: 180px; height: 24px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=hinc>
+            
+            <input name="dob" id= "dob" type="text" class="noborder" style="position: absolute; left: 281px; top: 338px; width: 179px; height: 24px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=dob>
+            
+            <input name="phone" id= "phone" type="text" class="noborder" style="position: absolute; left: 472px; top: 338px; width: 179px; height: 24px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=phone>
+
+            <input name="appointmentDate" id= "appointmentDate" type="text" class="noborder" style="position: absolute; left: 93px; top: 390px; width: 263px; height: 26px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=appt_date>
+
+            <input name="appointmentTime" id= "appointmentTime" type="text" class="noborder" style="position: absolute; left: 368px; top: 390px; width: 283px; height: 26px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;"> 
+            
+            <input name="warning" id="warning" type="text" class="only-one-status" style="position:absolute; left:109px; top:483px; width:12px; height:12px; font-family:sans-serif; font-style:normal; font-weight:bold; font-size:12px; text-align:center; background-color:transparent;" >
+          
+            <input name="ProcedureChange" id="ProcedureChange" type="text" class="only-one-status" style="position:absolute; left:109px; top:551px; width:12px; height:12px; font-family:sans-serif; font-style:normal; font-weight:bold; font-size:12px; text-align:center; background-color:transparent;" >
+            
+            <input name="ContactName" id= "ContactName" type="text" class="noborder" style="position: absolute; left: 91px; top: 703px; width: 275px; height: 26px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 14px; text-align: left; background-color: transparent;"> 
+
+          <input name="ContactAddress" id= "ContactAddress" type="text" class="noborder" style="position: absolute; left: 378px; top: 703px; width: 275px; height: 26px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;"> 
+
+            <input name="ContactPhone" id= "ContactPhone" type="text" class="noborder" style="position: absolute; left: 91px; top: 755px; width: 275px; height: 26px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 14px; text-align: left; background-color: transparent;"> 
+
+            <input name="ContactFax" id= "ContactFax" type="text" class="noborder" style="position: absolute; left: 378px; top: 755px; width: 275px; height: 26px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 14px; text-align: left; background-color: transparent;"> 
+            
+        </div>
+        <div class="DoNotPrint" style="position: absolute; top:950px; left:0px;" id="BottomButtons">
+            <table>
+             <tr>
+                 <td class="subjectline">
+                 Subject: <input type="text" name="subject"  value="Notice of Change in Referral Process" size="40">&nbsp;
+                    <input value="Save" name="SubmitButton" id="SubmitButton" type="submit" onclick="releaseDirtyFlag();">
+                    <input name="saveAsEdoc" type="hidden" id="saveAsEdoc" value="false">
+                    <!-- <input value="eDocument" name="eDocument" type="button" onclick="document.getElementById('saveAsEdoc').value='true'; releaseDirtyFlag(); SubmitButton.click();"> -->
+                    <input value="Reset" name="ResetButton" id="ResetButton" type="reset" onclick="">
+                    <input value="Print" name="PrintButton" id="PrintButton" type="button" onclick="printForm();">
+                <!-- <input value="Print & Save" name="PrintSubmitButton" id="PrintSubmitButton" type="button" onclick="releaseDirtyFlag();printForm();setTimeout('SubmitButton.click()',1000);"> -->
+                </td>
+            </tr>
+        </div>
+
+    </table> 
+
+    </form>
+    
+    </body>
+</html>
