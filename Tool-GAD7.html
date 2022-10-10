@@ -1,0 +1,629 @@
+<!-- GAD7 eForm updated by Richard Ng on March 31, 2021. Improvements to save functionality and eDocument feature-->
+
+<html>
+<title>GAD-7</title>
+<head>
+
+<!-- Xbox styling -->
+<style type="text/css">
+	.box1 {
+		position:relative;
+		width: 23px;
+		height: 16px;
+		cursor: pointer;
+		font-weight: bold;
+		text-align: center;
+		background: transparent;
+	}
+
+	.box2 {
+		position: absolute;
+		border: 1px solid #000000;
+		cursor: pointer;
+		font-weight: bold;
+		text-align: center;
+		background: yellow;
+		font-size: 8px;
+		width:14px;
+		height:14px;
+	}
+</style>
+
+<!-- Text styling -->
+<style type="text/css">
+p.title{
+	text-transform: uppercase;
+	font-size: 16;
+	font-family: Arial;
+	font-weight: bolder;
+	text-align: left;
+	color: black;
+}
+p.heading{
+	font-weight: bolder;
+	text-decoration: underline;
+}
+
+td.heading1{
+	font-size: 12;
+	font-family: Arial;
+	font-weight: bold;
+	text-align: left;
+	vertical-align: top;
+	color: white;
+	background:black ;
+	border-width: 1;
+}
+td.heading2{
+	font-size: 12;
+	font-family: Arial;
+	font-weight: bold;
+	text-align: left;
+	vertical-align: top;
+	color: white;
+	background: #444444;
+	border-width: 1;
+}
+
+tr.even{
+	background-color: #ffffff;
+}
+tr.odd{
+	background-color: #dddddd;
+}
+td.question{
+	font-size: 12;
+	font-family: Arial;
+	font-weight: normal;
+	text-align: left;
+	vertical-align: top;
+	color: black;
+	border-width: 1;
+}
+td.answer{
+	font-size: 12;
+	font-family: Arial;
+	font-weight: normal;
+	text-align: center;
+	vertical-align: top;
+	color: black;
+	border-width: 1;
+}
+td.normaltext{
+	width: 100%;
+	font-size: 12;
+	font-family: Arial;
+	font-weight: normal;
+	text-align: left;
+	vertical-align: top;
+	color: black;
+	background-color: white;
+	border-width: 0;
+}
+input.formtext{
+	width: 100%;
+	height: 100%;
+	font-size: 12;
+	font-family: Arial;
+	font-weight: normal;
+	text-align: left;
+	vertical-align: top;
+	color: black;
+	background-color: white;
+	border-width: 1;
+	border-style: solid; 
+}
+textarea.formtext{
+	width: 100%;
+	height: auto;
+	font-size: 12;
+	font-family: Arial;
+	font-weight: normal;
+	text-align: left;
+	vertical-align: top;
+	color: black;
+	background-color: white;
+	border-width: 1;
+	border-style: solid;
+}
+
+</style>
+
+<!-- CSS Script that removes textarea and textbox borders when printing ---(put this inbetween <header></header>)----------------->
+<style type="text/css" media="print">
+div.DoNotPrint {
+	display: none;
+}
+
+input.noborder {
+	border : 0px;
+	background: transparent;
+}
+textarea.noborder {
+	scrollbar-3dlight-color: transparent;
+	scrollbar-3dlight-color: transparent;
+	scrollbar-arrow-color: transparent;
+	scrollbar-base-color: transparent;
+	scrollbar-darkshadow-color: transparent;
+	scrollbar-face-color: transparent;
+	scrollbar-highlight-color: transparent;
+	scrollbar-shadow-color: transparent;
+	scrollbar-track-color: transparent;
+	background: transparent;
+	overflow: hidden;
+	border : 0px;
+}
+</style>
+
+<!-- Standard form functions -->
+<script language="javascript" type="text/javascript">
+	/****************************
+	startup functions 
+	****************************/
+	function startUp() {			
+		// shows the forms on development machine from notepad ++ - saves you from uploading to the server to input alignments
+		var strLoc = window.location.href.toLowerCase();
+		if(strLoc.indexOf("https") == -1) {
+			// page1
+			//var src = document.getElementById('BGImage').src;
+			//document.getElementById('BGImage').src = src.replace('$%7Boscar_image_path%7D','');
+		}
+		setDocumentTitle('GAD7 Score',document.getElementById('PatientName').value);
+		setDefaults();			
+	//optimize window size/width
+	top.window.resizeTo(910, screen.availHeight);
+	}
+	
+	function setDocumentTitle(Title,PatientName) {
+		// set document title
+		document.title = Title + ' - ' + PatientName;					
+	}
+	
+	function setDefaults() {	            
+		// check the newform flag to ensure this is the initial load of the form
+		if (document.getElementById("newForm").value == 'True') {
+			//document.getElementById('').value = 'X';	
+		}   
+	}
+
+	/****************************
+		submit and print functions 
+	****************************/
+	function printSubmit() {
+		printLetter();
+		releaseDirtyFlag();			
+		submission();
+	}
+
+	function printLetter() {
+		// print the letter
+		window.print();
+	} 
+
+	function submission() {
+		setFlag();
+		setTimeout('document.FormName.submit()',1000);			
+	}
+
+	function setFlag() {
+	// indicate that the form has been submitted
+	if (document.getElementById("newForm").value == 'True')
+		document.getElementById("newForm").value = 'False';
+	}
+	
+	function showButtons() {
+		//show the bottom buttons if they are hidden
+		if (document.getElementById('BottomButtons').style.display == 'none')
+			document.getElementById('BottomButtons').style.display = '';
+	}
+	
+	/****************************
+		checkbox functions 
+	****************************/
+	function changeValue(x) {
+		if (document.getElementById(x).value == '')
+			document.getElementById(x).value = 'X';
+		else
+			document.getElementById(x).value = '';
+	}
+
+	function displayKeyCode(evt,x) {
+		var charCode = (evt.which) ? evt.which :event.keyCode
+		// any key press except tab will constitute a value change to the checkbox
+		if (charCode != 9) {
+			changeValue(x);
+			return false;
+		}
+	}
+
+	/****************************
+		scripts to confirm closing of window if it has not been saved yet 
+	****************************/
+		//keypress events trigger dirty flag
+		var needToConfirm = false;
+		document.onkeyup=setDirtyFlag;
+	function setDirtyFlag() {
+		needToConfirm = true;
+	}
+
+	function releaseDirtyFlag() {
+		needToConfirm = false; 
+		//Call this function if does not require an alert.
+		//this could be called when save button is clicked
+	}
+		window.onbeforeunload = confirmExit;
+
+	function confirmExit() {
+		if (needToConfirm) {
+		return "You have attempted to leave this page. If you have made any changes to the fields without clicking the Save button, your changes will be lost. Are you sure you want to exit this page?";
+		}
+	}
+</script>
+
+<!--Checkbox calculation functions-->
+<script type="text/javascript" language="javascript">
+function getCheckedValue(checkboxObj) {
+			if(!checkboxObj)
+				return parseInt(0);
+			var checkboxLength = checkboxObj.length;
+			if(checkboxLength == undefined)
+				if(checkboxObj.checked)
+					return parseInt(checkboxObj.value);
+				else
+					return parseInt(value);
+			for(var i = 0; i < checkboxLength; i++) {
+				if(checkboxObj[i].checked) {
+					return parseInt(checkboxObj[i].value);
+				}
+			}
+			return parseInt(0);
+		}
+
+function totalScore(){
+	var i = 0;
+
+	if (document.getElementById("Q1").value == ''){i += 0;}
+		else {i += 0;}
+	if (document.getElementById("Q2").value == ''){i += 0;}
+		else {i += 1;}
+	if (document.getElementById("Q3").value == ''){i += 0;}
+		else {i += 2;}
+	if (document.getElementById("Q4").value == ''){i += 0;}
+		else {i += 3;}
+	if (document.getElementById("Q5").value == ''){i += 0;}
+		else {i += 0;}
+	if (document.getElementById("Q6").value == ''){i += 0;}
+		else {i += 1;}
+	if (document.getElementById("Q7").value == ''){i += 0;}
+		else {i += 2;}
+	if (document.getElementById("Q8").value == ''){i += 0;}
+		else {i += 3;}
+	if (document.getElementById("Q9").value == ''){i += 0;}
+		else {i += 0;}
+	if (document.getElementById("Q10").value == ''){i += 0;}
+		else {i += 1;}
+	if (document.getElementById("Q11").value == ''){i += 0;}
+		else {i += 2;}
+	if (document.getElementById("Q12").value == ''){i += 0;}
+		else {i += 3;}
+	if (document.getElementById("Q13").value == ''){i += 0;}
+		else {i += 0;}
+	if (document.getElementById("Q14").value == ''){i += 0;}
+		else {i += 1;}
+	if (document.getElementById("Q15").value == ''){i += 0;}
+		else {i += 2;}
+	if (document.getElementById("Q16").value == ''){i += 0;}
+		else {i += 3;}
+	if (document.getElementById("Q17").value == ''){i += 0;}
+		else {i += 0;}
+	if (document.getElementById("Q18").value == ''){i += 0;}
+		else {i += 1;}
+	if (document.getElementById("Q19").value == ''){i += 0;}
+		else {i += 2;}
+	if (document.getElementById("Q20").value == ''){i += 0;}
+		else {i += 3;}
+	if (document.getElementById("Q21").value == ''){i += 0;}
+		else {i += 0;}
+	if (document.getElementById("Q22").value == ''){i += 0;}
+		else {i += 1;}
+	if (document.getElementById("Q23").value == ''){i += 0;}
+		else {i += 2;}
+	if (document.getElementById("Q24").value == ''){i += 0;}
+		else {i += 3;}
+	if (document.getElementById("Q25").value == ''){i += 0;}
+		else {i += 0;}
+	if (document.getElementById("Q26").value == ''){i += 0;}
+		else {i += 1;}
+	if (document.getElementById("Q27").value == ''){i += 0;}
+		else {i += 2;}
+	if (document.getElementById("Q28").value == ''){i += 0;}
+		else {i += 3;}
+ 
+
+	document.FormName.GAD7Score.value = i;
+	document.FormName.subject.value = 'GAD7 score = ' + i;
+
+	if (i<=4){
+		document.getElementById("none").style.background='yellow';
+		document.getElementById("mild").style.background='white';
+		document.getElementById("moderate").style.background='white';
+		document.getElementById("severe").style.background='white';
+	}
+	else if (i>=5 && i<=9){
+		document.getElementById("none").style.background='white';		
+		document.getElementById("mild").style.background='yellow';
+		document.getElementById("moderate").style.background='white';
+		document.getElementById("severe").style.background='white';
+	}
+	else if (i>=10 && i<=14){
+		document.getElementById("none").style.background='white';
+		document.getElementById("mild").style.background='white';
+		document.getElementById("moderate").style.background='yellow';
+		document.getElementById("severe").style.background='white';
+	}
+	else if (i>=15 && i<=21){
+		document.getElementById("none").style.background='white';
+		document.getElementById("mild").style.background='white';
+		document.getElementById("moderate").style.background='white';
+		document.getElementById("severe").style.background='yellow';
+	}
+
+
+}
+</script>
+</head>
+
+
+<body onload="startUp();" onMouseDown="showButtons();">
+<form method="post" action="" name="FormName" id="" >
+
+<p class="title">
+	GAD-7
+</p>
+
+<div name="demographics">
+    <table width="100%">
+        <tr>
+            <td class="heading1" style="width:20%">Patient name</td>
+            <td><input name="PatientName" id="PatientName" type="text" class="noborder" style="width: 400px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=patient_name></td>
+    
+        </tr>
+        <tr>
+            <td class="heading1" style="width:20%">Date</td>
+            <td><input name="Date" id="Date" type="text" class="noborder" style="width: 400px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;"  oscarDB=today></td>
+    
+        </tr>
+    </table>
+    </div>
+
+<br>
+
+<div name="Questionnaire">
+<table width="100%">
+
+	<tr>
+		<td class="heading2" width=40%>A. Over the last 2 weeks, how often have you been bothered by any of the following problems?</td>
+		<td class="heading2" width=15%>Not at all (0)</td>
+		<td class="heading2" width=15%>Several days (1)</td> 
+		<td class="heading2" width=15%>More than half the days (2)</td>
+		<td class="heading2" width=15%>Nearly every day (3) </td>
+	</tr>
+	<tr class="odd">
+		<td class="question"> Q1. Feeling nervous, anxious or on edge</td>
+		<td class="answer"><input name="Q1" id="Q1" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q2.value='';
+			document.FormName.Q3.value='';
+			document.FormName.Q4.value='';"></td>
+		<td class="answer"><input name="Q2" id="Q2" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q1.value='';
+			document.FormName.Q3.value='';
+			document.FormName.Q4.value='';"></td>
+		<td class="answer"><input name="Q3" id="Q3" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q1.value='';
+			document.FormName.Q2.value='';
+			document.FormName.Q4.value='';"></td>	
+		<td class="answer"><input name="Q4" id="Q4" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q1.value='';
+			document.FormName.Q2.value='';
+			document.FormName.Q3.value='';"></td>	
+	</tr>
+	<tr class="even">
+		<td class="question">Q2. Not being able to stop or control worrying</td>
+		<td class="answer"><input name="Q5" id="Q5" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q6.value='';
+			document.FormName.Q7.value='';
+			document.FormName.Q8.value='';"></td>	
+		<td class="answer"><input name="Q6" id="Q6" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q5.value='';
+			document.FormName.Q7.value='';
+			document.FormName.Q8.value='';"></td>
+		<td class="answer"><input name="Q7" id="Q7" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q5.value='';
+			document.FormName.Q6.value='';
+			document.FormName.Q8.value='';"></td>
+		<td class="answer"><input name="Q8" id="Q8" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q5.value='';
+			document.FormName.Q6.value='';
+			document.FormName.Q7.value='';"></td>
+	</tr>
+	<tr class="odd">
+		<td class="question">Q3. Worrying too much about different things</td>
+		<td class="answer"><input name="Q9" id="Q9" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q10.value='';
+			document.FormName.Q11.value='';
+			document.FormName.Q12.value='';"></td>
+		<td class="answer"><input name="Q10" id="Q10" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q9.value='';
+			document.FormName.Q11.value='';
+			document.FormName.Q12.value='';"></td>
+		<td class="answer"><input name="Q11" id="Q11" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q9.value='';
+			document.FormName.Q10.value='';
+			document.FormName.Q12.value='';"></td>
+		<td class="answer"><input name="Q12" id="Q12" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q9.value='';
+			document.FormName.Q10.value='';
+			document.FormName.Q11.value='';"></td>
+	</tr>
+	<tr class="even">
+		<td class="question">Q4. Trouble relaxing</td>
+		<td class="answer"><input name="Q13" id="Q13" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q14.value='';
+			document.FormName.Q15.value='';
+			document.FormName.Q16.value='';"></td>
+		<td class="answer"><input name="Q14" id="Q14" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q13.value='';
+			document.FormName.Q15.value='';
+			document.FormName.Q16.value='';"></td>
+		<td class="answer"><input name="Q15" id="Q15" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q13.value='';
+			document.FormName.Q14.value='';
+			document.FormName.Q16.value='';"></td>
+		<td class="answer"><input name="Q16" id="Q16" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q13.value='';
+			document.FormName.Q14.value='';
+			document.FormName.Q15.value='';"></td>
+	</tr>
+	<tr class="odd">
+		<td class="question">Q5. Being so restless that it is hard to sit still</td>
+		<td class="answer"><input name="Q17" id="Q17" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q18.value='';
+			document.FormName.Q19.value='';
+			document.FormName.Q20.value='';"></td>
+		<td class="answer"><input name="Q18" id="Q18" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q17.value='';
+			document.FormName.Q19.value='';
+			document.FormName.Q20.value='';"></td>
+		<td class="answer"><input name="Q19" id="Q19" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q17.value='';
+			document.FormName.Q18.value='';
+			document.FormName.Q20.value='';"></td>
+		<td class="answer"><input name="Q20" id="Q20" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q17.value='';
+			document.FormName.Q18.value='';
+			document.FormName.Q19.value='';"></td>
+	</tr>
+	<tr class="even">
+		<td class="question"> Q6. Becoming easily annoyed or irritable</td>
+		<td class="answer"><input name="Q21" id="Q21" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q22.value='';
+			document.FormName.Q23.value='';
+			document.FormName.Q24.value='';"></td>
+		<td class="answer"><input name="Q22" id="Q22" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q21.value='';
+			document.FormName.Q23.value='';
+			document.FormName.Q24.value='';"></td>
+		<td class="answer"><input name="Q23" id="Q23" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q21.value='';
+			document.FormName.Q22.value='';
+			document.FormName.Q24.value='';"></td>
+		<td class="answer"><input name="Q24" id="Q24" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q21.value='';
+			document.FormName.Q22.value='';
+			document.FormName.Q23.value='';"></td>
+	</tr>
+	<tr class="odd">
+		<td class="question">Q7. Felling afraid as if something awful might happen</td>
+		<td class="answer"><input name="Q25" id="Q25" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q26.value='';
+			document.FormName.Q27.value='';
+			document.FormName.Q28.value='';"></td>
+		<td class="answer"><input name="Q26" id="Q26" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q25.value='';
+			document.FormName.Q27.value='';
+			document.FormName.Q28.value='';"></td>
+		<td class="answer"><input name="Q27" id="Q27" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q25.value='';
+			document.FormName.Q26.value='';
+			document.FormName.Q28.value='';"></td>
+		<td class="answer"><input name="Q28" id="Q28" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q25.value='';
+			document.FormName.Q26.value='';
+			document.FormName.Q27.value='';"></td>
+	</tr>
+	
+
+</table>
+<br>
+<table width="100%">
+
+	<tr>
+		<td class="heading2" width=40%>B. If you checked off any problems, how difficult have these problems made it for you to do your work, take care of things at home, or get along with other people?</td>
+		<td class="answer" width=15%><input name="Q29" id="Q29" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);">Not difficult at all</td>
+		<td class="answer" width=15%><input name="Q30" id="Q30" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);">Somewhat difficult</td> 
+		<td class="answer" width=15%><input name="Q31" id="Q31" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);">Very difficult</td>
+		<td class="answer" width=15%><input name="Q32" id="Q32" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);">Extremely difficult</td>
+	</tr>
+</table>
+
+
+
+<table>
+<tr>
+	<td><input type="button" onclick="totalScore()" style="width: 150px; height: 25px;" value="Calculate Total Score"></td>
+	<!--<td><input type="text" name="GAD7Score" size="10" value=""></td>-->
+	<td><input name="GAD7Score" id="GAD7Score" type="text" style="width: 100px; height: 25px; text-align: left;"></td>
+</tr>
+</table>
+</div>
+
+
+<br>
+<br>
+
+
+<div name="Instructions">
+
+		<table>
+			<tr>
+				<td class="heading2">Score</td>
+				<td class="heading2">Action</td>
+			</tr>
+			<tr id="none">
+				<td>0-4</td>
+				<td>No anxiety </td>
+			</tr>		
+			<tr id="mild">
+				<td>5-9</td>
+				<td>Mild anxiety </td>
+			</tr>
+			<tr id="moderate">
+				<td> 10-14</td>
+				<td>Moderate anxiety </td>
+			</tr>
+			<tr id="severe">
+				<td>15-21</td>
+				<td>Severe anxiety </td>
+			</tr>
+		</table>
+	</td>
+</tr>
+</table>
+</div>
+
+
+<br>
+<br>
+
+<!-- The submit/print/reset buttons ------------------------------------------------------------->
+<div name="FunctionButtons" class="DoNotPrint">
+    <table>
+    <tr>
+        <td class="subjectline">
+			<input type="hidden" id="newForm" name="newForm" value="True" />				
+			Subject: <input type="text" value="GAD7 Score" name="subject" value="GAD7 Score" size="40">&nbsp;
+            <input value="Submit" name="SubmitButton" type="submit">
+            <input value="Reset" name="ResetButton" type="reset">
+            <input value="Print" name="PrintButton" onclick="javascript:window.print()" type="button">
+            <input id="saveAsEdoc" type="hidden" name="saveAsEdoc" value="false"> 
+             <input id="eDocument" name="eDocument" type="button" value="eDocument" onclick="document.getElementById('saveAsEdoc').value='true'; needToConfirm=false; SubmitButton.click();">
+        </td>
+    </tr>
+    </table>
+    </div>
+
+</form>
+<!-- ------End of submit/print/reset buttons----------------------------------------------------->
+
+</body>
+</html>
