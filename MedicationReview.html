@@ -1,0 +1,3839 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+ 
+
+<style>
+
+ 
+
+.capitalize {
+
+  text-transform: capitalize;
+
+}
+
+div.refreshMedList {
+
+   column-gap: 35px;
+
+}
+
+ 
+
+ul {
+
+    margin-top: 0px;
+
+    margin-bottom:0px;
+
+    list-style-type:disc;
+
+    list-style-position: outside;
+
+    columns: 2;
+
+    column-gap: 35px;
+
+    width:650px;
+
+}
+
+ 
+
+li+ul {padding-left: 20px;}
+
+ 
+
+ 
+
+th input[type="text"] {
+
+background: lightblue;
+
+border: none;
+
+text-align: center;
+
+}
+
+ 
+
+td, th {
+
+border-style : hidden!important;
+
+}
+
+ 
+
+td input[type="text"] {
+
+border-top: none;
+
+border-right: none;
+
+border-left: none;
+
+text-align: center;
+
+}
+
+ 
+
+table {
+
+    border-collapse: collapse;
+
+}
+
+ 
+
+.col1 {
+
+  visibility: hidden; }
+
+ 
+
+ 
+
+@media print{
+
+   div.DoNotPrint {
+
+                display: none;
+
+        visibility: hidden;
+
+        height: 0;
+
+}
+
+ 
+
+   .collapsible {
+
+                display: none;
+
+        visibility: hidden;
+
+        height: 0;
+
+}
+
+}
+
+ 
+
+.width-machine {
+
+  /*   Sort of a magic number to add extra space for number spinner */
+
+  padding: 0 1rem;
+
+}
+
+ 
+
+.grow-wrap {
+
+  /* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
+
+  display: grid;
+
+}
+
+.grow-wrap::after {
+
+  /* Note the weird space! Needed to preventy jumpy behavior */
+
+  content: attr(data-replicated-value) " ";
+
+ 
+
+  /* This is how textarea text behaves */
+
+  white-space: pre-wrap;
+
+ 
+
+  /* Hidden from view, clicks, and screen readers */
+
+  visibility: hidden;
+
+}
+
+.grow-wrap > textarea {
+
+  /* You could leave this, but after a user resizes, then it ruins the auto sizing */
+
+   resize: none;
+
+ 
+
+  /* Firefox shows scrollbar on growth, you can hide like this. */
+
+  overflow: hidden;
+
+}
+
+.grow-wrap > textarea,
+
+.grow-wrap::after {
+
+  /* Identical styling required!! */
+
+  border: 1px solid black;
+
+  padding: 0.5rem;
+
+  font: inherit;
+
+ 
+
+  /* Place on top of each other */
+
+  grid-area: 1 / 1 / 2 / 2;
+
+}
+
+ 
+
+.collapsible {
+
+  background-color: #99ccff;
+
+  color: black;
+
+  cursor: pointer;
+
+  padding: 2px;
+
+  width: 60%;
+
+  border: none;
+
+ text-align: left;
+
+  outline: none;
+
+  font-size: 14px;
+
+}
+
+ 
+
+.active, .collapsible:hover {
+
+  background-color: #0066ff;
+
+    color: white;
+
+}
+
+ 
+
+.content_collapsibles {
+
+  padding: 0 4px;
+
+  display: none;
+
+  overflow: hidden;
+
+}
+
+ 
+
+.content_collapsibles_Open {
+
+  padding: 0 4px;
+
+  display: visible;
+
+  overflow: hidden;
+
+}
+
+ 
+
+</style>
+
+ 
+
+</head>
+
+ 
+
+<title>Medication Review</title>
+
+ 
+
+<body>
+
+ 
+
+<form method="post" action="" name="MedicationReview" id="MedicationReview" >  
+
+ 
+
+<input name="drugList" id="drugList" type="text" style="display: none" oscarDB=druglist_line></input>
+
+ 
+
+<input name="previousCOVIDDose" id="previousCOVIDDose" type="text" style="display: none" oscarDB=e$last#covidDose />
+
+<input name="previousAdherenceAid" id="previousAdherenceAid" type="text" style="display: none" oscarDB=e$last#adherenceAid />
+
+<input name="previousDrugCoverage" id="previousDrugCoverage" type="text" style="display: none" oscarDB=e$last#drugCoverage />
+
+<input name="previousHelpRx" id="previousHelpRx" type="text" visibility: hidden oscarDB=e$last#helpRx />
+
+<input name="hadMI" id="hadMI" style="display: none" oscarDB=e$last#mi />
+
+<input name="hadCABG" id="hadCABG" style="display: none" oscarDB=e$last#cabg />
+
+<input name="hadPCI" id="hadPCI" style="display: none" oscarDB=e$last#pci />
+
+<input name="hadCAD" id="hadCAD" style="display: none" oscarDB=e$last#cad />
+
+<input name="hadPAD" id="hadPAD" style="display: none" oscarDB=e$last#pad />
+
+<input name="hadStroke" id="hadStroke" style="display: none" oscarDB=e$last#Stroke />
+
+<input name="hadAFib" id="hadAFib" style="display: none" oscarDB=e$last#afib />
+
+<input name="hadHF" id="hadHF" style="display: none" oscarDB=e$last#hf />
+
+<input name="onStatin" id="onStatin" style="display: none" oscarDB=e$last#statin />
+
+<input name="onACEi" id="onACEi" style="display: none" oscarDB=e$last#acei />
+
+<input name="onARB" id="onARB" style="display: none" oscarDB=e$last#arb />
+
+<input name="onAspirin" id="onAspirin" style="display: none" oscarDB=e$last#aspirin />
+
+<input name="onP2Y12i" id="onP2Y12i" style="display: none" oscarDB=e$last#p2y12i />
+
+<input name="onNOAC_W" id="onNOAC_W" style="display: none" oscarDB=e$last#noac_w />
+
+<input name="onSGLT2" id="onSGLT2" style="display: none" oscarDB=e$last#sglt2 />
+
+<input name="onGLP1" id="onGLP1" style="display: none" oscarDB=e$last#glp1 />
+
+<input name="hasDR" id="hasDR" style="display: none" oscarDB=e$last#dr />
+
+<input name="hasED" id="hasED" style="display: none" oscarDB=e$last#ed />
+
+<input name="hasPN" id="hasPN" style="display: none" oscarDB=e$last#pn />
+
+ 
+
+<input type="text"  name="dob_year" id="dob_year" style="display: none" oscarDB=dob_year ></text>
+
+<input type="text"  name="dob_month" id="dob_month" style="display: none" oscarDB=dob_month ></text>
+
+<input type="text"  name="dob_day" id="dob_day" style="display: none" oscarDB=dob_day ></text>
+
+ 
+
+<img id="BGPage1" src="${oscar_image_path}MedicationReviewHeader.png" style="position: absolute;left: 0px; top:0px; width: 750px">
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+ 
+
+<div class="DoNotPrint"><button id="resetRec" type="button" onClick="showNonEmptyContent()">Expand all non-empty text boxes</button></div>
+
+ 
+
+<h1 style= "font-family: arial, sans-serif; font-size: 24px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Medication Review</h1><label for="date">Date:</label> <input type="text"  name="date" id="date" type="text" style="position:left; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent; width: 100px; border: none" oscarDB=today></text><br>
+
+<br>
+
+<label for="patientName">Patient's Name:</label> <input type="text"  name="patientName" id="patientName" type="text" style="position:relative; font-family:sans-serif; font-style:normal; font-weight:bold; font-size:16px; text-align:left; background-color:transparent; width: 278px; border: none" oscarDB=patient_name></text><label for="sex">Sex:</label> <input type="text"  name="sex" id="sex" type="text" style="position:relative; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent; width: 20px; border: none" oscarDB=sex></text>
+
+<br><label for="patientPHN">PHN:</label> <input type="text"  name="patientPHN" id="patientPHN" type="text" style="position:relative; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent; width: 90px; border: none" oscarDB=hinc></text> <label for="patientDOB">Date of Birth:</label> <input type="text"  name="patientDOB" id="patientDOB" type="text" style="position:relative; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent; border: none" oscarDB=dob></text>&nbsp<label>Age:</label><input type="text"  name="age" id="age" style="position:relative; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent; width: 25px; border: none" ></text><br>
+
+<br>
+
+<label for="familyPhysician">Family Physician:</label> <input type="text"  name="familyPhysician" id="familyPhysician" type="text" style="position:relative; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent; border: none" oscarDB= e$last#familyPhysician></text>  &nbsp
+
+&nbsp
+
+<label for="nursePractitionner">Nurse Practitionner:</label> <input type="text"  name="nursePractitionner" id="nursePractitionner" type="text" style="position:relative; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent; border: none" oscarDB=e$last#nursePractitionner></text>
+
+<br>
+
+<label for="pharmacy">Pharmacy:</label> <input type="text"  name="pharmacy" id="pharmacy" type="text" style="position:relative; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent; width: 500px; border: none" oscarDB=e$last#pharmacy></text>
+
+<br>
+
+<button id="btnPatientGoals" type="button" class="collapsible">+ Patient's Goals</button>
+
+<div class="content_collapsibles">
+
+<label name="titlePatientGoals" id= "titlePatientGoals" style= "font-family: arial, sans-serif; font-size: 16px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Patient's Goals </label>
+
+<div class="grow-wrap">
+
+<textarea name="patientGoals" id= "patientGoals" onkeyup="findHeightPatientGoals()"  onInput="this.parentNode.dataset.replicatedValue = this.value"style="position: relative; width: 700px; text-align: left; background-color: transparent;" oscarDB=e$Last#patientGoals></textarea>
+
+</div>
+
+</div>
+
+<input id="h_PatientGoals" name="h_PatientGoals" type="text"  style="display: none" value="0"/>
+
+ 
+
+<br>
+
+<button type="button" class="collapsible">+ Medical Conditions</button>
+
+<div class="content_collapsibles_Open">
+
+<label style= "font-family: arial, sans-serif; font-size: 16px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Medical Conditions</label>
+
+<div id="conditions" class="capitalize"></div>
+
+<textarea name="dxregistry" id="dxregistry" type="text" visibility: hidden oscarDB=dxregistry></textarea>
+
+</div>
+
+ 
+
+<button type="button" class="collapsible">+ Medications</button>
+
+<div class="content_collapsibles_Open">
+
+<label style= "font-family: arial, sans-serif; font-size: 16px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Medications</label>
+
+<div id="refreshMedList" name="refreshMedList">
+
+<div id="meds" class="capitalize">
+
+<textarea name="drugList" id="drugList" type="text" visibility: hidden oscarDB=druglist_line></textarea>
+
+</div>
+
+</div>
+
+<div class="DoNotPrint"><button type= "button" onclick="reloadMedList()">Refresh</button> </div>
+
+<br>
+
+<label for="otc">List has been reconciled with patient and PharmaNet and includes any OTC and natural health products.</label>
+
+</div>
+
+ 
+
+ 
+
+<h1 style= "font-family: arial, sans-serif; font-size: 16px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Allergies</h1>
+
+<div id="allergies" class="capitalize"></div>
+
+<textarea name="listAllergies" id="listAllergies" type="text" visibility: hidden oscarDB=allergies_des_no_archived></textarea>
+
+<br>
+
+<label for="adherenceAid">Adherence/Compliance Aids</label>
+
+<select id="adherenceAid" name="adherenceAid">
+
+<option value="0"></option>
+
+<option value="1">Blister Pack</option>
+
+<option value="2">Pill Box</option>
+
+<option value="3">None</option>
+
+</select>
+
+&nbsp
+
+<label for="drugCoverage">Drug Coverage</label>
+
+<select id="drugCoverage" name="drugCoverage">
+
+<option value="0"></option>
+
+<option value="1">Pharmacare</option>
+
+<option value="2">No coverage</option>
+
+<option value="3">Private</option>
+
+</select>
+
+<br>
+
+<br>
+
+<label for="helpRx">Who helps the patient with medications?</label>
+
+<select id="helpRx" name="helpRx">
+
+<option value="0"></option>
+
+<option value="1">No one</option>
+
+<option value="2">Family / Caregiver</option>
+
+</select>
+
+<br>
+
+ 
+
+<br>
+
+<label for="medicationPreferences">Medication Preferences</label>&nbsp&nbsp<input name="medicationPreferences" id= "medicationPreferences" style="position: relative; width: 500px; text-align: left; background-color: transparent;" oscar=e$last#medicationPreferences />
+
+<br>
+
+ 
+
+<button type="button" class="collapsible">+ Immunizations</button>
+
+<div class="content_collapsibles_Open">
+
+<label style= "font-family: arial, sans-serif; font-size: 16px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Immunizations</label>
+
+<br>
+
+<label for="covidDose"> COVID-19</label>&nbsp&nbsp
+
+<select id="covidDose" name="covidDose">
+
+<option value="0"></option>
+
+<option value="1">1st</option>
+
+<option value="2">2nd</option>
+
+<option value="3">3rd</option>
+
+</select>
+
+<input type="text"  name="covidDate" id="covidDate" type="text" style="position:relative; width: 100px" oscarDB=e$last#covidDate></text>
+
+&nbsp<label for="influenza"> Influenza</label>&nbsp&nbsp<input type="text"  name="influenza" id="influenza" style="position:relative; width: 70px" oscarDB=flu_immunization_date></text>
+
+&nbsp<label for="shingrixDate">Shingrix</label>&nbsp&nbsp<input type="Date"  name="shingrixDate" id="shingrixDate" style="position:relative; width: 120px">
+
+<br>
+
+&nbsp<label for="pneumovaxDate"> Pneumovax</label>&nbsp&nbsp<input type="date"  name="pneumovaxDate" id="pneumovaxDate" style="position:relative; width: 120px">
+
+&nbsp<label for="prevnarDate"> Prevnar 13</label>&nbsp&nbsp<input type="date"  name="prevnarDate" id="prevnarDate" style="position:relative; width: 120px">
+
+</div>
+
+ 
+
+<br>
+
+<button id="btnSocialHistory" type="button" class="collapsible">+ Social History</button>
+
+<div class="content_collapsibles">
+
+<div class="grow-wrap">
+
+<textarea name="socialHistory" id= "socialHistory"  onkeyup="findHeightSocialHistory()" onInput="this.parentNode.dataset.replicatedValue = this.value"style="position: relative; width: 700px; text-align: left; background-color: transparent;" oscarDB=social_family_history></textarea>
+
+</div>
+
+</div>
+
+<input id="h_SocialHistory" name="h_SocialHistory" type="text" style="display: none" value="0"/>
+
+<br>
+
+ 
+
+<label style= "font-family: arial, sans-serif; font-size: 14px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Vitals</label>
+
+<br>
+
+<label for="sbp"> BP:</label>&nbsp&nbsp<input type="text"  name="sbp" id="sbp" type="text" onchange="isBPAtTarget()" style="position:relative; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:center; background-color:transparent; width: 25px"></text><label for="dbp"> / </label> <input type="text"  name="dbp" id="dbp" type="text" onchange="isBPAtTarget()" style="position:relative; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:center; background-color:transparent; width: 25px"></text> &nbsp<label for="noBPReadings"> No. of readings:</label>&nbsp<input type="text"  name="noBPReadings" id="noBPReadings" type="text" style="position:relative; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:center; background-color:transparent; width: 20px">&nbsp<label for="hr"> HR:</label>&nbsp&nbsp<input type="text"  name="hr" id="hr" type="text"  style="position:relative; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:center; background-color:transparent; width: 25px">
+
+&nbsp
+
+<br>
+
+<p>
+
+<label>Height</label>
+
+<input id="inchesHT" name="inchesHT" type="text" style="width: 60px" placeholder="inches" oninput="heightConverter_cm(this.value)" onchange="heightConverter_cm(this.value)" oscarDB=e$last#inchesHT />
+
+<label>in</label>
+
+&nbsp;&nbsp;   
+
+<input id="cmHT" name="cmHT" type="text" style="width: 60px" placeholder="cm" oninput="heightConverter_in(this.value)" onchange="heightConverter_in(this.value)" oscarDB=e$last#cmHT />
+
+<label>cm</label>
+
+&nbsp;&nbsp;
+
+<label>Weight</label>
+
+<input id="poundsWT" name="poundsWT"  type="text" style="width: 60px" placeholder="Pounds" oninput="weightConverter(this.value)" onchange="weightConverter(this.value)" />
+
+<label>lbs</label>
+
+&nbsp;
+
+<input id="kiloWT" name="kiloWT"  type="text" style="width: 60px" placeholder="Kilo" oninput="weightConverter_lbs(this.value)" onchange="weightConverter_lbs(this.value)" /><label> Kg</label>
+
+&nbsp;&nbsp;
+
+<label>BMI </label><input id="bmi" type="text" style="width: 60px; border: none; outline: none; font-size: 16px"></input>
+
+</p>
+
+ 
+
+<h2 style= "font-family: arial, sans-serif; font-size: 14px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Labs</h2>
+
+<button type="button" class="collapsible">+ Labs</button>
+
+<div class="content_collapsibles">
+
+<h2 style= "font-family: arial, sans-serif; font-size: 14px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Labs</h2>
+
+  <table id="labs" width="350px" border="1">
+
+                                  <tr>
+
+    <td class="col1"></td>
+
+    <td></td>       
+
+    <th><input id="Date1" name="Date1" size="10" type="text" /></td></th>
+
+    <th><input id="Date2" name="Date2" size="10" type="text" /></td></th>
+
+    <th><input id="Date3" name="Date3" size="10" type="text" /></td></th>
+
+    <th><input id="Date4" name="Date4" size="10" type="text" /></td></th>
+
+    <th><input id="Date5" name="Date5" size="10" type="text" /></td></th>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td> 
+
+    <td><input id="eGFR_R" name="eGFR_R" size="10" type="text" value="eGFR"/></td>
+
+    <td><input id="eGFR_RDate1" name="eGFR_RDate1" size="10" type="text" /></td>
+
+    <td><input id="eGFR_RDate2" name="eGFR_RDate2" size="10" type="text" /></td>
+
+    <td><input id="eGFR_RDate3" name="eGFR_RDate3" size="10" type="text" /></td>
+
+    <td><input id="eGFR_RDate4" name="eGFR_RDate4" size="10" type="text" /></td>
+
+    <td><input id="eGFR_RDate5" name="eGFR_RDate5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td> 
+
+    <td><input id="ACR" name="ACR" size="10" type="text" value="ACR"/></td>
+
+    <td><input id="ACRate1" name="ACRDate1" size="10" type="text" /></td>
+
+    <td><input id="ACRDate2" name="ACRDate2" size="10" type="text" /></td>
+
+    <td><input id="ACRDate3" name="ACRDate3" size="10" type="text" /></td>
+
+    <td><input id="ACRDate4" name="ACRDate4" size="10" type="text" /></td>
+
+    <td><input id="ACRDate5" name="ACRDate5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td>
+
+    <td><input id="A1c_M" name="A1c_M" size="10" type="text" value="A1c" /></td>
+
+    <td><input id="A1c_MDate1" name="A1cDate1" size="10" type="text" /></td>
+
+    <td><input id="A1c_MDate2" name="A1cDate2" size="10" type="text" /></td>
+
+    <td><input id="A1c_MDate3" name="A1cDate3" size="10" type="text" /></td>
+
+    <td><input id="A1c_MDate4" name="A1cDate4" size="10" type="text" /></td>
+
+    <td><input id="A1c_MDate5" name="A1cDate5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td>
+
+    <td><input id="TC" name="TC" size="10" type="text" Value="Total Cholest."/></td>
+
+    <td><input id="TCDate1" name="TCDate1" size="10" type="text" /></td>
+
+    <td><input id="TCDate2" name="TCDate2" size="10" type="text" /></td>
+
+    <td><input id="TCDate3" name="TCDate3" size="10" type="text" /></td>
+
+    <td><input id="TCDate4" name="TCDate4" size="10" type="text" /></td>
+
+    <td><input id="TCDate5" name="TCDate5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td>
+
+    <td><input id="LDL_R" name="LDL_R" size="10" type="text" Value="LDL"/></td>
+
+    <td><input id="LDLDate1" name="LDLDate1" size="10" type="text" /></td>
+
+    <td><input id="LDLDate2" name="LDLDate2" size="10" type="text" /></td>
+
+    <td><input id="LDLDate3" name="LDLDate3" size="10" type="text" /></td>
+
+    <td><input id="LDLDate4" name="LDLDate4" size="10" type="text" /></td>
+
+    <td><input id="LDLDate5" name="LDLDate5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td>
+
+    <td><input id="HDLDate" name="HDLDate" size="10" type="text" value="HDL"/>
+
+    <td><input id="HDLDate1" name="HDLDate1" size="10" type="text" /></td>
+
+    <td><input id="HDLDate2" name="HDLDate2" size="10" type="text" /></td>
+
+    <td><input id="HDLDate3" name="HDLDate3" size="10" type="text" /></td>
+
+    <td><input id="HDLDate4" name="HDLDate4" size="10" type="text" /></td>
+
+    <td><input id="HDLDate5" name="HDLDate5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td>
+
+    <td><input id="Non_HDLDate" name="Non_HDLDate" size="10" type="text" value="Non-HDL"/>
+
+    <td><input id="Non_HDLDate1" name="Non_HDLDate1" size="10" type="text" /></td>
+
+    <td><input id="Non_HDLDate2" name="Non_HDLDate2" size="10" type="text" /></td>
+
+    <td><input id="Non_HDLDate3" name="Non_HDLDate3" size="10" type="text" /></td>
+
+    <td><input id="Non_HDLDate4" name="Non_HDLDate4" size="10" type="text" /></td>
+
+    <td><input id="Non_HDLDate5" name="Non_HDLDate5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td>
+
+    <td><input id="TC_HDL" name="TC_HDL" size="10" type="text" value="TC/HDL"/>
+
+    <td><input id="TC_HDL1" name="TC_HDL1" size="10" type="text" /></td>
+
+    <td><input id="TC_HDL2" name="TC_HDL2" size="10" type="text" /></td>
+
+    <td><input id="TC_HDL3" name="TC_HDL3" size="10" type="text" /></td>
+
+    <td><input id="TC_HDL4" name="TC_HDL4" size="10" type="text" /></td>
+
+    <td><input id="TC_HDL5" name="TC_HDL5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td>
+
+    <td><input id="Na" name="Na" size="10" type="text" Value="Na+" /></td>
+
+    <td><input id="NaDate1" name="NaDate1" size="10" type="text" /></td>
+
+    <td><input id="NaDate2" name="NaDate2" size="10" type="text" /></td>
+
+    <td><input id="NaDate3" name="NaDate3" size="10" type="text" /></td>
+
+    <td><input id="NaDate4" name="NaDate4" size="10" type="text" /></td>
+
+    <td><input id="NaDate5" name="NaDate5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td>
+
+    <td><input id="K" name="K" size="10" type="text" Value="K+" /></td>
+
+    <td><input id="KDate1" name="KDate1" size="10" type="text" /></td>
+
+    <td><input id="KDate2" name="KDate2" size="10" type="text" /></td>
+
+    <td><input id="KDate3" name="KDate3" size="10" type="text" /></td>
+
+    <td><input id="KDate4" name="KDate4" size="10" type="text" /></td>
+
+    <td><input id="KDate5" name="KDate5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td>
+
+    <td><input id="Hb" name="Hb" size="10" type="text" value="Hb" /></td>
+
+    <td><input id="HbDate1" name="HbDate1" size="10" type="text" /></td>
+
+    <td><input id="HbDate2" name="HbDate2" size="10" type="text" /></td>
+
+    <td><input id="HbDate3" name="HbDate3" size="10" type="text" /></td>
+
+    <td><input id="HbDate4" name="HbDate4" size="10" type="text" /></td>
+
+    <td><input id="HbDate5" name="HbDate5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td>
+
+    <td><input id="Ferritin" name="Ferritin" size="10" type="text" value="Ferritin"/></td>
+
+    <td><input id="FerritinDate1" name="FerritinDate1" size="10" type="text" /></td>
+
+    <td><input id="FerritinDate2" name="FerritinDate2" size="10" type="text" /></td>
+
+    <td><input id="FerritinDate3" name="FerritinDate3" size="10" type="text" /></td>
+
+    <td><input id="FerritinDate4" name="FerritinDate4" size="10" type="text" /></td>
+
+    <td><input id="FerritinDate5" name="FerritinDate5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td>
+
+    <td><input id="SerumIron" name="SerumIron" size="10" type="text" value="Serum Iron"/></td>
+
+    <td><input id="SerumIronDate1" name="SerumIronDate1" size="10" type="text" /></td>
+
+    <td><input id="SerumIronDate2" name="SerumIronDate2" size="10" type="text" /></td>
+
+    <td><input id="SerumIronDate3" name="SerumIronDate3" size="10" type="text" /></td>
+
+    <td><input id="SerumIronDate4" name="SerumIronDate4" size="10" type="text" /></td>
+
+    <td><input id="SerumIronDate5" name="SerumIronDate5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td>
+
+    <td><input id="B12" name="B12" size="10" type="text" value="B12"/></td>
+
+    <td><input id="B12Date1" name="B12Date1" size="10" type="text" /></td>
+
+    <td><input id="B12Date2" name="B12Date2" size="10" type="text" /></td>
+
+    <td><input id="B12Date3" name="B12Date3" size="10" type="text" /></td>
+
+    <td><input id="B12Date4" name="B12Date4" size="10" type="text" /></td>
+
+    <td><input id="B12Date5" name="B12Date5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td>
+
+    <td><input id="AST" name="AST" size="10" type="text" value="AST"/></td>
+
+    <td><input id="ASTDate1" name="ASTDate1" size="10" type="text" /></td>
+
+    <td><input id="ASTDate2" name="ASTDate2" size="10" type="text" /></td>
+
+    <td><input id="ASTDate3" name="ASTDate3" size="10" type="text" /></td>
+
+    <td><input id="ASTDate4" name="ASTDate4" size="10" type="text" /></td>
+
+    <td><input id="ASTDate5" name="ASTDate5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td>
+
+    <td><input id="ALT" name="ALT" size="10" type="text" value="ALT"/></td>
+
+    <td><input id="ALTDate1" name="ALTDate1" size="10" type="text" /></td>
+
+    <td><input id="ALTDate2" name="ALTDate2" size="10" type="text" /></td>
+
+    <td><input id="ALTDate3" name="ALTDate3" size="10" type="text" /></td>
+
+    <td><input id="ALTDate4" name="ALTDate4" size="10" type="text" /></td>
+
+    <td><input id="ALTDate5" name="ALTDate5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td>
+
+    <td><input id="TSH" name="TSH" size="10" type="text" value="TSH"/></td>
+
+    <td><input id="TSHDate1" name="TSHDate1" size="10" type="text" /></td>
+
+    <td><input id="TSHDate2" name="TSHDate2" size="10" type="text" /></td>
+
+    <td><input id="TSHDate3" name="TSHDate3" size="10" type="text" /></td>
+
+    <td><input id="TSHDate4" name="TSHDate4" size="10" type="text" /></td>
+
+    <td><input id="TSHDate5" name="TSHDate5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td>
+
+    <td><input id="ExtraLab1" name="ExtraLab1" size="10" type="text" value=" "/></td>
+
+    <td><input id="ExtraLab1Date1" name="ExtraLab1Date1" size="10" type="text" /></td>
+
+    <td><input id="ExtraLab1Date2" name="ExtraLab1Date2" size="10" type="text" /></td>
+
+    <td><input id="ExtraLab1Date3" name="ExtraLab1Date3" size="10" type="text" /></td>
+
+    <td><input id="ExtraLab1Date4" name="ExtraLab1Date4" size="10" type="text" /></td>
+
+    <td><input id="ExtraLab1Date5" name="ExtraLab1Date5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td>
+
+    <td><input id="ExtraLab2" name="ExtraLab2" size="10" type="text" value=" "/></td>
+
+    <td><input id="ExtraLab2Date1" name="ExtraLab1Date1" size="10" type="text" /></td>
+
+    <td><input id="ExtraLab2Date2" name="ExtraLab2Date2" size="10" type="text" /></td>
+
+    <td><input id="ExtraLab2Date3" name="ExtraLab3Date3" size="10" type="text" /></td>
+
+    <td><input id="ExtraLab2Date4" name="ExtraLab4Date4" size="10" type="text" /></td>
+
+    <td><input id="ExtraLab2Date5" name="ExtraLab5Date5" size="10" type="text" /></td>
+
+  </tr>
+
+  <tr>
+
+    <td class="col1"><input type="checkbox" name="chk"/></td>
+
+    <td><input id="ExtraLab3" name="ExtraLab3" size="10" type="text" value=" "/></td>
+
+    <td><input id="ExtraLab3Date1" name="ExtraLab3Date1" size="10" type="text" /></td>
+
+    <td><input id="ExtraLab3Date2" name="ExtraLab3Date2" size="10" type="text" /></td>
+
+    <td><input id="ExtraLab3Date3" name="ExtraLab3Date3" size="10" type="text" /></td>
+
+    <td><input id="ExtraLab3Date4" name="ExtraLab3Date4" size="10" type="text" /></td>
+
+    <td><input id="ExtraLab3Date5" name="ExtraLab3Date5" size="10" type="text" /></td>
+
+  </tr>
+
+                </table>
+
+ 
+
+<input type="button" value="Delete All Empty Row(s)" onclick="findCellWithContent('labs')" />
+
+ 
+
+</div>
+
+</div>
+
+<button id= "btnSubjectiveObjective" type="button" class="collapsible">+ Subjective and Objective text box</button>
+
+<div class="content_collapsibles">
+
+<div class="grow-wrap">
+
+<textarea name="subjectiveObjective" id= "subjectiveObjective"  onkeyup="findHeightSubjectiveObjective()" onInput="this.parentNode.dataset.replicatedValue = this.value"style="position: relative; width: 700px; text-align: left; background-color: transparent;"></textarea>
+
+</div>
+
+</div>
+
+<input id="h_SubjectiveObjective" name="h_SubjectiveObjective" type="text" style="display: none" value="0" />
+
+ 
+
+<h1 style= "font-family: arial, sans-serif; font-size: 16px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Assessment and Plan</h1>
+
+ 
+
+<label for="BPatTarget">BP at Target?&nbsp;</label>
+
+<select id="BPatTarget" name="BPatTarget">
+
+<option value="0"></option>
+
+<option value="1">Yes</option>
+
+<option value="2">No</option>
+
+</select>
+
+<br>
+
+<button type="button" class="collapsible">+ Risk Assessment</button>
+
+<div class="content_collapsibles">
+
+<label style= "font-family: arial, sans-serif; font-size: 14px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Cardiovascular and Renal Protection</label>
+
+<br><br>
+
+<label for="mi">MI:&nbsp</label>
+
+<select id="mi" name="mi">
+
+<option value="0"></option>
+
+<option value="1">Yes</option>
+
+<option value="2">No</option>
+
+</select>
+
+&nbsp<input name="miDate" id="miDate" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 100px" oscarDB=e$last#miDate />
+
+ 
+
+<label for="cabg">CABG:&nbsp</label>
+
+<select id="cabg" name="cabg">
+
+<option value="0"></option>
+
+<option value="1">Yes</option>
+
+<option value="2">x 1</option>
+
+<option value="3">x 2</option>
+
+<option value="4">x 3</option>
+
+<option value="5">x 4</option>
+
+<option value="6">4+</option>
+
+<option value="7">No</option>
+
+</select>
+
+<input name="cabgDate" id="cabgDate" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 100px" oscarDB=e$last#cabgDate />
+
+ 
+
+<label for="pci">PCI:&nbsp</label>
+
+<select id="pci" name="pci">
+
+<option value="0"></option>
+
+<option value="1">Yes</option>
+
+<option value="2">x 1</option>
+
+<option value="3">x 2</option>
+
+<option value="4">x 3</option>
+
+<option value="5">x 4</option>
+
+<option value="6">4+</option>
+
+<option value="7">No</option>
+
+</select>
+
+&nbsp<input name="pciDate" id="pciDate" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 60px" oscarDB=e$last#pciDate />
+
+<br><br>
+
+ 
+
+<label for="cad">CAD:&nbsp</label>
+
+<select id="cad" name="cad">
+
+<option value="0"></option>
+
+<option value="1">Yes</option>
+
+<option value="2">No</option>
+
+</select>
+
+&nbsp<input name="cadDate" id="cadDate" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 60px" oscarDB=e$last#cadDate />
+
+ 
+
+<label for="pad">PAD:&nbsp</label>
+
+<select id="pad" name="pad">
+
+<option value="0"></option>
+
+<option value="1">Yes</option>
+
+<option value="2">No</option>
+
+</select>
+
+&nbsp<input name="padDate" id="padDate" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 60px" oscarDB=e$last#padDate />
+
+ 
+
+<label for="stroke">Stroke:&nbsp</label>
+
+<select id="stroke" name="stroke">
+
+<option value="0"></option>
+
+<option value="1">Yes</option>
+
+<option value="2">Embolic</option>
+
+<option value="3">Hemorrhagic</option>
+
+</select>
+
+&nbsp<input name="strokeDate" id="strokeDate" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 60px" oscarDB=e$last#strokeDate />
+
+<br><br>
+
+ 
+
+<label for="afib">A.Fib.:&nbsp</label>
+
+<select id="afib" name="afib">
+
+<option value="0"></option>
+
+<option value="1">Yes</option>
+
+<option value="2">Non-Valvular</option>
+
+<option value="3">Valvular</option>
+
+</select>
+
+&nbsp<input name="afibDate" id="afibDate" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 100px" oscarDB=e$last#afibDate />
+
+ 
+
+<label for="hf">HF:&nbsp</label>
+
+<select id="hf" name="hf">
+
+<option value="0"></option>
+
+<option value="1">Yes</option>
+
+<option value="2">HFpEF</option>
+
+<option value="3">HFmrEF</option>
+
+<option value="4">HFrEF</option>
+
+<option value="5">No</option>
+
+</select>
+
+&nbsp<input name="hfDate" id="hfDate" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 100px" oscarDB=e$last#hfDate />
+
+ 
+
+<br>
+
+<br>
+
+<label for="egfr">eGFR: </label><input name="egfr" id="egfr" type="text" onchange="gradeCKD()" style="font-family:sans-serif; font-size:14px; text-align:left; width: 30px" oscarDB=m$EGFR#value />&nbsp<input name="egfrDate" id="egfrDate" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 75px" oscarDB=m$EGFR#dateObserved />&nbsp; &nbsp
+
+<label for="acr">ACR: </label><input name="acr" id="acr" type="text" onchange="gradeCKD()" style="font-family:sans-serif; font-size:14px; text-align:left; width: 30px" oscarDB=m$ACR#value/>&nbsp<input name="acrDate" id="acrDate" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 75px" oscarDB=m$ACR#dateObserved />&nbsp;&nbsp
+
+<label for="classCKDG">KDIGO Class: </label><input name="classCKDG" id="classCKDG" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 20px; border: none" />
+
+<input name="classCKDA" id="classCKDA" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 20px; border: none" />&nbsp
+
+<input name="txtRemarks" id="txtRemarks" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 50px; border: none" />&nbsp
+
+<br><br>
+
+<label for="nephrologist">Nephrologist: </label><input name="nephrologist" id="nephrologist" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 150px" />
+
+<br><br>
+
+<input name="smokerCheckBox" id="smokerCheckBox" type="checkbox" unchecked /><label for="smokerCheckBox">Smoker </label>&nbsp<input name="smoker" id="smoker" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 60px"/><label> ppd</label>&nbsp
+
+<input name="exSmokerCheckBox" id="exSmokerCheckBox" type="checkbox" unchecked /><label for="exSmokerCheckBox">Ex-Smoker </label>&nbsp<input name="exSmokerDate" id="exSmokerDate" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 60px" oscarDB=e$last#exSmokerDate /><label> quit date</label>&nbsp
+
+<input name="neverSmokerCheckBox" id="neverSmokerCheckBox" type="checkbox" unchecked /><label for="neverSmokerCheckBox">Never Smoked </label>
+
+<br>
+
+<br>
+
+ 
+
+<label id="lblStatin">Statin:&nbsp</label>
+
+<select id="statin" name="statin">
+
+<option value="0"></option>
+
+<option value="1">Atorvastatin</option>
+
+<option value="2">Fluvastatin</option>
+
+<option value="3">Lovastatin</option>
+
+<option value="4">Pravastatin</option>
+
+<option value="5">Rosuvastatin</option>
+
+<option value="6">Simvastatin</option>
+
+<option value="7">Intolerant</option>
+
+<option value="8">Contraindicated</option>
+
+<option value="9">Patient declined</option>
+
+</select>
+
+ 
+
+<label id="lblACEi">ACEi:&nbsp</label>
+
+<select id="acei" name="acei">
+
+<option value="0"></option>
+
+<option value="1">Benazepril</option>
+
+<option value="2">Captopril</option>
+
+<option value="3">Enalapril</option>
+
+<option value="4">Fosinopril</option>
+
+<option value="5">Lisinopril</option>
+
+<option value="6">Perindopril</option>
+
+<option value="7">Quinapril</option>
+
+<option value="8">Ramipril</option>
+
+<option value="9">Trandolapril</option>
+
+<option value="10">Intolerant</option>
+
+<option value="11">Contraindicated</option>
+
+<option value="12">Patient declined</option>
+
+</select>
+
+ 
+
+<label id="lblARB">ARB:&nbsp</label>
+
+<select id="arb" name="arb">
+
+<option value="0"></option>
+
+<option value="1">Azilsartan</option>
+
+<option value="2">Candesartan</option>
+
+<option value="3">Eprosartan</option>
+
+<option value="4">Irbesartan</option>
+
+<option value="5">Losartan</option>
+
+<option value="6">Olmesartan</option>
+
+<option value="7">Telmisartan</option>
+
+<option value="8">Valsartan</option>
+
+<option value="9">Intolerant</option>
+
+<option value="10">Contraindicated</option>
+
+<option value="11">Patient declined</option>
+
+</select>
+
+ 
+
+<br><br>
+
+<label id="lblAspirin">Aspirin:&nbsp</label>
+
+<select id="aspirin" name="aspirin">
+
+<option value="0"></option>
+
+<option value="1">Yes</option>
+
+<option value="2">Intolerant</option>
+
+<option value="3">Contraindicated</option>
+
+<option value="4">Patient declined</option>
+
+</select>
+
+ 
+
+<label id="lblP2Y12i">P2Y12i:&nbsp</label>
+
+<select id="p2y12i" name="p2y12i">
+
+<option value="0"></option>
+
+<option value="1">Clopidogrel</option>
+
+<option value="2">Ticagrelor</option>
+
+<option value="3">Intolerant</option>
+
+<option value="4">Contraindicated</option>
+
+<option value="5">Patient declined</option>
+
+</select>
+
+ 
+
+<label id="lblNOAC_W">NOAC / W:&nbsp</label>
+
+<select id="noac_w" name="noac_w">
+
+<option value="0"></option>
+
+<option value="1">Apixaban</option>
+
+<option value="2">Dabigatran</option>
+
+<option value="3">Rivaroxaban</option>
+
+<option value="4">Warfarin</option>
+
+<option value="5">Intolerant</option>
+
+<option value="6">Contraindicated</option>
+
+<option value="7">Patient declined</option>
+
+</select>
+
+ 
+
+<br>
+
+<br>
+
+ 
+
+<label id="lblSGLT2">SGLT-2:&nbsp</label>
+
+<select id="sglt2" name="sglt2">
+
+<option value="0"></option>
+
+<option value="1">Canagliflozin</option>
+
+<option value="2">Dapagliflozin</option>
+
+<option value="3">Empagliflozin</option>
+
+<option value="4">Intolerant</option>
+
+<option value="5">Contraindicated</option>
+
+<option value="6">Patient declined</option>
+
+</select>
+
+ 
+
+<label id="lblGLP1">GLP-1:&nbsp</label>
+
+<select id="glp1" name="glp1">
+
+<option value="0"></option>
+
+<option value="1">Dulaglutide</option>
+
+<option value="2">Liraglutide</option>
+
+<option value="3">Semaglutide</option>
+
+<option value="4">Intolerant</option>
+
+<option value="5">Contraindicated</option>
+
+<option value="6">Patient declined</option>
+
+</select>
+
+</div>
+
+ 
+
+<br>
+
+<button id= "btnAssessmentPlan" type="button" class="collapsible">+ Assessment and Plan text box</button>
+
+<div class="content_collapsibles">
+
+<div class="grow-wrap">
+
+<textarea name="assessmentPlan" id= "assessmentPlan"  onkeyup="findHeightAssessmentPlan()" onInput="this.parentNode.dataset.replicatedValue = this.value"style="position: relative; width: 700px; text-align: left; background-color: transparent;"></textarea>
+
+</div>
+
+</div>
+
+<input id="h_AssessmentPlan" name="h_AssessmentPlan" type="text" style="display: none" value="0"/>
+
+ 
+
+<button id= "btnPhysician" type="button" class="collapsible">+ Recommendations to Physician</button>
+
+<div class="content_collapsibles">
+
+<label name="titlePhysicianRec" id= "titlePhysicianRec" style= "font-family: arial, sans-serif; font-size: 16px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Recommendations for the patient's physician / nurse practitionner</label>
+
+<div class="grow-wrap">
+
+<textarea name="physicianRec" id= "physicianRec"  onkeyup="findHeightPhysician()" onInput="this.parentNode.dataset.replicatedValue = this.value"style="position: relative; width: 700px; text-align: left; background-color: transparent;"></textarea>
+
+</div>
+
+</div>
+
+ 
+
+<input id="h_Physician" name="h_Physician" type="text" style="display: none" value="0"/>
+
+<button type="button" class="collapsible" id="btnPatient" >+ Recommendations to Patient</button>
+
+<div class="content_collapsibles">
+
+<label name="titlepatientRec" id= "titlepatientRec" style= "font-family: arial, sans-serif; font-size: 16px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Recommendations for the patient</label>
+
+<div class="grow-wrap">
+
+<textarea name="patientRec" id= "patientRec"  onkeyup="findHeightPatient()" onInput="this.parentNode.dataset.replicatedValue = this.value"style="position: relative; width: 700px; text-align: left; background-color: transparent;"></textarea>
+
+</div>
+
+</div>
+
+<input id="h_Patient" name="h_Patient" type="text" style="display: none" value="0"/>
+
+ 
+
+<button type="button" class="collapsible" id="btnPharmacist">+ Recommendations to Pharmacist</button>
+
+<div class="content_collapsibles">
+
+<label name="titlepharmacistRec" id= "titlepharmacistRec" style= "font-family: arial, sans-serif; font-size: 16px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Recommendations for the community pharmacist</label>
+
+<div class="grow-wrap">
+
+<textarea name="pharmacistRec" id= "pharmacistRec"  onkeyup="findHeightPharmacist()" onInput="this.parentNode.dataset.replicatedValue = this.value"style="position: relative; width: 700px; text-align: left; background-color: transparent;"></textarea>
+
+</div>
+
+</div>
+
+<input id="h_Pharmacist" name="h_Pharmacist" type="text" value="0" style="display: none" />
+
+ 
+
+<button type="button" class="collapsible" id="btnProblems">+ Problems not addressed</button>
+
+<div class="content_collapsibles">
+
+<label name="titleproblemsNotAddressed" id= "titleproblemsNotAddressed" style= "font-family: arial, sans-serif; font-size: 16px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Problems not addressed today</label>
+
+<div class="grow-wrap">
+
+<textarea name="problemsNotAddressed" id= "problemsNotAddressed"   onkeyup="findHeightProblems()" onInput="this.parentNode.dataset.replicatedValue = this.value"style="position: relative; width: 700px; text-align: left; background-color: transparent;"></textarea>
+
+</div>
+
+</div>
+
+<input id="h_Problems" name="h_Problems" type="text" value="0" style="display: none"/>
+
+ 
+
+<button type="button" class="collapsible" id="btnFollowUp">+ Follow-up</button>
+
+<div class="content_collapsibles">
+
+<label name="titlefollowup" id= "titlefollowup" style= "font-family: arial, sans-serif; font-size: 16px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Follow-up</label>
+
+<div class="grow-wrap">
+
+<textarea name="followup" id= "followup" onkeyup="findHeightFollowUp()"  onInput="this.parentNode.dataset.replicatedValue = this.value"style="position: relative; width: 700px; text-align: left; background-color: transparent;"></textarea>
+
+</div>
+
+</div>
+
+<input id="h_FollowUp" name="h_FollowUp" type="text" value="0" style="display: none"/>
+
+<br><br>
+
+<label for="user ">Diabetes review done by:&nbsp;</label>
+
+<input type="text"  name="user " id="user " type="text" style="position:relative; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:transparent; width: 200px; border: none" oscarDB=doctor></text>
+
+<br>
+
+<br>
+
+ 
+
+ 
+
+<div class="DoNotPrint" style="relative" id="BottomButtons">
+
+    <table>
+
+      <tr>
+
+         <td class="subjectline">
+
+         Subject: <input type="text" name="subject"  value="Medication Review" size="40">&nbsp;
+
+            <input value="Save" name="SubmitButton" id="SubmitButton" type="submit" onclick="releaseDirtyFlag();">
+
+            <input name="saveAsEdoc" type="hidden" id="saveAsEdoc" value="false">
+
+<!-- <input value="eDocument" name="eDocument" type="button" onclick="document.getElementById('saveAsEdoc').value='true'; releaseDirtyFlag(); SubmitButton.click();"> -->
+
+             <input value="Reset" name="ResetButton" id="ResetButton" type="reset" onclick="">
+
+             <input value="Print" name="PrintButton" id="PrintButton" type="button" onclick="printForm();">
+
+<!-- <input value="Print & Save" name="PrintSubmitButton" id="PrintSubmitButton" type="button" onclick="releaseDirtyFlag();printForm();setTimeout('SubmitButton.click()',1000);"> -->
+
+         </td>
+
+    </tr>
+
+</div>
+
+ 
+
+ 
+
+ 
+
+</form>
+
+ 
+
+<script type="text/javascript">
+
+ 
+
+var coll = document.getElementsByClassName("collapsible");
+
+var i;
+
+ 
+
+for (i = 0; i < coll.length; i++) {
+
+  coll[i].addEventListener("click", function() {
+
+    this.classList.toggle("active");
+
+    var content = this.nextElementSibling;
+
+    if (content.style.display === "block") {
+
+      content.style.display = "none";
+
+    } else {
+
+      content.style.display = "block";
+
+    }
+
+  });
+
+}
+
+ 
+
+function printForm(){
+
+    window.print();
+
+}
+
+ 
+
+//keypress events trigger dirty flag
+
+var confirmClose = false;
+
+document.onkeyup=setDirtyFlag;
+
+ 
+
+function setDirtyFlag(){
+
+    confirmClose = true;
+
+}
+
+ 
+
+function releaseDirtyFlag(){
+
+    confirmClose = false; // call to prevent an alert // call when submit buttom clicked
+
+}
+
+ 
+
+window.onbeforeunload = confirmExit;
+
+ 
+
+function confirmExit(){
+
+    if (confirmClose){
+
+                return "You have made changes to this form without submitting. If you leave, your changes will be lost. Are you sure you want to exit?";
+
+     }
+
+}
+
+ 
+
+ 
+
+function getLastAdherenceAid(){
+
+var lastAdherenceAid= document.getElementById("adherenceAid");
+
+var previous = document.getElementById("previousAdherenceAid").value;
+
+ 
+
+if(previous =="0"){
+
+lastAdherenceAid.options[0].selected = true;
+
+} else if(previous =="1"){
+
+lastAdherenceAid.options[1].selected = true;
+
+} else if(previous =="2"){
+
+lastAdherenceAid.options[2].selected = true;
+
+} else if(previous =="3"){
+
+lastAdherenceAid.options[3].selected = true;
+
+}
+
+}
+
+getLastAdherenceAid();
+
+ 
+
+function getLastDrugCoverage(){
+
+var lastDrugCoverage= document.getElementById("drugCoverage");
+
+var previous = document.getElementById("previousDrugCoverage").value;
+
+ 
+
+if(previous =="0"){
+
+lastDrugCoverage.options[0].selected = true;
+
+} else if(previous =="1"){
+
+lastDrugCoverage.options[1].selected = true;
+
+} else if(previous =="2"){
+
+lastDrugCoverage.options[2].selected = true;
+
+} else if(previous =="3"){
+
+lastDrugCoverage.options[3].selected = true;
+
+}
+
+}
+
+getLastDrugCoverage();
+
+ 
+
+function getLastHelpRx(){
+
+var lastHelpRx= document.getElementById("helpRx");
+
+var previous = document.getElementById("previousHelpRx").value;
+
+ 
+
+if(previous =="0"){
+
+lastHelpRx.options[0].selected = true;
+
+} else if(previous =="1"){
+
+lastHelpRx.options[1].selected = true;
+
+} else if(previous =="2"){
+
+lastHelpRx.options[2].selected = true;
+
+}
+
+}
+
+getLastHelpRx();
+
+ 
+
+function getLastCOVIDDose(){
+
+var covidDose= document.getElementById("covidDose");
+
+var previous = document.getElementById("previousCOVIDDose").value;
+
+ 
+
+if(previous =="0"){
+
+covidDose.options[0].selected = true;
+
+} else if(previous =="1"){
+
+covidDose.options[1].selected = true;
+
+} else if(previous =="2"){
+
+covidDose.options[2].selected = true;
+
+} else if(previous =="3"){
+
+covidDose.options[3].selected = true;
+
+}
+
+}
+
+getLastCOVIDDose();
+
+ 
+
+ 
+
+function medicalConditions(array, element) {
+
+    var ul = document.createElement('ul');
+
+    var prev;
+
+    for (var item in array) {
+
+        if (Array.isArray(array[item])) {
+
+            displayArrayAsHtmlList(array[item], prev);
+
+        } else {
+
+            var li = document.createElement('li');
+
+            li.innerHTML = array[item];
+
+            prev = li;
+
+        }
+
+        ul.appendChild(li);
+
+    }
+
+    element.appendChild(ul);
+
+}
+
+ 
+
+var conditions= document.getElementById("dxregistry").value;
+
+var noStar = conditions.replace(/[^a-zA-Z0-9 ,]/g,'');
+
+var noNEC =noStar.replace(/NEC/g,'');
+
+var noNOS =noNEC.replace(/NOS/g,'');
+
+var lowerCase = noNOS.toLowerCase();
+
+var arr = lowerCase.split(',');
+
+medicalConditions(arr, document.getElementById("conditions"));
+
+ 
+
+ 
+
+function medicationList(array, element) {
+
+    var ul = document.createElement('ul');
+
+    var prev;
+
+    for (var item in array) {
+
+        if (Array.isArray(array[item])) {
+
+            displayArrayAsHtmlList(array[item], prev);
+
+        } else {
+
+            var li = document.createElement('li');
+
+            li.innerHTML = array[item];
+
+            prev = li;
+
+        }
+
+        ul.appendChild(li);
+
+    }
+
+    element.appendChild(ul);
+
+}
+
+    var meds= document.getElementById("drugList").value;
+
+    var noQty =meds.replace(/Qty:0 Repeats:0/g,',');
+
+    var lowerCaseMeds = noQty.toLowerCase();
+
+     var deleteLastCharacter = lowerCaseMeds .slice(0,-1);
+
+    var arrMeds = deleteLastCharacter .split(',');
+
+    medicationList(arrMeds, document.getElementById("meds"));
+
+ 
+
+function reloadMedList(){
+
+   window.location.reload();
+
+}
+
+ 
+
+function allergiesList(array, element) {
+
+    var ul = document.createElement('ul');
+
+    var prev;
+
+ 
+
+    if(allergies.length == 0) {
+
+    } else {
+
+    for (var item in array) {
+
+        if (Array.isArray(array[item])) {
+
+            displayArrayAsHtmlList(array[item], prev);
+
+        } else {
+
+            var li = document.createElement('li');
+
+            li.innerHTML = array[item];
+
+            prev = li;
+
+        }
+
+        ul.appendChild(li);
+
+    }
+
+    element.appendChild(ul);
+
+}
+
+}
+
+    var allergies= document.getElementById("listAllergies").value;
+
+    var lowerCaseAllergies = allergies.toLowerCase();
+
+    var arrAllergies = lowerCaseAllergies.split(',');
+
+    allergiesList(arrAllergies, document.getElementById("allergies"));
+
+ 
+
+ 
+
+function deleteRow(tableID) {
+
+try {
+
+var table = document.getElementById(tableID);
+
+var rowCount = table.rows.length;
+
+     
+
+for(var i=0; i<rowCount; i++) {
+
+var row = table.rows[i];
+
+var chkbox = row.cells[0].childNodes[0];
+
+       
+
+if(null != chkbox && true == chkbox.checked) {
+
+  table.deleteRow(i);
+
+  rowCount--;
+
+   i--;
+
+}
+
+ 
+
+   }
+
+   }catch(e) {
+
+                alert(e);
+
+   }
+
+}
+
+ 
+
+ 
+
+function findCellWithContent(tableID) {
+
+var table = document.getElementById(tableID);
+
+var rowCount = table.rows.length;
+
+ 
+
+for(var i=1; i<rowCount; i++) {
+
+                                var row = table.rows[i];
+
+                                var chkbox = row.cells[0].childNodes[0];
+
+    var date1 = row.cells[2].getElementsByTagName('input')[0].value;
+
+    var date2 = row.cells[3].getElementsByTagName('input')[0].value;
+
+    var date3 = row.cells[4].getElementsByTagName('input')[0].value;
+
+    var date4 = row.cells[5].getElementsByTagName('input')[0].value;
+
+    var date5 = row.cells[6].getElementsByTagName('input')[0].value;
+
+       
+
+   if(date1<0.001 && date2<0.001 && date3<0.001 && date4<0.001 && date5<0.001){
+
+    chkbox.checked = true;
+
+   } else {
+
+    chkbox.checked = false;
+
+   }
+
+}
+
+  deleteRow(tableID);
+
+}
+
+ 
+
+ 
+
+function get(fName) {
+
+   return document.getElementById(fName);
+
+}
+
+ 
+
+function getVal(fName) {
+
+    return get(fName).value;
+
+}
+
+ 
+
+ 
+
+function recallValues(){
+
+var previousMI= document.getElementById("hadMI").value;
+
+var ddMI= document.getElementById("mi");
+
+var previousCABG= document.getElementById("hadCABG").value;
+
+var ddCABG= document.getElementById("cabg");
+
+var previousPCI= document.getElementById("hadPCI").value;
+
+var ddPCI= document.getElementById("pci");
+
+var previousCAD= document.getElementById("hadCAD").value;
+
+var ddCAD= document.getElementById("cad");
+
+var previousPAD= document.getElementById("hadPAD").value;
+
+var ddPAD= document.getElementById("pad");
+
+var previousStroke= document.getElementById("hadStroke").value;
+
+var ddStroke= document.getElementById("stroke");
+
+var previousAFib= document.getElementById("hadAFib").value;
+
+var ddAFib= document.getElementById("afib");
+
+var previousHF= document.getElementById("hadHF").value;
+
+var ddHF= document.getElementById("hf");
+
+var previousStatin= document.getElementById("onStatin").value;
+
+var ddStatin= document.getElementById("statin");
+
+var previousACEi= document.getElementById("onACEi").value;
+
+var ddACEi= document.getElementById("acei");
+
+var previousARB= document.getElementById("onARB").value;
+
+var ddARB= document.getElementById("arb");
+
+var previousAspirin= document.getElementById("onAspirin").value;
+
+var ddAspirin= document.getElementById("aspirin");
+
+var previousP2Y12i= document.getElementById("onP2Y12i").value;
+
+var ddP2Y12i= document.getElementById("p2y12i");
+
+var previousNOAC_W= document.getElementById("onNOAC_W").value;
+
+var ddNOAC_W= document.getElementById("noac_w");
+
+var previousSGLT2= document.getElementById("onSGLT2").value;
+
+var ddSGLT2= document.getElementById("sglt2");
+
+var previousGLP1= document.getElementById("onGLP1").value;
+
+var ddGLP1= document.getElementById("glp1");
+
+var previousDR= document.getElementById("hasDR").value;
+
+var ddDR= document.getElementById("dr");
+
+var previousED= document.getElementById("hasED").value;
+
+var ddED= document.getElementById("ed");
+
+var previousPN= document.getElementById("hasPN").value;
+
+var ddPN= document.getElementById("pn");
+
+ 
+
+ 
+
+if(previousMI== "0"){
+
+ddMI.options[0].selected = true;
+
+}else if(previousMI== "1"){
+
+ddMI.options[1].selected = true;
+
+}else if(previousMI== "2"){
+
+ddMI.options[2].selected = true;
+
+}
+
+ 
+
+if(previousCABG== "0"){
+
+ddCABG.options[0].selected = true;
+
+}else if(previousCABG== "1"){
+
+ddCABG.options[1].selected = true;
+
+}else if(previousCABG== "2"){
+
+ddCABG.options[2].selected = true;
+
+}else if(previousCABG== "3"){
+
+ddCABG.options[3].selected = true;
+
+}else if(previousCABG== "4"){
+
+ddCABG.options[4].selected = true;
+
+}else if(previousCABG== "5"){
+
+ddCABG.options[5].selected = true;
+
+}else if(previousCABG== "6"){
+
+ddCABG.options[6].selected = true;
+
+}else if(previousCABG== "7"){
+
+ddCABG.options[7].selected = true;
+
+}
+
+ 
+
+if(previousPCI== "0"){
+
+ddPCI.options[0].selected = true;
+
+}else if(previousPCI== "1"){
+
+ddPCI.options[1].selected = true;
+
+}else if(previousPCI== "2"){
+
+ddPCI.options[2].selected = true;
+
+}else if(previousPCI== "3"){
+
+ddPCI.options[3].selected = true;
+
+}else if(previousPCI== "4"){
+
+ddPCI.options[4].selected = true;
+
+}else if(previousPCI== "5"){
+
+ddPCI.options[5].selected = true;
+
+}else if(previousPCI== "6"){
+
+ddPCI.options[6].selected = true;
+
+}else if(previousPCI== "7"){
+
+ddPCI.options[7].selected = true;
+
+}
+
+ 
+
+if(previousCAD== "0"){
+
+ddCAD.options[0].selected = true;
+
+}else if(previousCAD== "1"){
+
+ddCAD.options[1].selected = true;
+
+}else if(previousCAD== "2"){
+
+ddCAD.options[2].selected = true;
+
+}
+
+ 
+
+if(previousPAD== "0"){
+
+ddPAD.options[0].selected = true;
+
+}else if(previousPAD== "1"){
+
+ddPAD.options[1].selected = true;
+
+}else if(previousPAD== "2"){
+
+ddPAD.options[2].selected = true;
+
+}
+
+ 
+
+if(previousStroke== "0"){
+
+ddStroke.options[0].selected = true;
+
+}else if(previousStroke== "1"){
+
+ddStroke.options[1].selected = true;
+
+}else if(previousStroke== "2"){
+
+ddStroke.options[2].selected = true;
+
+}else if(previousStroke== "3"){
+
+ddStroke.options[3].selected = true;
+
+}
+
+ 
+
+if(previousHF== "0"){
+
+ddHF.options[0].selected = true;
+
+}else if(previousHF== "1"){
+
+ddHF.options[1].selected = true;
+
+}else if(previousHF== "2"){
+
+ddHF.options[2].selected = true;
+
+}else if(previousHF== "3"){
+
+ddHF.options[3].selected = true;
+
+}else if(previousHF== "4"){
+
+ddHF.options[4].selected = true;
+
+}else if(previousHF== "5"){
+
+ddHF.options[5].selected = true;
+
+}
+
+ 
+
+if(previousAFib== "0"){
+
+ddAFib.options[0].selected = true;
+
+}else if(previousAFib== "1"){
+
+ddAFib.options[1].selected = true;
+
+}else if(previousAFib== "2"){
+
+ddAFib.options[2].selected = true;
+
+}else if(previousAFib== "3"){
+
+ddAFib.options[3].selected = true;
+
+}
+
+ 
+
+if(previousDR== "0"){
+
+ddDR.options[0].selected = true;
+
+}else if(previousDR== "1"){
+
+ddDR.options[1].selected = true;
+
+}else if(previousDR== "2"){
+
+ddDR.options[2].selected = true;
+
+}
+
+ 
+
+if(previousED== "0"){
+
+ddED.options[0].selected = true;
+
+}else if(previousED== "1"){
+
+ddED.options[1].selected = true;
+
+}else if(previousED== "2"){
+
+ddED.options[2].selected = true;
+
+}
+
+ 
+
+if(previousPN== "0"){
+
+ddPN.options[0].selected = true;
+
+}else if(previousPN== "1"){
+
+ddPN.options[1].selected = true;
+
+}else if(previousPN== "2"){
+
+ddPN.options[2].selected = true;
+
+}
+
+ 
+
+}
+
+recallValues();
+
+ 
+
+function gradeCKD(eGFR,ACR) {
+
+ 
+
+var eGFR = document.getElementById("egfr").value;
+
+var ACR = document.getElementById("acr").value;
+
+var G= document.getElementById("classCKDG");
+
+var A= document.getElementById("classCKDA");
+
+var R= document.getElementById("txtRemarks");
+
+ 
+
+    if (eGFR >= 90) {
+
+      if (ACR > 30) {
+
+        A.value = "A3";
+
+        R.value = "Refer";
+
+        R.style="width: 50px; border: none; background-color:#ff0000";
+
+        R.style.color = "#ffffff";
+
+        R.style.textAlign = "center";
+
+      } else if (ACR >=3)  {
+
+        A.value = "A2";
+
+        R.value = "Monitor";
+
+        R.style="width: 50px; border: none; background-color:#ffc299;"
+
+        R.style.textAlign = "center";
+
+      } else if (ACR <3 && ACR >0.1)  {
+
+        A.value = "A1";
+
+        R.value = " ";
+
+        R.style="width: 50px; border: none; background-color: none;"
+
+      } else {
+
+        A.value = " ";
+
+        R.value = " ";
+
+        R.style="width: 50px; border: none; background-color: none;"
+
+      }
+
+      G.value = "G1";
+
+    } else if (eGFR > 59) {
+
+      if (ACR > 30) {
+
+        A.value = "A3";
+
+        R.value = "Refer";
+
+        R.style="width: 50px; border: none; background-color:#ff0000";
+
+        R.style.color = "#ffffff";
+
+        R.style.textAlign = "center";
+
+      } else if (ACR >=3)  {
+
+        A.value = "A2";
+
+        R.value = "Monitor";
+
+        R.style="width: 50px; border: none; background-color:#ffc299;"
+
+        R.style.textAlign = "center";
+
+      } else if (ACR <3 && ACR >0.1)  {
+
+        A.value = "A1";
+
+        R.value = " ";
+
+        R.style="width: 50px; border: none; background-color: none;"
+
+      } else if (ACR <.1 ) {
+
+        A.value = " ";
+
+        R.value = " ";
+
+        R.style="width: 50px; border: none; background-color: none;"
+
+      }     
+
+      G.value = "G2";
+
+    } else if (eGFR > 44) {
+
+      if (ACR > 30) {
+
+        A.value = "A3";
+
+        R.value = "Refer";
+
+        R.style="width: 50px; border: none; background-color:#ff0000";
+
+        R.style.color = "#ffffff";
+
+        R.style.textAlign = "center";
+
+      } else if (ACR >=3)  {
+
+        A.value = "A2";
+
+        R.value = "Monitor";
+
+        R.style="width: 50px; border: none; background-color:#ffc299;"
+
+       
+
+      } else if (ACR <3 && ACR >0.1)  {
+
+        A.value = "A1";
+
+        R.value = "Monitor";
+
+       R.style="width: 50px; border: none; background-color:#ffc299;"
+
+        R.style.textAlign = "center";
+
+      } else if (ACR <.1 ) {
+
+        A.value = " ";
+
+        R.value = " ";
+
+      }
+
+        G.value = "G3a";
+
+    } else if (eGFR > 29) {
+
+       if (ACR > 30) {
+
+        A.value = "A3";
+
+        R.value = "Refer";
+
+        R.style="width: 50px; border: none; background-color:#ff0000";
+
+        R.style.color = "#ffffff";
+
+        R.style.textAlign = "center";
+
+      } else if (ACR >=3)  {
+
+        A.value = "A2";
+
+        R.value = "Monitor";
+
+        R.style="width: 50px; border: none; background-color:#ffc299;"
+
+        R.style.textAlign = "center";
+
+      } else if (ACR <3 && ACR >0.1)  {
+
+        A.value = "A1";
+
+        R.value = "Monitor";
+
+        R.style="width: 50px; border: none; background-color:#ffc299;"
+
+        R.style.textAlign = "center";
+
+      } else if (ACR <.1 ) {
+
+        A.value = " ";
+
+        R.value = " ";
+
+        R.style="width: 50px; border: none; background-color: none;"
+
+      }
+
+        G.value = "G3b";
+
+    }  else if (eGFR >14) {
+
+       if (ACR > 30) {
+
+        A.value = "A3";
+
+        R.value = "Refer";
+
+        R.style="width: 50px; border: none; background-color:#ff0000";
+
+        R.style.color = "#ffffff";
+
+        R.style.textAlign = "center";
+
+      } else if (ACR >=3)  {
+
+        A.value = "A2";
+
+        R.value= "Refer";
+
+        R.style="width: 50px; border: none; background-color:#ff0000";
+
+        R.style.color = "#ffffff";
+
+        R.style.textAlign = "center";
+
+      } else if (ACR <3 && ACR >0.1)  {
+
+        A.value = "A1";
+
+        R.value = "Refer";
+
+        R.style="width: 50px; border: none; background-color:#ff0000";
+
+        R.style.color = "#ffffff";
+
+        R.style.textAlign = "center";
+
+      } else if (ACR <.1 ) {
+
+        A.value = " ";
+
+        R.value = " ";
+
+        R.style="width: 50px; border: none; background-color: none;"
+
+      }
+
+        G.value = "G4";
+
+    } else if (eGFR < 15){
+
+      if (ACR > 30) {
+
+        A.value = "A3";
+
+        R.value = "Refer";
+
+        R.style="width: 50px; border: none; background-color:#ff0000";
+
+        R.style.color = "#ffffff";
+
+        R.style.textAlign = "center";
+
+      } else if (ACR >=3)  {
+
+        A.value = "A2";
+
+        R.value = "Refer";
+
+        R.style="width: 50px; border: none; background-color:#ff0000";
+
+        R.style.color = "#ffffff";
+
+        R.style.textAlign = "center";
+
+      } else if (ACR <3 && ACR >0.1)  {
+
+        A.value = "A1";
+
+        R.value = "Refer";
+
+        R.style="width: 50px; border: none; background-color:#ff0000";
+
+        R.style.color = "#ffffff";
+
+        R.style.textAlign = "center";
+
+      } else if (ACR <.1 ) {
+
+        A.value = " ";
+
+        R.value = " ";
+
+        R.style="width: 50px; border: none; background-color: none;"
+
+      }
+
+        G.value = "G5";
+
+   }
+
+}
+
+ 
+
+gradeCKD();
+
+ 
+
+function populateMeds() {
+
+ 
+
+var mediText = document.getElementById("drugList").value;
+
+mediText = mediText.toLowerCase();
+
+var ddStatin = document.getElementById("statin");
+
+var previousStatin= document.getElementById("onStatin").value;
+
+var lblStatin= document.getElementById("lblStatin");
+
+var ddACEi = document.getElementById("acei");
+
+var previousACEi= document.getElementById("onACEi").value;
+
+var lblACEi= document.getElementById("lblACEi");
+
+var ddARB = document.getElementById("arb");
+
+var previousARB= document.getElementById("onARB").value;
+
+var lblARB= document.getElementById("lblARB");
+
+var ddAspirin = document.getElementById("aspirin");
+
+var previousAspirin= document.getElementById("onAspirin").value;
+
+var lblAspirin= document.getElementById("lblAspirin");
+
+var ddP2Y12i = document.getElementById("p2y12i");
+
+var previousP2Y12i= document.getElementById("onP2Y12i").value;
+
+var lblP2Y12i= document.getElementById("lblP2Y12i");
+
+var ddNOAC_W = document.getElementById("noac_w");
+
+var previousNOAC_W= document.getElementById("onNOAC_W").value;
+
+var lblNOAC_W= document.getElementById("lblNOAC_W");
+
+var ddSGLT2 = document.getElementById("sglt2");
+
+var previousSGLT2= document.getElementById("onSGLT2").value;
+
+var lblSGLT2= document.getElementById("lblSGLT2");
+
+var ddGLP1 = document.getElementById("glp1");
+
+var previousGLP1= document.getElementById("onGLP1").value;
+
+var lblGLP1= document.getElementById("lblGLP1");
+
+ 
+
+ 
+
+//Statin
+
+if (mediText.includes('atorvastatin')) {
+
+   ddStatin.options[1].selected = true;   
+
+} else if (mediText.includes('fluvastatin')) {
+
+   ddStatin.options[2].selected = true;   
+
+} else if (mediText.includes('lovastatin')) {
+
+   ddStatin.options[3].selected = true;   
+
+} else if (mediText.includes('pravastatin')) {
+
+   ddStatin.options[4].selected = true;   
+
+} else if (mediText.includes('rosuvastatin')) {
+
+   ddStatin.options[5].selected = true;
+
+} else if (mediText.includes('simvastatin')) {
+
+   ddStatin.options[6].selected = true;
+
+}else if(previousStatin== "7"){
+
+   ddStatin.options[7].selected = true;
+
+}else if(previousStatin== "8"){
+
+   ddStatin.options[8].selected = true;
+
+}else if(previousStatin== "9"){
+
+   ddStatin.options[9].selected = true;
+
+}else if((previousStatin== "1") || (previousStatin== "2") || (previousStatin== "3") || (previousStatin== "4") || (previousStatin== "5") || (previousStatin== "6")){
+
+   ddStatin.style.visibility = "visible";
+
+   lblStatin.style.visibility = "visible";
+
+}else if(previousStatin== "0") {
+
+   ddStatin.style.display = 'none';
+
+   lblStatin.style.display = 'none';
+
+}else {
+
+   ddStatin.style.visibility = "visible";
+
+   lblStatin.style.visibility = "visible";
+
+   previousStatin== "0"
+
+}
+
+ 
+
+ 
+
+//ACEi
+
+if (mediText.includes('benazepril')) {
+
+   ddACEi.options[1].selected = true;   
+
+} else if (mediText.includes('captopril')) {
+
+   ddACEi.options[2].selected = true;   
+
+} else if (mediText.includes('enalapril')) {
+
+   ddACEi.options[3].selected = true;   
+
+} else if (mediText.includes('fosinopril')) {
+
+   ddACEi.options[4].selected = true;   
+
+} else if (mediText.includes('lisinopril')) {
+
+   ddACEi.options[5].selected = true;
+
+} else if (mediText.includes('perindopril')) {
+
+   ddACEi.options[6].selected = true; 
+
+} else if (mediText.includes('quinapril')) {
+
+   ddACEi.options[7].selected = true; 
+
+} else if (mediText.includes('ramipril')) {
+
+   ddACEi.options[8].selected = true; 
+
+} else if (mediText.includes('trandolapril')) {
+
+   ddACEi.options[9].selected = true;
+
+}else if(previousACEi== "10"){
+
+   ddACEi.options[10].selected = true;
+
+}else if(previousACEi== "11"){
+
+   ddACEi.options[11].selected = true;
+
+}else if(previousACEi== "12"){
+
+   ddACEi.options[12].selected = true;
+
+}else if((previousACEi== "1") || (previousACEi== "2") || (previousACEi== "3") || (previousACEi== "4") || (previousACEi== "5") || (previousACEi== "6") || (previousACEi== "7") || (previousACEi== "8") || (previousACEi== "9")){
+
+   ddACEi.style.visibility = "visible";
+
+   lblStatin.style.visibility = "visible";
+
+}else if(previousACEi== "0") {
+
+   ddACEi.style.display = 'none';
+
+   lblACEi.style.display = 'none';
+
+}else {
+
+   ddACEi.style.visibility = "visible";
+
+   lblACEi.style.visibility = "visible";
+
+   previousACEi== "0"
+
+}
+
+ 
+
+//ARB
+
+if (mediText.includes('azilsartan')) {
+
+   ddARB.options[1].selected = true;   
+
+} else if (mediText.includes('candesartan')) {
+
+   ddARB.options[2].selected = true;   
+
+} else if (mediText.includes('eprosartan')) {
+
+   ddARB.options[3].selected = true;   
+
+} else if (mediText.includes('irbesartan')) {
+
+   ddARB.options[4].selected = true;   
+
+} else if (mediText.includes('losartan')) {
+
+   ddARB.options[5].selected = true;
+
+} else if (mediText.includes('olmesartan')) {
+
+   ddARB.options[6].selected = true; 
+
+} else if (mediText.includes('telmisartan')) {
+
+   ddARB.options[7].selected = true; 
+
+} else if (mediText.includes('valsartan')) {
+
+   ddARB.options[8].selected = true;
+
+}else if(previousARB== "9"){
+
+   ddARB.options[9].selected = true;
+
+}else if(previousARB== "10"){
+
+   ddARB.options[10].selected = true;
+
+}else if(previousARB== "11"){
+
+   ddARB.options[11].selected = true;
+
+}else if((previousARB== "1") || (previousARB== "2") || (previousARB== "3") || (previousARB== "4") || (previousARB== "5") || (previousARB== "6") || (previousARB== "7") || (previousARB== "8")){
+
+   ddARB.style.visibility = "visible";
+
+   lblARB.style.visibility = "visible";
+
+}else if(previousARB== "0") {
+
+   ddARB.style.display = 'none';
+
+   lblARB.style.display = 'none';
+
+}else {
+
+   ddARB.style.visibility = "visible";
+
+   lblARB.style.visibility = "visible";
+
+   previousARB== "0"
+
+}
+
+ 
+
+//Aspirin
+
+if (mediText.includes('aspirin')) {
+
+   ddAspirin.options[1].selected = true;   
+
+}else if(previousAspirin== "2"){
+
+   ddAspirin.options[2].selected = true;
+
+}else if(previousAspirin== "3"){
+
+   ddAspirin.options[3].selected = true;
+
+}else if(previousAspirin== "4"){
+
+   ddAspirin.options[4].selected = true;
+
+}else if(previousAspirin== "1"){
+
+   ddAspirin.style.visibility = "visible";
+
+   lblAspirin.style.visibility = "visible";
+
+}else if(previousAspirin== "0") {
+
+   ddAspirin.style.display = 'none';
+
+   lblAspirin.style.display = 'none';
+
+}else {
+
+   ddAspirin.style.visibility = "visible";
+
+   lblAspirin.style.visibility = "visible";
+
+   previousAspirin== "0"
+
+}
+
+ 
+
+//P2Y12i
+
+if (mediText.includes('clopidogrel')) {
+
+   ddP2Y12i.options[1].selected = true;
+
+} else if (mediText.includes('ticagrelor')) {
+
+   ddP2Y12i.options[2].selected = true;   
+
+}else if(previousP2Y12i== "3"){
+
+   ddP2Y12i.options[3].selected = true;
+
+}else if(previousP2Y12i== "4"){
+
+   ddP2Y12i.options[4].selected = true;
+
+}else if(previousP2Y12i== "5"){
+
+   ddP2Y12i.options[5].selected = true;
+
+}else if(previousP2Y12i== "1"){
+
+   ddP2Y12i.style.visibility = "visible";
+
+   lblP2Y12i.style.visibility = "visible";
+
+}else if((previousP2Y12i== "0") || (previousP2Y12i== "2")) {
+
+   ddP2Y12i.style.display = 'none';
+
+   lblP2Y12i.style.display = 'none';
+
+}else {
+
+   ddP2Y12i.style.visibility = "visible";
+
+   lblP2Y12i.style.visibility = "visible";
+
+   previousP2Y12i== "0"
+
+}
+
+ 
+
+//NOAC and Warfarin
+
+if (mediText.includes('apixaban')) {
+
+   ddNOAC_W.options[1].selected = true;
+
+} else if (mediText.includes('dabigatran')) {
+
+   ddNOAC_W.options[2].selected = true;    
+
+} else if (mediText.includes('rivaroxaban')) {
+
+   ddNOAC_W.options[3].selected = true;
+
+} else if (mediText.includes('warfarin')) {
+
+   ddNOAC_W.options[4].selected = true;
+
+}else if(previousNOAC_W== "5"){
+
+   ddNOAC_W.options[5].selected = true;
+
+}else if(previousNOAC_W== "6"){
+
+   ddNOAC_W.options[6].selected = true;
+
+}else if(previousNOAC_W== "7"){
+
+   ddNOAC_W.options[7].selected = true;
+
+}else if((previousNOAC_W== "1") || (previousNOAC_W== "2") || (previousNOAC_W== "3") || (previousNOAC_W== "4")){
+
+   ddNOAC_W.style.visibility = "visible";
+
+   lblNOAC_W.style.visibility = "visible";
+
+}else if(previousNOAC_W== "0") {
+
+   ddNOAC_W.style.display = 'none';
+
+   lblNOAC_W.style.display = 'none';
+
+}else {
+
+   ddNOAC_W.style.visibility = "visible";
+
+   lblNOAC_W.style.visibility = "visible";
+
+   previousNOAC_W== "0"
+
+}
+
+ 
+
+//SGLT-2i
+
+if (mediText.includes('canagliflozin')) {
+
+   ddSGLT2.options[1].selected = true;
+
+} else if (mediText.includes('dapagliflozin')) {
+
+   ddSGLT2.options[2].selected = true;   
+
+} else if (mediText.includes('empagliflozin')) {
+
+   ddSGLT2.options[3].selected = true;
+
+}else if(previousSGLT2== "4"){
+
+   ddSGLT2.options[4].selected = true;
+
+}else if(previousSGLT2== "5"){
+
+   ddSGLT2.options[5].selected = true;
+
+}else if(previousSGLT2== "6"){
+
+   ddSGLT2.options[6].selected = true;
+
+}else if((previousSGLT2== "1") || (previousSGLT2== "2") || (previousSGLT2== "3")){
+
+   ddSGLT2.style.visibility = "visible";
+
+   lblSGLT2.style.visibility = "visible";
+
+}else if(previousSGLT2== "0") {
+
+   ddSGLT2.style.display = 'none';
+
+   lblSGLT2.style.display = 'none';
+
+}else {
+
+   ddSGLT2.style.visibility = "visible";
+
+   lblSGLT2.style.visibility = "visible";
+
+   previousSGLT2== "0"
+
+}
+
+ 
+
+//GLP-1
+
+if (mediText.includes('dulaglutide')) {
+
+   ddGLP1.options[1].selected = true;
+
+} else if (mediText.includes('liraglutide')) {
+
+   ddGLP1.options[2].selected = true;   
+
+} else if (mediText.includes('semaglutide')) {
+
+   ddGLP1.options[3].selected = true;
+
+}else if(previousGLP1== "4"){
+
+   ddGLP1.options[4].selected = true;
+
+}else if(previousGLP1== "5"){
+
+   ddGLP1.options[5].selected = true;
+
+}else if(previousGLP1== "6"){
+
+   ddGLP1.options[6].selected = true;
+
+}else if((previousGLP1== "1") || (previousGLP1== "2") || (previousGLP1== "3")){
+
+   ddGLP1.style.visibility = "visible";
+
+   lblGLP1.style.visibility = "visible";
+
+}else if(previousGLP1== "0") {
+
+   ddGLP1.style.display = 'none';
+
+   lblGLP1.style.display = 'none';
+
+}else {
+
+   ddGLP1.style.visibility = "visible";
+
+   lblGLP1.style.visibility = "visible";
+
+  previousGLP1== "0"
+
+}
+
+ 
+
+}
+
+populateMeds();
+
+ 
+
+ 
+
+function heightConverter_in(valNum) {
+
+let num = valNum*0.39370;
+
+let n= num.toFixed(0);
+
+let k= document.getElementById("inchesHT");
+
+let kg= document.getElementById("kiloWT").value;
+
+k.value= n;
+
+ bmi.value= Math.round(kg / Math.pow(valNum, 2) * 10000);
+
+}
+
+heightConverter_cm(valNum);
+
+ 
+
+function heightConverter_cm(valNum) {
+
+let num = valNum/0.39370;
+
+let n= num.toFixed(0);
+
+let k= document.getElementById("cmHT");
+
+let kg= document.getElementById("kiloWT").value;
+
+let bmi= document.getElementById("bmi");
+
+k.value= n;
+
+ bmi.value= Math.round(kg / Math.pow(num, 2) * 10000);
+
+}
+
+heightConverter_cm(valNum);
+
+ 
+
+function weightConverter(valNum) {
+
+let num = valNum/2.2046;
+
+let n= num.toFixed(0);
+
+let k= document.getElementById("kiloWT");
+
+let h= document.getElementById("cmHT").value;
+
+let bmi= document.getElementById("bmi");
+
+k.value= n;
+
+bmi.value= Math.round(num / Math.pow(h, 2) * 10000);
+
+}
+
+weightConverter(valNum);
+
+ 
+
+function weightConverter_lbs(valNum) {
+
+let num = valNum*2.2046;
+
+let n= num.toFixed(0);
+
+let k= document.getElementById("inputPounds");
+
+let kg= document.getElementById("inputKilo");
+
+let h= document.getElementById("inputCm").value;
+
+let bmi= document.getElementById("bmi");
+
+k.value= n;
+
+bmi.value= Math.round(valNum / Math.pow(h, 2) * 10000);
+
+}
+
+weightConverter_lbs(valNum);
+
+ 
+
+function findHeightPatientGoals(){
+
+var ta = document.getElementById("patientGoals");
+
+var c = document.getElementById('patientGoals').value.length;
+
+var rows = document.getElementById('patientGoals').value.split("\n").length;
+
+var i = document.getElementById("h_PatientGoals");
+
+ 
+
+if(c>0) {
+
+  i.value = rows;
+
+}else{
+
+  i.value = "0"
+
+}
+
+}
+
+ 
+
+function findHeightSocialHistory(){
+
+var ta = document.getElementById("socialHistory");
+
+var c = document.getElementById('socialHistory').value.length;
+
+var rows = document.getElementById('socialHistory').value.split("\n").length;
+
+var i = document.getElementById("h_SocialHistory");
+
+ 
+
+if(c>0) {
+
+  i.value = rows;
+
+}else{
+
+  i.value = "0"
+
+}
+
+}
+
+ 
+
+function findHeightSubjectiveObjective(){
+
+var ta = document.getElementById("subjectiveObjective");
+
+var c = document.getElementById('subjectiveObjective').value.length;
+
+var rows = document.getElementById('subjectiveObjective').value.split("\n").length;
+
+var i = document.getElementById("h_SubjectiveObjective");
+
+ 
+
+if(c>0) {
+
+  i.value = rows;
+
+}else{
+
+  i.value = "0"
+
+}
+
+}
+
+ 
+
+function findHeightAssessmentPlan(){
+
+var ta = document.getElementById("assessmentPlan");
+
+var c = document.getElementById('assessmentPlan').value.length;
+
+var rows = document.getElementById('assessmentPlan').value.split("\n").length;
+
+var i = document.getElementById("h_AssessmentPlan");
+
+ 
+
+if(c>0) {
+
+  i.value = rows;
+
+}else{
+
+  i.value = "0"
+
+}
+
+}
+
+ 
+
+function findHeightPhysician(){
+
+var ta = document.getElementById("physicianRec");
+
+var c = document.getElementById('physicianRec').value.length;
+
+var rows = document.getElementById('physicianRec').value.split("\n").length;
+
+var i = document.getElementById("h_Physician");
+
+ 
+
+if(c>0) {
+
+  i.value = rows;
+
+}else{
+
+  i.value = "0"
+
+}
+
+}
+
+ 
+
+function findHeightPatient(){
+
+var ta = document.getElementById("patientRec");
+
+var c = document.getElementById('patientRec').value.length;
+
+var rows = document.getElementById('patientRec').value.split("\n").length;
+
+var i = document.getElementById("h_Patient");
+
+ 
+
+if(c>0) {
+
+  i.value = rows;
+
+}else{
+
+  i.value = "0"
+
+}
+
+}
+
+ 
+
+function findHeightPharmacist(){
+
+var ta = document.getElementById("pharmacistRec");
+
+var c = document.getElementById('pharmacistRec').value.length;
+
+var rows = document.getElementById('pharmacistRec').value.split("\n").length;
+
+var i = document.getElementById("h_Pharmacist");
+
+ 
+
+if(c>0) {
+
+  i.value = rows;
+
+}else{
+
+  i.value = "0"
+
+}
+
+}
+
+ 
+
+function findHeightProblems(){
+
+var ta = document.getElementById("problemsNotAddressed");
+
+var c = document.getElementById('problemsNotAddressed').value.length;
+
+var rows = document.getElementById('problemsNotAddressed').value.split("\n").length;
+
+var i = document.getElementById("h_Problems");
+
+ 
+
+if(c>0) {
+
+  i.value = rows;
+
+}else{
+
+ i.value = "0"
+
+}
+
+}
+
+ 
+
+function findHeightFollowUp(){
+
+var ta = document.getElementById("followup");
+
+var c = document.getElementById('followup').value.length;
+
+var rows = document.getElementById('followup').value.split("\n").length;
+
+var i = document.getElementById("h_FollowUp");
+
+ 
+
+if(c>0) {
+
+  i.value = rows;
+
+}else{
+
+  i.value = "0"
+
+}
+
+}
+
+ 
+
+function showNonEmptyContent(){
+
+var patientGoals= document.getElementById("h_PatientGoals").value;
+
+var ta_PatientGoals = document.getElementById("patientGoals");
+
+var ta_PatientGoals_L = document.getElementById("patientGoals").value.length;
+
+var socialHistory= document.getElementById("h_SocialHistory").value;
+
+var ta_SocialHistory = document.getElementById("socialHistory");
+
+var ta_SocialHistory_L = document.getElementById("socialHistory").value.length;
+
+var subjectiveObjective= document.getElementById("h_SubjectiveObjective").value;
+
+var ta_SubjectiveObjective = document.getElementById("subjectiveObjective");
+
+var assessmentPlan= document.getElementById("h_AssessmentPlan").value;
+
+var ta_AssessmentPlan = document.getElementById("assessmentPlan");
+
+var physician = document.getElementById("h_Physician").value;
+
+var ta_Physician = document.getElementById("physicianRec");
+
+var patient = document.getElementById("h_Patient").value;
+
+var ta_Patient = document.getElementById("patientRec");
+
+var pharmacist = document.getElementById("h_Pharmacist").value;
+
+var ta_Pharmacist = document.getElementById("pharmacistRec");
+
+var problems = document.getElementById("h_Problems").value;
+
+var ta_Problems = document.getElementById("problemsNotAddressed");
+
+var followup = document.getElementById("h_FollowUp").value;
+
+var ta_FollowUp = document.getElementById("followup");
+
+ 
+
+if(patientGoals>0) {
+
+  ta_PatientGoals.rows = patientGoals;
+
+  document.getElementById("btnPatientGoals").click();
+
+}else if(ta_PatientGoals_L>0){
+
+  document.getElementById("btnPatientGoals").click();
+
+}
+
+ 
+
+if(socialHistory>0)  {
+
+  ta_SocialHistory.rows = socialHistory;
+
+  document.getElementById("btnSocialHistory").click(); 
+
+}else if(ta_SocialHistory_L>0){
+
+  document.getElementById("btnSocialHistory").click();
+
+}
+
+ 
+
+if(subjectiveObjective>0) {
+
+  ta_SubjectiveObjective.rows = subjectiveObjective;
+
+  document.getElementById("btnSubjectiveObjective").click(); 
+
+}
+
+ 
+
+if(assessmentPlan>0) {
+
+  ta_AssessmentPlan.rows = assessmentPlan;
+
+  document.getElementById("btnAssessmentPlan").click(); 
+
+}
+
+ 
+
+if(physician>0) {
+
+  ta_Physician.rows = physician;
+
+  document.getElementById("btnPhysician").click(); 
+
+}
+
+ 
+
+if(patient>0) {
+
+  ta_Patient.rows = patient;
+
+  document.getElementById("btnPatient").click(); 
+
+}
+
+ 
+
+if(pharmacist>0) {
+
+  ta_Pharmacist.rows = pharmacist;
+
+  document.getElementById("btnPharmacist").click(); 
+
+}
+
+ 
+
+if(problems>0) {
+
+  ta_Problems.rows = problems;
+
+  document.getElementById("btnProblems").click(); 
+
+}
+
+ 
+
+if(followup>0) {
+
+  ta_FollowUp.rows = followup;
+
+  document.getElementById("btnFollowUp").click(); 
+
+}
+
+}
+
+ 
+
+ 
+
+function ageCalculator() {
+
+var dobYear = document.getElementById("dob_year").value;
+
+var dobMonth = document.getElementById("dob_month").value;
+
+var dobDay = document.getElementById("dob_day").value;
+
+var userinput = dobMonth + "/" + dobDay + "/" + dobYear
+
+ 
+
+  
+
+var patientAge = document.getElementById("age");
+
+var dob = new Date(userinput);
+
+if(userinput==null || userinput=='') {
+
+  document.getElementById("message").innerHTML = "**Choose a date please!"; 
+
+  return false;
+
+} else {
+
+   
+
+//calculate month difference from current date in time
+
+var month_diff = Date.now() - dob.getTime();
+
+   
+
+//convert the calculated difference in date format
+
+var age_dt = new Date(month_diff);
+
+    
+
+//extract year from date   
+
+var year = age_dt.getUTCFullYear();
+
+ 
+
+//now calculate the age of the user
+
+var age = Math.abs(year - 1970);
+
+   
+
+//display the calculated age
+
+patientAge.value = age;
+
+ 
+
+}
+
+}
+
+ageCalculator();
+
+ 
+
+ 
+
+ 
+
+function start(){
+
+ 
+
+   medicalConditions();
+
+   medicationList();
+
+   allergiesList();
+
+   socialHistory();
+
+   getLastAdherenceAid();
+
+   getLastDrugCoverage();
+
+   getLastHelpRx();
+
+   getLastCOVIDDose();
+
+   recallValues();
+
+   populateMedsDD();
+
+   findHeightPatientGoals();
+
+   findHeightSocialHistory();
+
+   findHeightSubjectiveObjective();
+
+   findHeightAssessmentPlan();
+
+   findHeightPhysician();
+
+   findHeightPatient();
+
+   findHeightPharmacist();
+
+   findHeightProblems();
+
+   findHeightFollowUp();
+
+   showNonEmptyContent();
+
+   ageCalculator();
+
+ 
+
+}
+
+ 
+
+</script>
+
+ 
+
+</body>
+
+</html>
