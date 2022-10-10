@@ -1,0 +1,115 @@
+<!---Created by Kelly 8/18/2022-->
+<html>
+<head>
+<title>Brief Pain Inventory</title>
+<style type="text/css" media="print">
+    @page 
+    { 
+        size: auto; 
+        margin: 10mm; 
+    }
+    .DoNotPrint {
+        display: none;
+    }
+    .noborder {
+        border : 0px;
+        background: transparent;
+        scrollbar-3dlight-color: transparent;
+        scrollbar-3dlight-color: transparent;
+        scrollbar-arrow-color: transparent;
+        scrollbar-base-color: transparent;
+        scrollbar-darkshadow-color: transparent;
+        scrollbar-face-color: transparent;
+        scrollbar-highlight-color: transparent;
+        scrollbar-shadow-color: transparent;
+        scrollbar-track-color: transparent;
+        background: transparent;
+        overflow: hidden;
+    }
+</style>
+</head>
+
+<body>
+<script language="javascript">
+function formPrint(){
+	window.print();
+} 
+</script>
+
+<!-- scripts to confirm closing of window if it hadnt been saved yet -->
+<script language="javascript">
+//keypress events trigger dirty flag
+var needToConfirm = false;
+document.onkeyup=setDirtyFlag;
+function setDirtyFlag(){
+	needToConfirm = true;
+}
+function releaseDirtyFlag(){
+	needToConfirm = false; //Call this function to prevent an alert.
+//this could be called when save button is clicked
+}
+window.onbeforeunload = confirmExit;
+function confirmExit(){
+	if (needToConfirm){
+		 return "You have attempted to leave this page. If you have made any changes to the fields without clicking the Save button, your changes will be lost. Are you sure you want to exit this page?";
+	 }
+}
+</script>
+
+
+<form method="post" action="" name="FormName" id="FormName" >
+<div id="page1">
+    <!-- <img src="BriefPainUpdatedv2.png" style="position:absolute; width:750px" alt=""> -->
+    <img id="PainImg" src="${oscar_image_path}BriefPainUpdatedv2.png" style="position: absolute;left: 0px; top:0px; width: 750px"> 
+
+  
+	<input name="date" id="date" type="text" class=" noborder" style="position:absolute; left:83px; top:88px; width:158px; height:22px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:white;"  oscarDB=today>
+	<input name="namr" id="namr" type="text" class=" noborder" style="position:absolute; left:127px; top:116px; width:136px; height:22px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:white;"  oscarDB=patient_name>
+	<input name="2a" id="2a" class="" type="checkbox" style="position:absolute; left:81px; top:205px;">
+	<input name="2b" id="2b" class="" type="checkbox" style="position:absolute; left:154px; top:205px;">
+	<input name="head" id="head" class="" type="checkbox" style="position:absolute; left:98px; top:291px; ">
+	<input name="rShoulder" id="rShoulder" class="" type="checkbox" style="position:absolute; left:74px; top:345px; ">
+	<input name="lShoulder" id="lShoulder" class="" type="checkbox" style="position:absolute; left:117px; top:344px; ">
+	<input name="rKnee" id="rKnee" class="" type="checkbox" style="position:absolute; left:83px; top:466px; ">
+	<input name="lKnee" id="lKnee" class="" type="checkbox" style="position:absolute; left:105px; top:466px; ">
+	<input name="rAnkle" id="rAnkle" class="" type="checkbox" style="position:absolute; left:84px; top:520px; ">
+	<input name="lAnkle" id="lAnkle" class="" type="checkbox" style="position:absolute; left:102px; top:520px; ">
+	<input name="rShoulderB" id="rShoulderB" class="" type="checkbox" style="position:absolute; left:279px; top:342px; ">
+	<input name="lShoulderB" id="lShoulderB" class="" type="checkbox" style="position:absolute; left:249px; top:343px; ">
+	<input name="rHip" id="rHip" class="" type="checkbox" style="position:absolute; left:277px; top:402px; ">
+	<input name="lHip" id="lHip" class="" type="checkbox" style="position:absolute; left:251px; top:402px; ">
+	<input name="bHead" id="bHead" class="" type="checkbox" style="position:absolute; left:268px; top:297px; ">
+	<input name="rWrist" id="rWrist" class="" type="checkbox" style="position:absolute; left:61px; top:417px; ">
+	<input name="lWrist" id="lWrist" class="" type="checkbox" style="position:absolute; left:135px; top:415px; ">
+	<input name="rThigh" id="rThigh" class="" type="checkbox" style="position:absolute; left:252px; top:450px; ">
+	<input name="lThigh" id="lThigh" class="" type="checkbox" style="position:absolute; left:276px; top:450px; ">
+	<input name="Q3" id="Q3" type="text" class=" noborder" style="position:absolute; left:96px; top:646px; width:73px; height:22px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:white;" >
+	<input name="Q4" id="Q4" type="text" class=" noborder" style="position:absolute; left:96px; top:725px; width:73px; height:22px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:white;" >
+	<input name="Q5" id="Q5" type="text" class=" noborder" style="position:absolute; left:96px; top:808px; width:73px; height:22px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:white;" >
+	<input name="Q6" id="Q6" type="text" class=" noborder" style="position:absolute; left:425px; top:58px; width:73px; height:22px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:white;" >
+	<textarea name="Q7" id="Q7" type="text" class=" noborder" style="position:absolute; left:385px; top:127px; width:314px; height:60px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:white;" ></textarea>
+	<input name="Q8" id="Q8" type="text" class=" noborder" style="position:absolute; left:415px; top:263px; width:98px; height:22px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:white;" >
+	<input name="Q9A" id="Q9A" type="text" class=" noborder" style="position:absolute; left:434px; top:363px; width:88px; height:22px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:white;" >
+	<input name="Q9B" id="Q9B" type="text" class=" noborder" style="position:absolute; left:434px; top:437px; width:88px; height:22px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:white;" >
+	<input name="Q9C" id="Q9C" type="text" class=" noborder" style="position:absolute; left:434px; top:504px; width:88px; height:22px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:white;" >
+	<input name="Q9D" id="Q9D" type="text" class=" noborder" style="position:absolute; left:434px; top:591px; width:88px; height:22px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:white;" >
+	<input name="Q9E" id="Q9E" type="text" class=" noborder" style="position:absolute; left:434px; top:661px; width:88px; height:22px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:white;" >
+	<input name="Q9F" id="Q9F" type="text" class=" noborder" style="position:absolute; left:434px; top:733px; width:88px; height:22px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:white;" >
+	<input name="Q9G" id="Q9G" type="text" class=" noborder" style="position:absolute; left:434px; top:806px; width:88px; height:22px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:white;" >
+<div class="DoNotPrint" id="BottomButtons" style="position: absolute; top:971px; left:0px;">
+	 <table><tr><td>
+		 Subject: <input name="subject" size="40" type="text" value="Brief Pain Inventory"> <br> 
+		<input value="Submit" name="SubmitButton" id="SubmitButton" type="submit" onclick=" releaseDirtyFlag();"> 
+		 <input value="Reset" name="ResetButton" id="ResetButton" type="reset"> 
+			<input value="Print" name="PrintButton" id="PrintButton" type="button" onclick="formPrint();"> 
+			<input value="Print & Submit" name="PrintSubmitButton" id="PrintSubmitButton" type="button" onclick="formPrint();releaseDirtyFlag();setTimeout('SubmitButton.click()',1000);"> 
+
+		<input id="saveAsEdoc" type="hidden" name="saveAsEdoc" value="false"> 
+		 <input id="eDocument" name="eDocument" type="button" value="eDocument" onclick="document.getElementById('saveAsEdoc').value='true'; needToConfirm=false; SubmitButton.click();"> 
+	 </td></tr></table>
+ </div>
+</div>
+ </form>
+
+</body>
+</html>
