@@ -1,0 +1,137 @@
+<!-- E-FORM DISCLAIMER: As is: E-Forms are shared as-is, free of charge on a share-alike basis with absolutely no guarantee or warranty. No Quality Control: The author does not vet any E-Forms and does not purport to apply any manner of quality control. Responsibility: The responsibility for the clinical and medical-legal consequences of any and all E-Forms, rest with the clinical OSCAR end-users themselves, not with the author of the eForm. This applies to both E-Forms shared by others, and those created by users themselves. Attribution: E-Forms are shared freely among the user community, with attribution to the original author of the eForm. Free: E-Forms so shared may not be sold or purchased. Provincial validation:  E-Forms are optional and non-essential add-ons, separate from OSCAR, and with their own license terms.E-Forms  are not part of the OSCAR core program functionality and code base. For this reason E-Forms are not subject to provincial validation testing and conformance criteria. E-Forms are also not subject to the ISO production process for OSCAR. -->
+<!-- Created by Jamil Devsi August 2017 -->
+<html>
+<head>
+<style type="text/css" media="print">
+	.DoNotPrint {
+		display: none;
+	}
+	.noborder {
+		border : 0px;
+		background: transparent;
+		scrollbar-3dlight-color: transparent;
+		scrollbar-3dlight-color: transparent;
+		scrollbar-arrow-color: transparent;
+		scrollbar-base-color: transparent;
+		scrollbar-darkshadow-color: transparent;
+		scrollbar-face-color: transparent;
+		scrollbar-highlight-color: transparent;
+		scrollbar-shadow-color: transparent;
+		scrollbar-track-color: transparent;
+		background: transparent;
+		overflow: hidden;
+	}
+</style>
+</head>
+
+<title> Pharmacists Clinic External Referral Forms </title>
+
+<body>
+<script type="text/javascript">
+	function printForm(){
+		window.print();
+	}
+</script>
+
+<script type="text/javascript">
+	//keypress events trigger dirty flag
+	var confirmClose = false;
+	document.onkeyup=setDirtyFlag;
+
+	function setDirtyFlag(){
+		confirmClose = true;
+	}
+	function releaseDirtyFlag(){
+		confirmClose = false; // call to prevent an alert // call when submit buttom clicked
+	}
+	window.onbeforeunload = confirmExit;
+	function confirmExit(){
+		if (confirmClose){
+			return "You have made changes to this form without submitting. If you leave, your changes will be lost. Are you sure you want to exit?";
+		}
+	}
+</script>
+
+<script type="text/javascript">
+	function controlDisplay(form){
+
+		displayImg = document.getElementById("displayForm");
+		saveBox = document.getElementById("saveBoxName");
+		bottomButtons = document.getElementById("BottomButtons");
+		if (form == "counsellors"){
+
+			displayImg.src = "${oscar_image_path}counsellors2017.png";
+			// displayImg.src = "counsellors2017.png";
+			saveBox.value="Counsellor Referral Options";
+			displayImg.onload = function (){
+				bottomButtons.style.top = (displayImg.height + 5);
+			}
+		} else if (form =="dietitians"){
+			displayImg.src = "${oscar_image_path}dietitians2017.png";
+			// displayImg.src = "dietitians2017.png";
+			saveBox.value="Dietitian Referral Options";
+			displayImg.onload = function (){
+				bottomButtons.style.top = (displayImg.height + 15);
+			}
+		} else if (form =="physiotherapists"){
+			displayImg.src = "${oscar_image_path}physiotherapists2017.png";
+			// displayImg.src = "physiotherapists2017.png";
+			saveBox.value="Physiotherapist Referral Options";
+			displayImg.onload = function (){
+				bottomButtons.style.top = (displayImg.height + 15);
+			}
+		}else if (form =="support_groups"){
+			displayImg.src = "${oscar_image_path}support_groups2017.png";
+			// displayImg.src = "support_groups2017.png";
+			saveBox.value="Support Group Referral Options";
+			displayImg.onload = function (){
+				bottomButtons.style.top = (displayImg.height + 15);
+			}
+		} else {
+			displayImg.src ="";
+			saveBox.value="";
+			bottomButtons.style.top=0;
+
+		}
+	}
+
+</script>
+
+
+<!-- use the top ones for testing on local machine. Use bottom ones for Oscar -->
+<!-- <img id="displayForm" src="" style="position: absolute;left: 10px; top:0px; width: 750px"> -->
+
+<form method="POST" action="" name="ReferralForms" id="ReferralForms">
+<div>
+<img id="displayForm" src="" style="position: absolute;left: 10px; top:0px; width: 750px">
+
+<div id="page1">
+
+</div>
+
+<div class="DoNotPrint" style="position: absolute; top:0px; left:0px;" id="BottomButtons" >
+	<table>
+	 	<tr>
+	 		<td class="subjectline">
+	 			Select a form: <select name="Referral Form" onchange="controlDisplay(this.value)">
+	 				<option name=none" value="none">None</option>
+	 				<option name="dietitians" value="dietitians">Dietitians</option>
+	 				<option name="physiotherapists" value="physiotherapists">Physiotherapists</option>
+	 				<option name="counsellors" value="counsellors">Counsellors</option>
+	 				<option name="support_groups" value="support_groups">Support Groups</option>
+	 			</select> </br>
+		 		Save As:<input type="text" id="saveBoxName" name="subject" size="40" value="">&nbsp;
+				<input value="Save" name="SubmitButton" id="SubmitButton" type="submit" onclick="releaseDirtyFlag()">
+				<input value="true" name="saveAsEdoc" type="hidden" id="saveAsEdoc" value="false">
+				<input value="eDocument" name="eDocument" type="button" onclick="document.getElementById('saveAsEdoc').value='true'; releaseDirtyFlag(); SubmitButton.click();">
+				<input value="Print" name="PrintButton" id="PrintButton" type="button" onclick="printForm();">
+				<input value="Print & Save" name="PrintSubmitButton" id="PrintSubmitButton" type="button" onclick="releaseDirtyFlag(); printForm();setTimeout('SubmitButton.click()',1000);">
+			</td>
+		</tr>
+	</table> 
+
+</div>
+</div>
+</form>
+</body>
+</html>
