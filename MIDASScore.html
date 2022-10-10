@@ -1,0 +1,105 @@
+<!-- E-FORM DISCLAIMER: As is: E-Forms are shared as-is, free of charge on a share-alike basis with absolutely no guarantee or warranty. No Quality Control: The author does not vet any E-Forms and does not purport to apply any manner of quality control. Responsibility: The responsibility for the clinical and medical-legal consequences of any and all E-Forms, rest with the clinical OSCAR end-users themselves, not with the author of the eForm. This applies to both E-Forms shared by others, and those created by users themselves. Attribution: E-Forms are shared freely among the user community, with attribution to the original author of the eForm. Free: E-Forms so shared may not be sold or purchased. Provincial validation:  E-Forms are optional and non-essential add-ons, separate from OSCAR, and with their own license terms.E-Forms  are not part of the OSCAR core program functionality and code base. For this reason E-Forms are not subject to provincial validation testing and conformance criteria. E-Forms are also not subject to the ISO production process for OSCAR. -->
+<!-- UPDATE 04-02-2020: removed copyright information from MIDAS form image. -->
+
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MIDAS Score</title>
+<style type="text/css" media="print">
+		@page 
+		{ 
+			size: auto; 
+			margin: 10mm; 
+		}
+		.DoNotPrint {
+			display: none;
+		}
+		.noborder {
+			border : 0px;
+			background: transparent;
+			scrollbar-3dlight-color: transparent;
+			scrollbar-3dlight-color: transparent;
+			scrollbar-arrow-color: transparent;
+			scrollbar-base-color: transparent;
+			scrollbar-darkshadow-color: transparent;
+			scrollbar-face-color: transparent;
+			scrollbar-highlight-color: transparent;
+			scrollbar-shadow-color: transparent;
+			scrollbar-track-color: transparent;
+			background: transparent;
+			overflow: hidden;
+		}
+	</style>
+
+<script language="javascript">
+function formPrint(){
+	window.print();
+} 
+</script>
+
+<!-- scripts to confirm closing of window if it hadnt been saved yet -->
+<script language="javascript">
+//keypress events trigger dirty flag
+var needToConfirm = false;
+document.onkeyup=setDirtyFlag;
+function setDirtyFlag(){
+	needToConfirm = true;
+}
+function releaseDirtyFlag(){
+	needToConfirm = false; //Call this function to prevent an alert.
+//this could be called when save button is clicked
+}
+window.onbeforeunload = confirmExit;
+function confirmExit(){
+	if (needToConfirm){
+		 return "You have attempted to leave this page. If you have made any changes to the fields without clicking the Save button, your changes will be lost. Are you sure you want to exit this page?";
+	 }
+}
+</script>
+
+</head>
+
+<body onload="">
+<form method="post" action="" name="FormName" id="FormName" >
+<div id="page1" style="position:relative;" >
+
+<!-- <img id="BGImage1" src="MIDAS-No-Copyright.png" style="position: relative; left: 0px; top: 0px; width:730px"> -->
+<img id="BGImage1" src="${oscar_image_path}MIDAS-No-Copyright.png" style="position: relative; left: 0px; top: 0px; width:730px">
+
+
+<input name="Q1" id="page1_2" type="text" class=" noborder" style="position:absolute; left:67px; top:222px; width:18px; height:18px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent;" >
+
+<input name="Q2" id="page1_1" type="text" class=" noborder" style="position:absolute; left:67px; top:250px; width:18px; height:18px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent;" >
+
+<input name="Q3" id="page1_3" type="text" class=" noborder" style="position:absolute; left:67px; top:304px; width:18px; height:18px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent;" >
+
+<input name="Q4" id="page1_4" type="text" class=" noborder" style="position:absolute; left:67px; top:345px; width:18px; height:18px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent;" >
+
+<input name="Q5" id="page1_5" type="text" class=" noborder" style="position:absolute; left:67px; top:400px; width:18px; height:18px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent;" >
+
+<input name="Total" id="page1_6" type="text" class=" noborder" style="position:absolute; left:68px; top:442px; width:18px; height:18px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent;" >
+
+<input name="QA" id="page1_7" type="text" class=" noborder" style="position:absolute; left:68px; top:496px; width:18px; height:18px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent;" >
+
+<input name="QB" id="page1_8" type="text" class=" noborder" style="position:absolute; left:68px; top:537px; width:18px; height:18px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent;" >
+
+
+<div class="DoNotPrint" style="position: absolute; top:950px; left:0px;" id="BottomButtons">
+		<table>
+			<tbody><tr>
+				<td class="subjectline">
+					Subject: <input type="text" value="MIDAS" name="subject" value="MIDAS" size="40">&nbsp;
+					<input value="Save" name="SubmitButton" id="SubmitButton" type="submit" onclick="releaseDirtyFlag();">
+					<input name="saveAsEdoc" value="true" type="hidden" id="saveAsEdoc" value="false">
+					<input value="eDocument" name="eDocument" type="button" onclick="document.getElementById('saveAsEdoc').value='true'; releaseDirtyFlag(); SubmitButton.click();">
+					<input value="Reset" name="ResetButton" id="ResetButton" type="reset" onclick="">
+					<input value="Print" name="PrintButton" id="PrintButton" type="button" onclick="printForm();">
+					<input value="Print &amp; Save" name="PrintSubmitButton" id="PrintSubmitButton" type="button" onclick="releaseDirtyFlag();printForm();setTimeout('SubmitButton.click()',1000);">
+				</td>
+			</tr>
+		</tbody></table>  </div>
+</div>
+ </form>
+</body>
+</html>
+
