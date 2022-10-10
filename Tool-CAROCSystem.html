@@ -1,0 +1,85 @@
+<!-- Last updated 04-05-2021 by RN; Updates include: Edocument functionality improved -->
+
+<html>
+<head>
+	<style type="text/css" media="print">
+		@page 
+		{ 
+			size: auto; 
+			margin: 10mm; 
+            height: auto;
+		}
+		.DoNotPrint {
+			display: none;
+		}
+		.noborder {
+			border : 0px;
+			background: transparent;
+			scrollbar-3dlight-color: transparent;
+			scrollbar-3dlight-color: transparent;
+			scrollbar-arrow-color: transparent;
+			scrollbar-base-color: transparent;
+			scrollbar-darkshadow-color: transparent;
+			scrollbar-face-color: transparent;
+			scrollbar-highlight-color: transparent;
+			scrollbar-shadow-color: transparent;
+			scrollbar-track-color: transparent;
+			background: transparent;
+			overflow: hidden;
+		}
+	</style>
+	<title> CAROC system </title></head>
+
+	<body>
+		<script type="text/javascript">
+			function printForm(){
+				window.print();
+			}
+		</script>
+
+		<script type="text/javascript">
+	//keypress events trigger dirty flag
+	var confirmClose = false;
+	document.onkeyup=setDirtyFlag;
+
+	function setDirtyFlag(){
+		confirmClose = true;
+	}
+	function releaseDirtyFlag(){
+		confirmClose = false; // call to prevent an alert // call when submit buttom clicked
+	}
+	window.onbeforeunload = confirmExit;
+	function confirmExit(){
+		if (confirmClose){
+			return "You have made changes to this form without submitting. If you leave, your changes will be lost. Are you sure you want to exit?";
+		}
+	}
+</script>
+
+<img id="BGImage1" src="${oscar_image_path}CAROC-1.png" style="position: relative; left: 0px; top: 0px; width:750px">
+
+<img id="BGImage2" src="${oscar_image_path}CAROC-2.png" style="position: relative; left: 0px; top: 0px; width:750px">
+
+<form method="post" action="" name="FormName" id="FormName" >
+
+
+<div class="DoNotPrint" style="position: absolute; top:1900px; left:0px;" id="BottomButtons">
+    <table>
+        <tbody><tr>
+            <td class="subjectline">
+                Subject: <input type="text" value="CAROC" name="subject" value="CAROC" size="40">&nbsp;
+                <input value="Save" name="SubmitButton" id="SubmitButton" type="submit" onclick="releaseDirtyFlag();">
+                <input name="saveAsEdoc" value="true" type="hidden" id="saveAsEdoc" value="false">
+                <input value="eDocument" name="eDocument" type="button" onclick="document.getElementById('saveAsEdoc').value='true'; releaseDirtyFlag(); SubmitButton.click();">
+                <input value="Reset" name="ResetButton" id="ResetButton" type="reset" onclick="">
+                <input value="Print" name="PrintButton" id="PrintButton" type="button" onclick="printForm();">
+                <input value="Print &amp; Save" name="PrintSubmitButton" id="PrintSubmitButton" type="button" onclick="releaseDirtyFlag();printForm();setTimeout('SubmitButton.click()',1000);">
+            </td>
+        </tr>
+    </tbody></table> 
+
+</div>
+</div>
+ </form>
+</body>
+</html>
