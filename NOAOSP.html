@@ -1,0 +1,96 @@
+<html>
+<head>
+<title>NOA OSP</title>
+<style type="text/css" media="print">
+    @page 
+    { 
+        size: auto; 
+        margin: 10mm; 
+    }
+    .DoNotPrint {
+        display: none;
+    }
+    .noborder {
+        border : 0px;
+        background: transparent;
+        scrollbar-3dlight-color: transparent;
+        scrollbar-3dlight-color: transparent;
+        scrollbar-arrow-color: transparent;
+        scrollbar-base-color: transparent;
+        scrollbar-darkshadow-color: transparent;
+        scrollbar-face-color: transparent;
+        scrollbar-highlight-color: transparent;
+        scrollbar-shadow-color: transparent;
+        scrollbar-track-color: transparent;
+        background: transparent;
+        overflow: hidden;
+    }
+</style>
+</head>
+
+<body>
+<script language="javascript">
+function formPrint(){
+	window.print();
+} 
+</script>
+
+<!-- scripts to confirm closing of window if it hadnt been saved yet -->
+<script language="javascript">
+//keypress events trigger dirty flag
+var needToConfirm = false;
+document.onkeyup=setDirtyFlag;
+function setDirtyFlag(){
+	needToConfirm = true;
+}
+function releaseDirtyFlag(){
+	needToConfirm = false; //Call this function to prevent an alert.
+//this could be called when save button is clicked
+}
+window.onbeforeunload = confirmExit;
+function confirmExit(){
+	if (needToConfirm){
+		 return "You have attempted to leave this page. If you have made any changes to the fields without clicking the Save button, your changes will be lost. Are you sure you want to exit this page?";
+	 }
+}
+</script>
+
+
+<form method="post" action="" name="FormName" id="FormName" >
+<div id="page1">
+<img src="NOA_OSPv2.png" style="position: absolute; left:0px; top:0px; width:750px">
+<img id="BGImage1" src="${oscar_image_path}NOA_OSPv2.png" style="position: absolute; left: 0px; top: 0px; width:750px">
+
+<input name="date" id="date" type="text" class=" noborder" style="position:absolute; left:190px; top:190px; width:189px; height:21px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:transparent;" >
+<input name="to" id="to" type="text" class=" noborder" style="position:absolute; left:191px; top:211px; width:188px; height:21px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:transparent;" >
+<input name="fax_num" id="fax_num" type="text" class=" noborder" style="position:absolute; left:191px; top:234px; width:187px; height:21px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:12px; text-align:left; background-color:transparent;" >
+<input name="patient_name" id="patient_name" type="text" class=" noborder" style="position:absolute; left:89px; top:290px; width:244px; height:30px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:17px; text-align:left; background-color:transparent;"  oscarDB=patient_name>
+<input name="dob" id="dob" type="text" class=" noborder" style="position:absolute; left:337px; top:290px; width:154px; height:30px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:17px; text-align:left; background-color:transparent;"  oscarDB=dob>
+<input name="phn" id="phn" type="text" class=" noborder" style="position:absolute; left:494px; top:290px; width:200px; height:30px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:17px; text-align:left; background-color:transparent;"  oscarDB=hinc>
+<input name="appt_date" id="appt_date" type="text" class=" noborder" style="position:absolute; left:89px; top:340px; width:244px; height:30px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:17px; text-align:left; background-color:transparent;" >
+<input name="appt_time" id="appt_time" type="text" class=" noborder" style="position:absolute; left:338px; top:340px; width:150px; height:30px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:17px; text-align:left; background-color:transparent;" >
+<input name="phone_num" id="phone_num" type="text" class=" noborder" style="position:absolute; left:494px; top:340px; width:200px; height:30px; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:17px; text-align:left; background-color:transparent;"  oscarDB=phone>
+<input name="booked" id="booked" type="text" class="only-one-status" style="position:absolute; left:85px; top:510px; width:22px; height:22px; font-family:sans-serif; font-style:normal; font-weight:bold; font-size:17px; text-align:center; background-color:white; border: 1px solid; border-color: black;" >
+<input name="cancelled" id="cancelled" type="text" class="only-one-status" style="position:absolute; left:84px; top:580px; width:22px; height:22px; font-family:sans-serif; font-style:normal; font-weight:bold; font-size:17px; text-align:center; background-color:white; border: 1px solid; border-color: black;" >
+<input name="no_show" id="no_show" type="text" class="only-one-status" style="position:absolute; left:285px; top:580px; width:22px; height:22px; font-family:sans-serif; font-style:normal; font-weight:bold; font-size:17px; text-align:center; background-color:white; border: 1px solid; border-color: black;" >
+<input name="declined" id="declined" type="text" class="only-one-status" style="position:absolute; left:509px; top:580px; width:22px; height:22px; font-family:sans-serif; font-style:normal; font-weight:bold; font-size:17px; text-align:center; background-color:white; border: 1px solid; border-color: black;" >
+<input name="unreachable" id="unreachable" type="text" class="only-one-status" style="position:absolute; left:86px; top:714px; width:22px; height:22px; font-family:sans-serif; font-style:normal; font-weight:bold; font-size:17px; text-align:center; background-color:white; border: 1px solid; border-color: black;" >
+<textarea name = "notes" id="notes" rows="4" cols="70" class="noborder" display="none" style="overflow: hidden; resize: none; position: absolute; left:92px; top:778px; width:591px; height:62px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;"></textarea>
+
+<div class="DoNotPrint" id="BottomButtons" style="position: absolute; top:971px; left:0px;">
+	 <table><tr><td>
+		 Subject: <input name="subject" size="40" type="text" value="NOA OSP"> <br> 
+		<input value="Submit" name="SubmitButton" id="SubmitButton" type="submit" onclick=" releaseDirtyFlag();"> 
+		 <input value="Reset" name="ResetButton" id="ResetButton" type="reset"> 
+			<input value="Print" name="PrintButton" id="PrintButton" type="button" onclick="formPrint();"> 
+			<input value="Print & Submit" name="PrintSubmitButton" id="PrintSubmitButton" type="button" onclick="formPrint();releaseDirtyFlag();setTimeout('SubmitButton.click()',1000);"> 
+
+		<input id="saveAsEdoc" type="hidden" name="saveAsEdoc" value="false"> 
+		 <input id="eDocument" name="eDocument" type="button" value="eDocument" onclick="document.getElementById('saveAsEdoc').value='true'; needToConfirm=false; SubmitButton.click();"> 
+	 </td></tr></table>
+ </div>
+</div>
+ </form>
+
+</body>
+</html>
