@@ -1,0 +1,1383 @@
+<!-- PCL5 eForm updated by Ambrose Wong on August 13, 2021. Improvements to save functionality and eDocument feature-->
+<!--E-FORM DISCLAIMER: As is: E-Forms are shared as-is, free of charge on a share-alike basis with absolutely no guarantee or warranty.
+No Quality Control: The author does not vet any E-Forms and does not purport to apply any manner of quality control. Responsibility:
+The responsibility for the clinical and medical-legal consequences of any and all E-Forms, rest with the clinical OSCAR end-users themselves,
+not with the author of the E-Form. This applies to both E-Forms shared by others, and those created by users themselves. Attribution:
+E-Forms are shared freely among the user community, with attribution to the original author of the E-Form. Free: E-Forms so shared
+may not be sold or purchased. Provincial validation:  E-Forms are optional and non-essential add-ons, separate from OSCAR, and with
+their own license terms.E-Forms  are not part of the OSCAR core program functionality and code base. For this reason E-Forms are not
+subject to provincial validation testing and conformance criteria. E-Forms are also not subject to the ISO production process for OSCAR. -->
+
+<html>
+<title>PCL-5</title>
+<head>
+    <!-- Xbox styling -->
+    <style type="text/css">
+        .box1 {
+            position: relative;
+            width: 23px;
+            height: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            text-align: center;
+            background: transparent;
+        }
+
+        .box2 {
+            position: absolute;
+            border: 1px solid #000000;
+            cursor: pointer;
+            font-weight: bold;
+            text-align: center;
+            background: yellow;
+            font-size: 8px;
+            width: 14px;
+            height: 14px;
+        }
+    </style>
+
+    <!-- Text styling -->
+    <style type="text/css">
+        p.title {
+            text-transform: uppercase;
+            font-size: 16;
+            font-family: Arial;
+            font-weight: bolder;
+            text-align: left;
+            color: black;
+        }
+
+        p.heading {
+            font-weight: bolder;
+            text-decoration: underline;
+        }
+
+        td.heading1 {
+            font-size: 12;
+            font-family: Arial;
+            font-weight: bold;
+            text-align: left;
+            vertical-align: top;
+            color: white;
+            background: black;
+            border-width: 1;
+        }
+
+        td.heading2 {
+            font-size: 12;
+            font-family: Arial;
+            font-weight: bold;
+            text-align: left;
+            vertical-align: top;
+            color: white;
+            background: #444444;
+            border-width: 1;
+        }
+
+        tr.even {
+            background-color: #ffffff;
+        }
+
+        tr.odd {
+            background-color: #dddddd;
+        }
+
+        td.question {
+            font-size: 12;
+            font-family: Arial;
+            font-weight: normal;
+            text-align: left;
+            vertical-align: top;
+            color: black;
+            border-width: 1;
+        }
+
+        td.answer {
+            font-size: 12;
+            font-family: Arial;
+            font-weight: normal;
+            text-align: center;
+            vertical-align: top;
+            color: black;
+            border-width: 1;
+        }
+
+        td.normaltext {
+            width: 100%;
+            font-size: 12;
+            font-family: Arial;
+            font-weight: normal;
+            text-align: left;
+            vertical-align: top;
+            color: black;
+            background-color: white;
+            border-width: 0;
+        }
+
+        input.formtext {
+            width: 100%;
+            height: 100%;
+            font-size: 12;
+            font-family: Arial;
+            font-weight: normal;
+            text-align: left;
+            vertical-align: top;
+            color: black;
+            background-color: white;
+            border-width: 1;
+            border-style: solid;
+        }
+
+        textarea.formtext {
+            width: 100%;
+            height: auto;
+            font-size: 12;
+            font-family: Arial;
+            font-weight: normal;
+            text-align: left;
+            vertical-align: top;
+            color: black;
+            background-color: white;
+            border-width: 1;
+            border-style: solid;
+        }
+    </style>
+
+    <!-- CSS Script that removes textarea and textbox borders when printing ---(put this inbetween <header></header>)----------------->
+    <style type="text/css" media="print">
+        div.DoNotPrint {
+            display: none;
+        }
+
+        input.noborder {
+            border: 0px;
+            background: transparent;
+        }
+
+        textarea.noborder {
+            scrollbar-3dlight-color: transparent;
+            scrollbar-3dlight-color: transparent;
+            scrollbar-arrow-color: transparent;
+            scrollbar-base-color: transparent;
+            scrollbar-darkshadow-color: transparent;
+            scrollbar-face-color: transparent;
+            scrollbar-highlight-color: transparent;
+            scrollbar-shadow-color: transparent;
+            scrollbar-track-color: transparent;
+            background: transparent;
+            overflow: hidden;
+            border: 0px;
+        }
+    </style>
+
+    <!-- Standard form functions -->
+    <script language="javascript" type="text/javascript">/****************************
+                startup functions
+                ****************************/
+        function startUp() {
+            // shows the forms on development machine from notepad ++ - saves you from uploading to the server to input alignments
+            var strLoc = window.location.href.toLowerCase();
+            if (strLoc.indexOf("https") == -1) {
+                // page1
+                //var src = document.getElementById('BGImage').src;
+                //document.getElementById('BGImage').src = src.replace('$%7Boscar_image_path%7D','');
+            }
+            setDocumentTitle('PCL5 Score', document.getElementById('PatientName').value);
+            setDefaults();
+            //optimize window size/width
+            top.window.resizeTo(910, screen.availHeight);
+        }
+
+        function setDocumentTitle(Title, PatientName) {
+            // set document title
+            document.title = Title + ' - ' + PatientName;
+        }
+
+        function setDefaults() {
+            // check the newform flag to ensure this is the initial load of the form
+            if (document.getElementById("newForm").value == 'True') {
+                //document.getElementById('').value = 'X';
+            }
+        }
+
+        /****************************
+            submit and print functions
+        ****************************/
+        function printSubmit() {
+            printLetter();
+            releaseDirtyFlag();
+            submission();
+        }
+
+        function printLetter() {
+            // print the letter
+            window.print();
+        }
+
+        function submission() {
+            setFlag();
+            setTimeout('document.FormName.submit()', 1000);
+        }
+
+        function setFlag() {
+            // indicate that the form has been submitted
+            if (document.getElementById("newForm").value == 'True')
+                document.getElementById("newForm").value = 'False';
+        }
+
+        function showButtons() {
+            //show the bottom buttons if they are hidden
+            if (document.getElementById('BottomButtons').style.display == 'none')
+                document.getElementById('BottomButtons').style.display = '';
+        }
+
+        /****************************
+            checkbox functions
+        ****************************/
+        function changeValue(x) {
+            if (document.getElementById(x).value == '')
+                document.getElementById(x).value = 'X';
+            else
+                document.getElementById(x).value = '';
+        }
+
+        function displayKeyCode(evt, x) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            // any key press except tab will constitute a value change to the checkbox
+            if (charCode != 9) {
+                changeValue(x);
+                return false;
+            }
+        }
+
+        /****************************
+            scripts to confirm closing of window if it has not been saved yet
+        ****************************/
+        //keypress events trigger dirty flag
+        var needToConfirm = false;
+        document.onkeyup = setDirtyFlag;
+        function setDirtyFlag() {
+            needToConfirm = true;
+        }
+
+        function releaseDirtyFlag() {
+            needToConfirm = false;
+            //Call this function if does not require an alert.
+            //this could be called when save button is clicked
+        }
+        window.onbeforeunload = confirmExit;
+
+        function confirmExit() {
+            if (needToConfirm) {
+                return "You have attempted to leave this page. If you have made any changes to the fields without clicking the Save button, your changes will be lost. Are you sure you want to exit this page?";
+            }
+        }</script>
+
+    <!--Checkbox calculation functions-->
+    <script type="text/javascript" language="javascript">function getCheckedValue(checkboxObj) {
+            if (!checkboxObj)
+                return parseInt(0);
+            var checkboxLength = checkboxObj.length;
+            if (checkboxLength == undefined)
+                if (checkboxObj.checked)
+                    return parseInt(checkboxObj.value);
+                else
+                    return parseInt(value);
+            for (var i = 0; i < checkboxLength; i++) {
+                if (checkboxObj[i].checked) {
+                    return parseInt(checkboxObj[i].value);
+                }
+            }
+            return parseInt(0);
+        }
+
+        function totalScore() {
+            var i = 0;
+
+            if (document.getElementById("Q1").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q2").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q3").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q4").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q5").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q6").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q7").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q8").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q9").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q10").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q11").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q12").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q13").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q14").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q15").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q16").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q17").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q18").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q19").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q20").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q21").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q22").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q23").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q24").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q25").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q26").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q27").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q28").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q29").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q30").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q31").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q32").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q33").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q34").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q35").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q36").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q37").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q38").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q39").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q40").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q41").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q42").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q43").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q44").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q45").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q46").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q47").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q48").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q49").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q50").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q51").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q52").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q53").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q54").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q55").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q56").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q57").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q58").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q59").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q60").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q61").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q62").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q63").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q64").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q65").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q66").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q67").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q68").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q69").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q70").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q71").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q72").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q73").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q74").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q75").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q76").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q77").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q78").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q79").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q80").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q81").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q82").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q83").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q84").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q85").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q86").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q87").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q88").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q89").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q90").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q91").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q92").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q93").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q94").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q95").value == '') { i += 0; }
+            else { i += 4; }
+            if (document.getElementById("Q96").value == '') { i += 0; }
+            else { i += 0; }
+            if (document.getElementById("Q97").value == '') { i += 0; }
+            else { i += 1; }
+            if (document.getElementById("Q98").value == '') { i += 0; }
+            else { i += 2; }
+            if (document.getElementById("Q99").value == '') { i += 0; }
+            else { i += 3; }
+            if (document.getElementById("Q100").value == '') { i += 0; }
+            else { i += 4; }
+            document.FormName.PCL5Score.value = i;
+            document.FormName.subject.value = 'PCL5 score = ' + i;
+
+            if (i <= 32) {
+                document.getElementById("minimal").style.background = 'yellow';
+                document.getElementById("mild").style.background = 'white';
+            }
+            else {
+                document.getElementById("minimal").style.background = 'white';
+                document.getElementById("mild").style.background = 'yellow';
+
+            }
+
+        }</script>
+
+
+</head>
+
+<body onload="startUp();" onMouseDown="showButtons();">
+    <form method="post" action="" name="FormName" id="">
+
+        <p class="title">
+            Patient Health Questionnaire (PCL5)
+        </p>
+
+
+        <div name="demographics">
+            <table width="100%">
+                <tr>
+                    <td class="heading1" style="width:20%">Patient name</td>
+                    <td><input name="PatientName" id="PatientName" type="text" class="noborder" style="width: 400px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=patient_name></td>
+
+                </tr>
+                <tr>
+                    <td class="heading1" style="width:20%">Date</td>
+                    <td><input name="Date" id="Date" type="text" class="noborder" style="width: 400px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=today></td>
+
+                </tr>
+            </table>
+        </div>
+        <div name="Instructions">
+
+            <p name="normaltext"> <b>Instruction:</b> Below is a list of problems that people sometimes have in response to a very stressful experience. Please read each problem carefully and then check one of the numbers to the right to indicate how much you have been bothered by that problem <u>in the past month</u>.</p>
+
+            </td>
+            </tr>
+        </div>
+
+        <div name="Questionnaire">
+
+            <table width="100%">
+
+                <tr>
+                    <td class="heading2" width=40%>In the past month, how much were you bothered by:</td>
+                    <td class="heading2" width=10%>Not at all (0)</td>
+                    <td class="heading2" width=10%>A little (1)</td>
+                    <td class="heading2" width=10%>Moderately (2)</td>
+                    <td class="heading2" width=10%>Quite a bit (3) </td>
+                    <td class="heading2" width=10%>Extremely (4) </td>
+                </tr>
+                <tr class="odd">
+                    <td class="question"> Q1. Repeated, disturbing, and unwanted memories of the stressful experience?</td>
+                    <td class="answer">
+                        <input name="Q1" id="Q1" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q2.value='';
+			document.FormName.Q3.value='';
+			document.FormName.Q4.value='';
+			document.FormName.Q5.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q2" id="Q2" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q1.value='';
+			document.FormName.Q3.value='';
+			document.FormName.Q4.value='';
+			document.FormName.Q5.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q3" id="Q3" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q1.value='';
+			document.FormName.Q2.value='';
+			document.FormName.Q4.value='';
+			document.FormName.Q5.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q4" id="Q4" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q1.value='';
+			document.FormName.Q2.value='';
+			document.FormName.Q3.value='';
+			document.FormName.Q5.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q5" id="Q5" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q1.value='';
+			document.FormName.Q2.value='';
+			document.FormName.Q3.value='';
+			document.FormName.Q4.value='';">
+                    </td>
+                </tr>
+                <tr class="even">
+                    <td class="question">Q2. Repeated, disturbing dreams of the stressful experience?</td>
+                    <td class="answer">
+                        <input name="Q6" id="Q6" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q7.value='';
+			document.FormName.Q8.value='';
+			document.FormName.Q9.value='';
+			document.FormName.Q10.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q7" id="Q7" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q6.value='';
+			document.FormName.Q8.value='';
+			document.FormName.Q9.value='';
+			document.FormName.Q10.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q8" id="Q8" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q6.value='';
+			document.FormName.Q7.value='';
+			document.FormName.Q9.value='';
+			document.FormName.Q10.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q9" id="Q9" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q6.value='';
+			document.FormName.Q7.value='';
+			document.FormName.Q8.value='';
+			document.FormName.Q10.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q10" id="Q10" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q6.value='';
+			document.FormName.Q7.value='';
+			document.FormName.Q8.value='';
+			document.FormName.Q9.value='';">
+                    </td>
+                </tr>
+                <tr class="odd">
+                    <td class="question"> Q3. Suddenly feeling or acting as if the stressful experience were actually happening again (as if you were actually back there reliving it)?</td>
+                    <td class="answer">
+                        <input name="Q11" id="Q11" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q12.value='';
+			document.FormName.Q13.value='';
+			document.FormName.Q14.value='';
+			document.FormName.Q15.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q12" id="Q12" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q11.value='';
+			document.FormName.Q13.value='';
+			document.FormName.Q14.value='';
+			document.FormName.Q15.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q13" id="Q13" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q11.value='';
+			document.FormName.Q12.value='';
+			document.FormName.Q14.value='';
+			document.FormName.Q15.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q14" id="Q14" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q11.value='';
+			document.FormName.Q12.value='';
+			document.FormName.Q13.value='';
+			document.FormName.Q15.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q15" id="Q15" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q11.value='';
+			document.FormName.Q12.value='';
+			document.FormName.Q13.value='';
+			document.FormName.Q14.value='';">
+                    </td>
+                </tr>
+                <tr class="even">
+                    <td class="question">Q4. Feeling very upset when something reminded you of the stressful experience?</td>
+                    <td class="answer">
+                        <input name="Q16" id="Q16" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q17.value='';
+			document.FormName.Q18.value='';
+			document.FormName.Q19.value='';
+			document.FormName.Q20.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q17" id="Q17" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q16.value='';
+			document.FormName.Q18.value='';
+			document.FormName.Q19.value='';
+			document.FormName.Q20.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q18" id="Q18" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q16.value='';
+			document.FormName.Q17.value='';
+			document.FormName.Q19.value='';
+			document.FormName.Q20.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q19" id="Q19" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q16.value='';
+			document.FormName.Q17.value='';
+			document.FormName.Q18.value='';
+			document.FormName.Q20.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q20" id="Q20" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q16.value='';
+			document.FormName.Q17.value='';
+			document.FormName.Q18.value='';
+			document.FormName.Q19.value='';">
+                    </td>
+                </tr>
+                <tr class="odd">
+                    <td class="question"> Q5. Having strong physical reactions when something reminded you of the stressful experience (eg. heart pounding, trouble breathing, sweating)?</td>
+                    <td class="answer">
+                        <input name="Q21" id="Q21" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q22.value='';
+			document.FormName.Q23.value='';
+			document.FormName.Q24.value='';
+			document.FormName.Q25.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q22" id="Q22" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q21.value='';
+			document.FormName.Q23.value='';
+			document.FormName.Q24.value='';
+			document.FormName.Q25.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q23" id="Q23" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q21.value='';
+			document.FormName.Q22.value='';
+			document.FormName.Q24.value='';
+			document.FormName.Q25.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q14" id="Q24" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q21.value='';
+			document.FormName.Q22.value='';
+			document.FormName.Q23.value='';
+			document.FormName.Q25.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q25" id="Q25" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q21.value='';
+			document.FormName.Q22.value='';
+			document.FormName.Q23.value='';
+			document.FormName.Q24.value='';">
+                    </td>
+                </tr>
+                <tr class="even">
+                    <td class="question">Q6. Avoiding memories, thoughts, or feelings related to the stressful experience?</td>
+                    <td class="answer">
+                        <input name="Q26" id="Q26" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q27.value='';
+			document.FormName.Q28.value='';
+			document.FormName.Q29.value='';
+			document.FormName.Q30.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q27" id="Q27" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q26.value='';
+			document.FormName.Q28.value='';
+			document.FormName.Q29.value='';
+			document.FormName.Q30.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q28" id="Q28" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q26.value='';
+			document.FormName.Q27.value='';
+			document.FormName.Q29.value='';
+			document.FormName.Q30.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q29" id="Q29" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q26.value='';
+			document.FormName.Q27.value='';
+			document.FormName.Q28.value='';
+			document.FormName.Q30.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q30" id="Q30" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q26.value='';
+			document.FormName.Q27.value='';
+			document.FormName.Q28.value='';
+			document.FormName.Q29.value='';">
+                    </td>
+                </tr>
+                <tr class="odd">
+                    <td class="question"> Q7. Avoiding external reminders of the stressful experience (eg. people, places, conversations, activities, objects, or situations)?</td>
+                    <td class="answer">
+                        <input name="Q31" id="Q31" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q32.value='';
+			document.FormName.Q33.value='';
+			document.FormName.Q34.value='';
+			document.FormName.Q35.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q32" id="Q32" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q31.value='';
+			document.FormName.Q33.value='';
+			document.FormName.Q34.value='';
+			document.FormName.Q35.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q33" id="Q33" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q31.value='';
+			document.FormName.Q32.value='';
+			document.FormName.Q34.value='';
+			document.FormName.Q35.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q34" id="Q34" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q31.value='';
+			document.FormName.Q32.value='';
+			document.FormName.Q33.value='';
+			document.FormName.Q35.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q35" id="Q35" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q31.value='';
+			document.FormName.Q32.value='';
+			document.FormName.Q33.value='';
+			document.FormName.Q34.value='';">
+                    </td>
+                </tr>
+                <tr class="even">
+                    <td class="question">Q8. Trouble remembering important parts of the stressful experience?</td>
+                    <td class="answer">
+                        <input name="Q36" id="Q36" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q37.value='';
+			document.FormName.Q38.value='';
+			document.FormName.Q39.value='';
+			document.FormName.Q40.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q37" id="Q37" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q36.value='';
+			document.FormName.Q38.value='';
+			document.FormName.Q39.value='';
+			document.FormName.Q40.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q38" id="Q38" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q36.value='';
+			document.FormName.Q37.value='';
+			document.FormName.Q39.value='';
+			document.FormName.Q40.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q39" id="Q39" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q36.value='';
+			document.FormName.Q37.value='';
+			document.FormName.Q38.value='';
+			document.FormName.Q40.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q40" id="Q40" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q36.value='';
+			document.FormName.Q37.value='';
+			document.FormName.Q38.value='';
+			document.FormName.Q39.value='';">
+                    </td>
+                </tr>
+                <tr class="odd">
+                    <td class="question"> Q9. Having strong negative beliefs about yourself, other people, or the world (eg. having thoughts such as: I am bad, there is something seriously wrong with me, no one can be trusted, the world is completely dangerous)?</td>
+                    <td class="answer">
+                        <input name="Q41" id="Q41" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q42.value='';
+			document.FormName.Q43.value='';
+			document.FormName.Q44.value='';
+			document.FormName.Q45.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q42" id="Q42" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q41.value='';
+			document.FormName.Q43.value='';
+			document.FormName.Q44.value='';
+			document.FormName.Q45.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q43" id="Q43" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q41.value='';
+			document.FormName.Q42.value='';
+			document.FormName.Q44.value='';
+			document.FormName.Q45.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q44" id="Q44" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q41.value='';
+			document.FormName.Q42.value='';
+			document.FormName.Q43.value='';
+			document.FormName.Q45.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q45" id="Q45" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q41.value='';
+			document.FormName.Q42.value='';
+			document.FormName.Q43.value='';
+			document.FormName.Q44.value='';">
+                    </td>
+                </tr>
+                <tr class="even">
+                    <td class="question">Q10. Blaming yourself or someone else for the stressful experience or what happened after it?</td>
+                    <td class="answer">
+                        <input name="Q46" id="Q46" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q47.value='';
+			document.FormName.Q48.value='';
+			document.FormName.Q49.value='';
+			document.FormName.Q50.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q47" id="Q47" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q46.value='';
+			document.FormName.Q48.value='';
+			document.FormName.Q49.value='';
+			document.FormName.Q50.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q48" id="Q48" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q46.value='';
+			document.FormName.Q47.value='';
+			document.FormName.Q49.value='';
+			document.FormName.Q50.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q49" id="Q49" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q46.value='';
+			document.FormName.Q47.value='';
+			document.FormName.Q48.value='';
+			document.FormName.Q50.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q50" id="Q50" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q46.value='';
+			document.FormName.Q47.value='';
+			document.FormName.Q48.value='';
+			document.FormName.Q49.value='';">
+                    </td>
+                </tr>
+                <tr class="odd">
+                    <td class="question"> Q11. Having strong negative feelings such as fear, horror, anger, guilt, or shame?	</td>
+                    <td class="answer">
+                        <input name="Q51" id="Q51" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q52.value='';
+			document.FormName.Q53.value='';
+			document.FormName.Q54.value='';
+			document.FormName.Q55.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q52" id="Q52" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q51.value='';
+			document.FormName.Q53.value='';
+			document.FormName.Q54.value='';
+			document.FormName.Q55.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q53" id="Q53" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q51.value='';
+			document.FormName.Q52.value='';
+			document.FormName.Q54.value='';
+			document.FormName.Q55.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q54" id="Q54" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q51.value='';
+			document.FormName.Q52.value='';
+			document.FormName.Q53.value='';
+			document.FormName.Q55.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q55" id="Q55" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q51.value='';
+			document.FormName.Q52.value='';
+			document.FormName.Q53.value='';
+			document.FormName.Q54.value='';">
+                    </td>
+                </tr>
+                <tr class="even">
+                    <td class="question">Q12. Loss of interest in activities that you used to enjoy?</td>
+                    <td class="answer">
+                        <input name="Q56" id="Q56" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q57.value='';
+			document.FormName.Q58.value='';
+			document.FormName.Q59.value='';
+			document.FormName.Q60.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q57" id="Q57" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q56.value='';
+			document.FormName.Q58.value='';
+			document.FormName.Q59.value='';
+			document.FormName.Q60.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q58" id="Q58" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q56.value='';
+			document.FormName.Q57.value='';
+			document.FormName.Q59.value='';
+			document.FormName.Q60.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q59" id="Q59" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q56.value='';
+			document.FormName.Q57.value='';
+			document.FormName.Q58.value='';
+			document.FormName.Q60.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q60" id="Q60" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q56.value='';
+			document.FormName.Q57.value='';
+			document.FormName.Q58.value='';
+			document.FormName.Q59.value='';">
+                    </td>
+                </tr>
+                <tr class="odd">
+                    <td class="question"> Q13. Feeling distant or cut off from other people?</td>
+                    <td class="answer">
+                        <input name="Q61" id="Q61" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q62.value='';
+			document.FormName.Q63.value='';
+			document.FormName.Q64.value='';
+			document.FormName.Q65.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q62" id="Q62" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q61.value='';
+			document.FormName.Q63.value='';
+			document.FormName.Q64.value='';
+			document.FormName.Q65.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q63" id="Q63" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q61.value='';
+			document.FormName.Q62.value='';
+			document.FormName.Q64.value='';
+			document.FormName.Q65.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q64" id="Q64" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q61.value='';
+			document.FormName.Q62.value='';
+			document.FormName.Q63.value='';
+			document.FormName.Q65.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q65" id="Q65" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q61.value='';
+			document.FormName.Q62.value='';
+			document.FormName.Q63.value='';
+			document.FormName.Q64.value='';">
+                    </td>
+                </tr>
+                <tr>
+                    <td><br><br><br><br></td>
+                </tr>
+                <tr class="even">
+                    <td class="question">Q14. Trouble experiencing positive feelings (for example, being unable to feel happiness or have loving feelings for people close to you)?</td>
+                    <td class="answer">
+                        <input name="Q66" id="Q66" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q67.value='';
+			document.FormName.Q68.value='';
+			document.FormName.Q69.value='';
+			document.FormName.Q70.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q67" id="Q67" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q66.value='';
+			document.FormName.Q68.value='';
+			document.FormName.Q69.value='';
+			document.FormName.Q70.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q68" id="Q68" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q66.value='';
+			document.FormName.Q67.value='';
+			document.FormName.Q69.value='';
+			document.FormName.Q70.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q69" id="Q69" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q66.value='';
+			document.FormName.Q67.value='';
+			document.FormName.Q68.value='';
+			document.FormName.Q70.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q70" id="Q70" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q66.value='';
+			document.FormName.Q67.value='';
+			document.FormName.Q68.value='';
+			document.FormName.Q69.value='';">
+                    </td>
+                </tr>
+                <tr class="odd">
+                    <td class="question"> Q15. Irritable behavior, angry outbursts, or acting aggressively?	</td>
+                    <td class="answer">
+                        <input name="Q71" id="Q71" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q72.value='';
+			document.FormName.Q73.value='';
+			document.FormName.Q74.value='';
+			document.FormName.Q75.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q72" id="Q72" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q71.value='';
+			document.FormName.Q73.value='';
+			document.FormName.Q74.value='';
+			document.FormName.Q75.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q73" id="Q73" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q71.value='';
+			document.FormName.Q72.value='';
+			document.FormName.Q74.value='';
+			document.FormName.Q75.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q74" id="Q74" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q71.value='';
+			document.FormName.Q72.value='';
+			document.FormName.Q73.value='';
+			document.FormName.Q75.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q75" id="Q75" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q71.value='';
+			document.FormName.Q72.value='';
+			document.FormName.Q73.value='';
+			document.FormName.Q74.value='';">
+                    </td>
+                </tr>
+                <tr class="even">
+                    <td class="question">Q16. Taking too many risks or doing things that could cause you harm?</td>
+                    <td class="answer">
+                        <input name="Q76" id="Q76" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q77.value='';
+			document.FormName.Q78.value='';
+			document.FormName.Q79.value='';
+			document.FormName.Q80.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q77" id="Q77" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q76.value='';
+			document.FormName.Q78.value='';
+			document.FormName.Q79.value='';
+			document.FormName.Q80.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q78" id="Q78" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q76.value='';
+			document.FormName.Q77.value='';
+			document.FormName.Q79.value='';
+			document.FormName.Q80.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q79" id="Q79" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q76.value='';
+			document.FormName.Q77.value='';
+			document.FormName.Q78.value='';
+			document.FormName.Q80.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q80" id="Q80" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q76.value='';
+			document.FormName.Q77.value='';
+			document.FormName.Q78.value='';
+			document.FormName.Q79.value='';">
+                    </td>
+                </tr>
+                <tr class="odd">
+                    <td class="question"> Q17. Being "superalert" or watchful or on guard?</td>
+                    <td class="answer">
+                        <input name="Q81" id="Q81" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q82.value='';
+			document.FormName.Q83.value='';
+			document.FormName.Q84.value='';
+			document.FormName.Q85.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q82" id="Q82" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q81.value='';
+			document.FormName.Q83.value='';
+			document.FormName.Q84.value='';
+			document.FormName.Q85.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q83" id="Q83" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q81.value='';
+			document.FormName.Q82.value='';
+			document.FormName.Q84.value='';
+			document.FormName.Q85.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q84" id="Q84" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q81.value='';
+			document.FormName.Q82.value='';
+			document.FormName.Q83.value='';
+			document.FormName.Q85.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q85" id="Q85" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q81.value='';
+			document.FormName.Q82.value='';
+			document.FormName.Q83.value='';
+			document.FormName.Q84.value='';">
+                    </td>
+                </tr>
+                <tr class="even">
+                    <td class="question">Q18. Feeling jumpy or easily startled?</td>
+                    <td class="answer">
+                        <input name="Q86" id="Q86" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q87.value='';
+			document.FormName.Q88.value='';
+			document.FormName.Q89.value='';
+			document.FormName.Q90.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q87" id="Q87" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q86.value='';
+			document.FormName.Q88.value='';
+			document.FormName.Q89.value='';
+			document.FormName.Q90.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q88" id="Q88" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q86.value='';
+			document.FormName.Q87.value='';
+			document.FormName.Q89.value='';
+			document.FormName.Q90.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q89" id="Q89" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q86.value='';
+			document.FormName.Q87.value='';
+			document.FormName.Q88.value='';
+			document.FormName.Q90.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q90" id="Q90" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q86.value='';
+			document.FormName.Q87.value='';
+			document.FormName.Q88.value='';
+			document.FormName.Q89.value='';">
+                    </td>
+                </tr>
+                <tr class="odd">
+                    <td class="question"> Q19. Having difficulty concentrating?</td>
+                    <td class="answer">
+                        <input name="Q91" id="Q91" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q92.value='';
+			document.FormName.Q93.value='';
+			document.FormName.Q94.value='';
+			document.FormName.Q95.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q92" id="Q92" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q91.value='';
+			document.FormName.Q93.value='';
+			document.FormName.Q94.value='';
+			document.FormName.Q95.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q93" id="Q93" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q91.value='';
+			document.FormName.Q92.value='';
+			document.FormName.Q94.value='';
+			document.FormName.Q95.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q94" id="Q94" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q91.value='';
+			document.FormName.Q92.value='';
+			document.FormName.Q93.value='';
+			document.FormName.Q95.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q95" id="Q95" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q91.value='';
+			document.FormName.Q92.value='';
+			document.FormName.Q93.value='';
+			document.FormName.Q94.value='';">
+                    </td>
+                </tr>
+                <tr class="even">
+                    <td class="question">Q20. Trouble falling or staying asleep?</td>
+                    <td class="answer">
+                        <input name="Q96" id="Q96" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q97.value='';
+			document.FormName.Q98.value='';
+			document.FormName.Q99.value='';
+			document.FormName.Q100.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q97" id="Q97" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q96.value='';
+			document.FormName.Q98.value='';
+			document.FormName.Q99.value='';
+			document.FormName.Q100.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q98" id="Q98" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q96.value='';
+			document.FormName.Q97.value='';
+			document.FormName.Q99.value='';
+			document.FormName.Q100.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q99" id="Q99" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q96.value='';
+			document.FormName.Q97.value='';
+			document.FormName.Q98.value='';
+			document.FormName.Q100.value='';">
+                    </td>
+                    <td class="answer">
+                        <input name="Q100" id="Q100" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);" onClick="
+			document.FormName.Q96.value='';
+			document.FormName.Q97.value='';
+			document.FormName.Q98.value='';
+			document.FormName.Q99.value='';">
+                    </td>
+                </tr>
+
+                <table>
+                    <tr>
+                        <td><input type="button" onclick="totalScore()" style="width: 150px; height: 25px;" value="Calculate Total Score"></td>
+                        <td><input name="PCL5Score" id="PCL5Score" type="text" style="width: 100px; height: 25px; text-align: left;"></td>
+                    </tr>
+                </table>
+        </div>
+
+
+        <br>
+        <br>
+
+
+        <div name="Score">
+
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td class="heading2">Score</td>
+                            <td class="heading2">Action</td>
+                        </tr>
+                        <tr id="minimal">
+                            <td>0 - 32 points</td>
+                            <td>No PTSD or subthreshold symptoms</td>
+                        </tr>
+                        <tr id="mild">
+                            <td>33 - 80 points</td>
+                            <td>PTSD treatment might be beneficial</td>
+                        </tr>
+
+                    </table>
+                </td>
+            </tr>
+            </table>
+        </div>
+
+
+        <br>
+        <br>
+
+        <!-- The submit/print/reset buttons ------------------------------------------------------------->
+        <div name="FunctionButtons" class="DoNotPrint">
+            <table>
+                <tr>
+                    <td class="subjectline">
+                        <input type="hidden" id="newForm" name="newForm" value="True" />
+                        Subject: <input type="text" value="PCL5 Score" name="subject" value="PCL5 Score" size="40">&nbsp;
+                        <input value="Submit" name="SubmitButton" type="submit">
+                        <input value="Reset" name="ResetButton" type="reset">
+                        <input value="Print" name="PrintButton" onclick="javascript:window.print()" type="button">
+                        <input id="saveAsEdoc" type="hidden" name="saveAsEdoc" value="false">
+                        <input id="eDocument" name="eDocument" type="button" value="eDocument" onclick="document.getElementById('saveAsEdoc').value='true'; needToConfirm=false; SubmitButton.click();">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </form>
+    <!-- ------End of submit/print/reset buttons----------------------------------------------------->
+
+</body>
+</html>
