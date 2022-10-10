@@ -1,0 +1,368 @@
+<!---Created by Kelly Zhu 8/18/2022-->
+<html>
+<head>
+<title>Pain Outcomes Quesionnaire</title>
+<style type="text/css" media="print">
+    @page 
+    { 
+        size: auto; 
+        margin: 10mm; 
+    }
+    .DoNotPrint {
+        display: none;
+    }
+    .noborder {
+        border : 0px;
+        background: transparent;
+        scrollbar-3dlight-color: transparent;
+        scrollbar-3dlight-color: transparent;
+        scrollbar-arrow-color: transparent;
+        scrollbar-base-color: transparent;
+        scrollbar-darkshadow-color: transparent;
+        scrollbar-face-color: transparent;
+        scrollbar-highlight-color: transparent;
+        scrollbar-shadow-color: transparent;
+        scrollbar-track-color: transparent;
+        background: transparent;
+        overflow: hidden;
+    }
+    
+</style>
+<style>
+  .checkbox{
+      margin-left: 100px;
+    }
+</style>
+</head>
+
+<body>
+<script language="javascript">
+function formPrint(){
+	window.print();
+} 
+</script>
+
+<!-- scripts to confirm closing of window if it hadnt been saved yet -->
+<script language="javascript">
+//keypress events trigger dirty flag
+var needToConfirm = false;
+document.onkeyup=setDirtyFlag;
+function setDirtyFlag(){
+	needToConfirm = true;
+}
+function releaseDirtyFlag(){
+	needToConfirm = false; //Call this function to prevent an alert.
+//this could be called when save button is clicked
+}
+window.onbeforeunload = confirmExit;
+function confirmExit(){
+	if (needToConfirm){
+		 return "You have attempted to leave this page. If you have made any changes to the fields without clicking the Save button, your changes will be lost. Are you sure you want to exit this page?";
+	 }
+}
+</script>
+
+
+<form method="post" action="" name="FormName" id="FormName" >
+<div>
+
+<div align='center'style="font-size:x-large; align: center"><b>PAIN OUTCOMES QUESTIONNAIRE (Short Form)</b></div> <br>
+<div align='center'> James A. Haley Veterans Affairs Hospital, Tampa, Florida.
+  <br> 
+  We ask that <b>all patients regardless of condition</b> complete the remainder of the questionnaire.</div><br><br>
+
+<div>1. Date: 
+  <input type="text" id="date" name="date" style='height:25px; width:200px; font-size: large;' oscarDB=today>
+</div>
+
+
+    <div name="questions">
+      <label>2. On a scale of 0 to 10, how would you rate your pain on average during the <b>past week</b>.</label>
+
+      <br> <input type="checkbox" name="Q2.0" id='Q2.0' > 0 (no pain at all)
+      <input type="checkbox" name="Q2.1" id='Q2.1'  > 1 
+      <input type="checkbox" name="Q2.2" id='Q2.2'> 2
+      <input type="checkbox" name="Q2.3" id='Q2.3'  > 3
+      <input type="checkbox" name="Q2.4" id='Q2.4'  > 4
+      <input type="checkbox" name="Q2.5" id='Q2.5'   > 5
+      <input type="checkbox" name="Q2.6" id='Q2.6'  > 6
+      <input type="checkbox" name="Q2.7" id='Q2.7'  > 7
+      <input type="checkbox" name="Q2.8" id='Q2.8'  > 8
+      <input type="checkbox" name="Q2.9" id='Q2.9'  > 9
+      <input type="checkbox" name="Q2.10" id='Q2.10'  > 10 (worst pain possible) <br>
+      <input type="text" name = "Q2_comments" id="Q2_comments" style="width: 700px; height: 25px" placeholder="Comments (optional) - Max. 115 characters">
+      
+      <br> <br>
+          
+          
+      <tr class="question"> 3) Does your pain interfere with your ability to walk? </tr> <br>
+      <input type="checkbox" name="Q3.0" id="Q3.0"   > 0 (not at all)
+      <input type="checkbox" name="Q3.1" id="Q3.1"   > 1
+      <input type="checkbox" name="Q3.2" id="Q3.2"   > 2
+      <input type="checkbox" name="Q3.3" id="Q3.2"   > 3
+      <input type="checkbox" name="Q3.4" id="Q3.4"   > 4
+      <input  type="checkbox"  name="Q3.5" id="Q3.5"   > 5
+      <input  type="checkbox"  name="Q3.6" id="Q3.6"   > 6
+      <input  type="checkbox"  name="Q3.7" id="Q3.7"   > 7
+      <input  type="checkbox"  name="Q3.8" id="Q3.8"   > 8
+      <input  type="checkbox"  name="Q3.9" id="Q3.9"   > 9
+      <input  type="checkbox"  name="Q3.10" id="Q3.10"   > 10 (all the time) <br>
+      <input type="text" name = "Q3_comments" id="Q3_comments" style="width: 700px; height: 25px" placeholder="Comments (optional) - Max. 115 characters"><br><br>
+
+      <tr class="question"> 4) Does your pain interfere with your ability to carry/handle everyday objects such as a bag or groceries or books? </tr> <br>
+      <input  type="checkbox"  name="Q4.0" id="Q4.0"   > 0 (not at all)
+      <input  type="checkbox"  name="Q4.1" id="Q4.1"   > 1
+      <input  type="checkbox"  name="Q4.2" id="Q4.2"   > 2
+      <input  type="checkbox"  name="Q4.3" id="Q4.3"   > 3
+      <input  type="checkbox"  name="Q4.4" id="Q4.4"   > 4
+      <input  type="checkbox"  name="Q4.5" id="Q4.5"   > 5
+      <input  type="checkbox"  name="Q4.6" id="Q4.6"   > 6
+      <input  type="checkbox"  name="Q4.7" id="Q4.7"   > 7
+      <input  type="checkbox"  name="Q4.8" id="Q4.8"   > 8
+      <input  type="checkbox"  name="Q4.9" id="Q4.9"   > 9
+      <input  type="checkbox"  name="Q4.10" id="Q4.10"   > 10 (all the time)<br>
+      <input type="text" name = "Q4_comments" id="Q4_comments" style="width: 700px; height: 25px" placeholder= "Comments (optional) - Max. 115 characters"><br><br>
+
+      <tr class="question"> 5) Does your pain interfere with your ability to climb stairs? </tr> <br>
+      <input  type="checkbox"  name="Q5.0" id="Q5.0"   > 0 (not at all)
+      <input  type="checkbox"  name="Q5.1" id="Q5.1"   > 1
+      <input  type="checkbox"  name="Q5.2" id="Q5.2"   > 2
+      <input  type="checkbox"  name="Q5.3" id="Q5.3"   > 3
+      <input  type="checkbox"  name="Q5.4" id="Q5.4"   > 4
+      <input  type="checkbox"  name="Q5.5" id="Q5.5"   > 5
+      <input  type="checkbox"  name="Q5.6" id="Q6.6"   > 6
+      <input  type="checkbox"  name="Q5.7" id="Q5.7"   > 7
+      <input  type="checkbox"  name="Q5.8" id="Q5.8"   > 8
+      <input  type="checkbox"  name="Q5.9" id="Q5.9"   > 9
+      <input  type="checkbox"  name="Q5.10" id="Q5.10"   > 10 (all the time)<br>
+      <input type="text" name = "Q5_comments" id="Q5_comments" style="width: 700px; height: 25px" placeholder= "Comments (optional) - Max. 115 characters"><br><br>
+
+      <tr class="question"> 6) Does your pain require you to use a cane, walker, wheelchair or other devices? </tr> <br>
+      <input  type="checkbox"  name="Q6.0" id="Q6.0"   > 0 (not at all)
+      <input  type="checkbox"  name="Q6.1" id="Q6.1"   > 1
+      <input  type="checkbox"  name="Q6.2" id="Q6.2"   > 2
+      <input  type="checkbox"  name="Q6.4" id="Q6.3"   > 3
+      <input  type="checkbox"  name="Q6.4" id="Q6.4"   > 4
+      <input  type="checkbox"  name="Q6.5" id="Q6.5"   > 5
+      <input  type="checkbox"  name="Q6.6" id="Q6.6"   > 6
+      <input  type="checkbox"  name="Q6.7" id="Q6.7"   > 7
+      <input  type="checkbox"  name="Q6.8" id="Q6.8"   > 8
+      <input  type="checkbox"  name="Q6.9" id="Q6.9"   > 9
+      <input  type="checkbox"  name="Q6.10" id="Q6.10"   > 10 (all the time)<br>
+      <input type="text" name = "Q6_comments" id="Q6_comments" style="width: 700px; height: 25px" placeholder= "Comments (optional) - Max. 115 characters"><br><br>
+     
+      <tr class="question"> 7) Does your pain interfere with your ability to bathe yourself? </tr> <br>
+      <input  type="checkbox"  name="Q7.0" id="Q7.0"   > 0 (not at all)
+      <input  type="checkbox"  name="Q7.1" id="Q7.1"   > 1
+      <input  type="checkbox"  name="Q7.2" id="Q7.2"   > 2
+      <input  type="checkbox"  name="Q7.3" id="Q7.2"   > 3
+      <input  type="checkbox"  name="Q7.4" id="Q7.4"   > 4
+      <input  type="checkbox"  name="Q7.5" id="Q7.5"   > 5
+      <input  type="checkbox"  name="Q7.6" id="Q7.6"   > 6
+      <input  type="checkbox"  name="Q7.7" id="Q7.7"   > 7
+      <input  type="checkbox"  name="Q7.8" id="Q7.8"   > 8
+      <input  type="checkbox"  name="Q7.9" id="Q7.9"   > 9
+      <input  type="checkbox"  name="Q7.10" id="Q7.10"   > 10 (all the time)<br>
+      <input type="text" name = "Q7_comments" id="Q7_comments" style="width: 700px; height: 25px" placeholder= "Comments (optional) - Max. 115 characters"><br><br>
+
+      <tr class="question"> 8) Does your pain interfere with your ability to dress yourself? </tr> <br>
+      <input  type="checkbox"  name="Q8.0" id="Q8.0"   > 0 (not at all)
+      <input  type="checkbox"  name="Q8.1" id="Q8.1"   > 1
+      <input  type="checkbox"  name="Q8.2" id="Q8.2"   > 2
+      <input  type="checkbox"  name="Q8.3" id="Q8.2"   > 3
+      <input  type="checkbox"  name="Q8.4" id="Q8.4"   > 4
+      <input  type="checkbox"  name="Q8.5" id="Q8.5"   > 5
+      <input  type="checkbox"  name="Q8.6" id="Q8.6"   > 6
+      <input  type="checkbox"  name="Q8.7" id="Q8.7"   > 7
+      <input  type="checkbox"  name="Q8.8" id="Q8.8"   > 8
+      <input  type="checkbox"  name="Q8.9" id="Q8.9"   > 9
+      <input  type="checkbox"  name="Q8.10" id="Q8.10"   > 10 (all the time)<br>
+      <input type="text" name = "Q8_comments" id="Q8_comments" style="width: 700px; height: 25px" placeholder= "Comments (optional) - Max. 115 characters"><br><br>
+
+      <tr class="question"> 9) Does your pain interfere with your ability to use the bathroom? </tr> <br>
+      <input  type="checkbox"  name="Q9.0" id="Q9.0"   > 0 (not at all)
+      <input  type="checkbox"  name="Q9.1" id="Q9.1"   > 1
+      <input  type="checkbox"  name="Q9.2" id="Q9.2"   > 2
+      <input  type="checkbox"  name="Q9.3" id="Q9.3"   > 3
+      <input  type="checkbox"  name="Q9.4" id="Q9.4"   > 4
+      <input  type="checkbox"  name="Q9.5" id="Q9.5"   > 5
+      <input  type="checkbox"  name="Q9.6" id="Q9.6"   > 6
+      <input  type="checkbox"  name="Q9.7" id="Q9.7"   > 7
+      <input  type="checkbox"  name="Q9.8" id="Q9.8"   > 8
+      <input  type="checkbox"  name="Q9.9" id="Q9.9"   > 9
+      <input  type="checkbox"  name="Q9.10" id="Q9.10"   > 10 (all the time)<br>
+      <input type="text" name = "Q9_comments" id="Q9_comments" style="width: 700px; height: 25px" placeholder= "Comments (optional) - Max. 115 characters"><br><br> 
+
+      <tr class="question"> 10) Does your pain interfere with your ability to manage your personal grooming (for example, combing your hair, brushing you teeth, etc.)? </tr> <br>
+      <input  type="checkbox"  name="Q10.0" id="Q10.0"   > 0 (not at all)
+      <input  type="checkbox"  name="Q10.1" id="Q10.1"   > 1
+      <input  type="checkbox"  name="Q10.2" id="Q10.2"   > 2
+      <input  type="checkbox"  name="Q10.3" id="Q10.3"   > 3
+      <input  type="checkbox"  name="Q10.4" id="Q10.4"   > 4
+      <input  type="checkbox"  name="Q10.5" id="Q10.5"   > 5
+      <input  type="checkbox"  name="Q10.6" id="Q10.6"   > 6
+      <input  type="checkbox"  name="Q10.7" id="Q10.7"   > 7
+      <input  type="checkbox"  name="Q10.8" id="Q10.8"   > 8
+      <input  type="checkbox"  name="Q10.9" id="Q10.9"   > 9
+      <input  type="checkbox"  name="Q10.10" id="Q10.10"   > 10 (all the time)<br>
+      <input type="text" name = "Q10_comments" id="Q10_comments" style="width: 700px; height: 25px" placeholder= "Comments (optional) - Max. 115 characters"><br><br>
+
+      <tr class="question"> 11) Does your pain affect your self-esteem or self-worth? </tr> <br>
+      <input  type="checkbox"  name="Q11.0" id="Q11.0"   > 0 (not at all)
+      <input  type="checkbox"  name="Q11.1" id="Q11.1"   > 1
+      <input  type="checkbox"  name="Q11.2" id="Q11.2"   > 2
+      <input  type="checkbox"  name="Q11.3" id="Q11.3"   > 3
+      <input  type="checkbox"  name="Q11.4" id="Q11.4"   > 4
+      <input  type="checkbox"  name="Q11.5" id="Q11.5"   > 5
+      <input  type="checkbox"  name="Q11.6" id="Q11.6"   > 6
+      <input  type="checkbox"  name="Q11.7" id="Q11.7"   > 7
+      <input  type="checkbox"  name="Q11.8" id="Q11.8"   > 8
+      <input  type="checkbox"  name="Q11.9" id="Q11.9"   > 9
+      <input  type="checkbox"  name="Q11.10" id="Q11.10"   > 10 (all the time)<br>
+      <input type="text" name = "Q11_comments" id="Q11_comments" style="width: 700px; height: 25px" placeholder= "Comments (optional) - Max. 115 characters"><br><br>
+
+      <tr class="question"> 12) How would you rate your physical activity </tr> <br>
+      <input  type="checkbox"  name="Q12.0" id="Q12.0"   > 0 (significant limitation in basic activities)
+      <input  type="checkbox"  name="Q12.1" id="Q12.1"   > 1
+      <input  type="checkbox"  name="Q12.2" id="Q12.2"   > 2
+      <input  type="checkbox"  name="Q12.3" id="Q12.3"   > 3
+      <input  type="checkbox"  name="Q12.4" id="Q12.4"   > 4
+      <input  type="checkbox"  name="Q12.5" id="Q12.5"   > 5
+      <input  type="checkbox"  name="Q12.6" id="Q12.6"   > 6
+      <input  type="checkbox"  name="Q12.7" id="Q12.7"   > 7
+      <input  type="checkbox"  name="Q12.8" id="Q12.8"   > 8
+      <input  type="checkbox"  name="Q12.9" id="Q12.9"   > 9
+      <input  type="checkbox"  name="Q12.10" id="Q12.10"   > 10 (can perform vigorous activities without limitation)<br>
+      <input type="text" name = "Q12_comments" id="Q12_comments" style="width: 700px; height: 25px" placeholder= "Comments (optional) - Max. 115 characters"><br><br>
+
+      <tr class="question"> 13) How would you rate your overall energy? </tr> <br>
+      <input  type="checkbox"  name="Q13.0" id="Q13.0"   > 0 (totally worn out)
+      <input  type="checkbox"  name="Q13.1" id="Q13.1"   > 1
+      <input  type="checkbox"  name="Q13.2" id="Q13.2"   > 2
+      <input  type="checkbox"  name="Q13.3" id="Q13.3"   > 3
+      <input  type="checkbox"  name="Q13.4" id="Q13.4"   > 4
+      <input  type="checkbox"  name="Q13.5" id="Q13.5"   > 5
+      <input  type="checkbox"  name="Q13.6" id="Q13.6"   > 6
+      <input  type="checkbox"  name="Q13.7" id="Q13.7"   > 7
+      <input  type="checkbox"  name="Q13.8" id="Q13.8"   > 8
+      <input  type="checkbox"  name="Q13.9" id="Q13.9"   > 9
+      <input  type="checkbox"  name="Q13.10" id="Q13.10" > 10 (most energy ever)<br>
+      <input type="text" name = "Q13_comments" id="Q13_comments" style="width: 700px; height: 25px" placeholder= "Comments (optional) - Max. 115 characters"><br><br>
+
+      <tr class="question"> 14) How would you rate your strength and endurance <b>today</b>? </tr> <br>
+      <input  type="checkbox"  name="Q14.0" id="Q14.0"   > 0 (very poor)
+      <input  type="checkbox"  name="Q14.1" id="Q14.1"   > 1
+      <input  type="checkbox"  name="Q14.2" id="Q14.2"   > 2
+      <input  type="checkbox"  name="Q14.3" id="Q14.3"   > 3
+      <input  type="checkbox"  name="Q14.4" id="Q14.4"   > 4
+      <input  type="checkbox"  name="Q14.5" id="Q14.5"   > 5
+      <input  type="checkbox"  name="Q14.6" id="Q14.6"   > 6
+      <input  type="checkbox"  name="Q14.7" id="Q14.7"   > 7
+      <input  type="checkbox"  name="Q14.8" id="Q14.8"   > 8
+      <input  type="checkbox"  name="Q14.9" id="Q14.9"   > 9
+      <input  type="checkbox"  name="Q14.10" id="Q14.10" > 10 (very high)<br>
+      <input type="text" name = "Q14_comments" id="Q14_comments" style="width: 700px; height: 25px" placeholder= "Comments (optional) - Max. 115 characters"><br><br>
+
+      <tr class="question"> 15) How would you rate your feelings of depression <b>today</b>? </tr> <br>
+      <input  type="checkbox"  name="Q15.0" id="Q15.0"   > 0 (not at all depressed)
+      <input  type="checkbox"  name="Q15.1" id="Q15.1"   > 1
+      <input  type="checkbox"  name="Q15.2" id="Q15.2"   > 2
+      <input  type="checkbox"  name="Q15.3" id="Q15.3"   > 3
+      <input  type="checkbox"  name="Q15.4" id="Q15.4"   > 4
+      <input  type="checkbox"  name="Q15.5" id="Q15.5"   > 5
+      <input  type="checkbox"  name="Q15.6" id="Q15.6"   > 6
+      <input  type="checkbox"  name="Q15.7" id="Q15.7"   > 7
+      <input  type="checkbox"  name="Q15.8" id="Q15.8"   > 8
+      <input  type="checkbox"  name="Q15.9" id="Q15.9"   > 9
+      <input  type="checkbox"  name="Q15.10" id="Q15.10"   > 10 (extremely depressed)<br>
+      <input type="text" name = "Q15_comments" id="Q15_comments" style="width: 700px; height: 25px" placeholder= "Comments (optional) - Max. 115 characters"><br><br>
+
+      <tr class="question"> 16) How would you rate your feelings of aniexty <b>today</b>? </tr> <br>
+      <input  type="checkbox"  name="Q16.0" id="Q16.0"   > 0 (not at all anxious)
+      <input  type="checkbox"  name="Q16.1" id="Q16.1"   > 1
+      <input  type="checkbox"  name="Q16.2" id="Q16.2"   > 2
+      <input  type="checkbox"  name="Q16.3" id="Q16.3"   > 3
+      <input  type="checkbox"  name="Q16.4" id="Q16.4"   > 4
+      <input  type="checkbox"  name="Q16.5" id="Q16.5"   > 5
+      <input  type="checkbox"  name="Q16.6" id="Q16.6"   > 6
+      <input  type="checkbox"  name="Q16.7" id="Q16.7"   > 7
+      <input  type="checkbox"  name="Q16.8" id="Q16.8"   > 8
+      <input  type="checkbox"  name="Q16.9" id="Q16.9"   > 9
+      <input  type="checkbox"  name="Q16.10" id="Q16.10"   > 10 (extremely anxious)<br>
+      <input type="text" name = "Q16_comments" id="Q16_comments" style="width: 700px; height: 25px" placeholder= "Comments (optional) - Max. 115 characters"><br><br>
+
+      <tr class="question"> 17) How much do you worry about re-injurying yourself if you are more active </tr> <br>
+      <input  type="checkbox"  name="Q17.0" id="Q17.0"   > 0 (not at all)
+      <input  type="checkbox"  name="Q17.1" id="Q17.1"   > 1
+      <input  type="checkbox"  name="Q17.2" id="Q17.2"   > 2
+      <input  type="checkbox"  name="Q17.3" id="Q17.3"   > 3
+      <input  type="checkbox"  name="Q17.4" id="Q17.4"   > 4
+      <input  type="checkbox"  name="Q17.5" id="Q17.5"   > 5
+      <input  type="checkbox"  name="Q17.6" id="Q17.6"   > 6
+      <input  type="checkbox"  name="Q17.7" id="Q17.7"   > 7
+      <input  type="checkbox"  name="Q17.8" id="Q17.8"   > 8
+      <input  type="checkbox"  name="Q17.9" id="Q17.9"   > 9
+      <input  type="checkbox"  name="Q17.10" id="Q17.10"   > 10 (all the time)<br>
+      <input type="text" name = "Q17_comments" id="Q17_comments" style="width: 700px; height: 25px" placeholder= "Comments (optional) - Max. 115 characters"><br><br>
+
+      <tr class="question"> 18) How safe do you think it is for you to exercise? </tr> <br>
+      <input  type="checkbox"  name="Q18.0" id="Q18.0"   > 0 (not at all safe)
+      <input  type="checkbox"  name="Q18.1" id="Q18.1"   > 1
+      <input  type="checkbox"  name="Q18.2" id="Q18.2"   > 2
+      <input  type="checkbox"  name="Q18.3" id="Q18.3"   > 3
+      <input  type="checkbox"  name="Q18.4" id="Q18.4"   > 4
+      <input  type="checkbox"  name="Q18.5" id="Q18.5"   > 5
+      <input  type="checkbox"  name="Q18.6" id="Q18.6"   > 6
+      <input  type="checkbox"  name="Q18.7" id="Q18.7"   > 7
+      <input  type="checkbox"  name="Q18.8" id="Q18.8"   > 8
+      <input  type="checkbox"  name="Q18.9" id="Q18.9"   > 9
+      <input  type="checkbox"  name="Q18.10" id="Q18.10"   > 10 (extremely safe)<br>
+      <input type="text" name = "Q18_comments" id="Q18_comments" style="width: 700px; height: 25px" placeholder= "Comments (optional) - Max. 115 characters"><br><br>
+
+      <tr class="question"> 19) Do you have problems concentrating on things <b>today</b>? </tr> <br>
+      <input  type="checkbox"  name="Q19.0" id="Q19.0"   > 0 (not at all)
+      <input  type="checkbox"  name="Q19.1" id="Q19.1"   > 1
+      <input  type="checkbox"  name="Q19.2" id="Q19.2"   > 2
+      <input  type="checkbox"  name="Q19.3" id="Q19.3"   > 3
+      <input  type="checkbox"  name="Q19.4" id="Q19.4"   > 4
+      <input  type="checkbox"  name="Q19.5" id="Q19.5"   > 5
+      <input  type="checkbox"  name="Q19.6" id="Q19.6"   > 6
+      <input  type="checkbox"  name="Q19.7" id="Q19.7"   > 7
+      <input  type="checkbox"  name="Q19.8" id="Q19.8"   > 8
+      <input  type="checkbox"  name="Q19.9" id="Q19.9"   > 9
+      <input  type="checkbox"  name="Q19.10" id="Q19.10"   > 10 (all the time)<br>
+      <input type="text" name = "Q19_comments" id="Q19_comments" style="width: 700px; height: 25px" placeholder= "Comments (optional) - Max. 115 characters"><br><br>
+
+      <tr class="question"> 20) How often do you feel tense? </tr> <br>
+      <input  type="checkbox"  name="Q20.0" id="Q20.0"   > 0 (not at all)
+      <input  type="checkbox"  name="Q20.1" id="Q20.1"   > 1
+      <input  type="checkbox"  name="Q20.2" id="Q20.2"   > 2
+      <input  type="checkbox"  name="Q20.3" id="Q20.3"   > 3
+      <input  type="checkbox"  name="Q20.4" id="Q20.4"   > 4
+      <input  type="checkbox"  name="Q20.5" id="Q20.5"   > 5
+      <input  type="checkbox"  name="Q20.6" id="Q20.6"   > 6
+      <input  type="checkbox"  name="Q20.7" id="Q20.7"   > 7
+      <input  type="checkbox"  name="Q20.8" id="Q20.8"   > 8
+      <input  type="checkbox"  name="Q20.9" id="Q20.9"   > 9
+      <input  type="checkbox"  name="Q20.10" id="Q20.10"   > 10 (all the time)<br>
+      <input type="text" name = "Q20_comments" id="Q20_comments" style="width: 700px; height: 25px" placeholder= "Comments (optional) - Max. 115 characters"><br><br> <br> <br>
+
+      </div>
+      
+      <div class="DoNotPrint" id="BottomButtons">
+	 <table><tr><td>
+		 Subject: <input name="subject" size="40" type="text" value="Pain Outcome Questionnaire"> <br> 
+		<input value="Submit" name="SubmitButton" id="SubmitButton" type="submit" onclick=" releaseDirtyFlag();"> 
+		 <input value="Reset" name="ResetButton" id="ResetButton" type="reset"> 
+			<input value="Print" name="PrintButton" id="PrintButton" type="button" onclick="formPrint();"> 
+			<input value="Print & Submit" name="PrintSubmitButton" id="PrintSubmitButton" type="button" onclick="formPrint();releaseDirtyFlag();setTimeout('SubmitButton.click()',1000);"> 
+
+		<input id="saveAsEdoc" type="hidden" name="saveAsEdoc" value="false"> 
+		 <input id="eDocument" name="eDocument" type="button" value="eDocument" onclick="document.getElementById('saveAsEdoc').value='true'; needToConfirm=false; SubmitButton.click();"> 
+	 </td></tr></table>
+ </div>
+</div>
+ </form>
+
+</body>
+</html>
