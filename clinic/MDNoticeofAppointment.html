@@ -1,0 +1,124 @@
+<!-- E-FORM DISCLAIMER: As is: E-Forms are shared as-is, free of charge on a share-alike basis with absolutely no guarantee or warranty. No Quality Control: The author does not vet any E-Forms and does not purport to apply any manner of quality control. Responsibility: The responsibility for the clinical and medical-legal consequences of any and all E-Forms, rest with the clinical OSCAR end-users themselves, not with the author of the eForm. This applies to both E-Forms shared by others, and those created by users themselves. Attribution: E-Forms are shared freely among the user community, with attribution to the original author of the eForm. Free: E-Forms so shared may not be sold or purchased. Provincial validation:  E-Forms are optional and non-essential add-ons, separate from OSCAR, and with their own license terms.E-Forms  are not part of the OSCAR core program functionality and code base. For this reason E-Forms are not subject to provincial validation testing and conformance criteria. E-Forms are also not subject to the ISO production process for OSCAR. -->
+<!-- Created by Jamil Devsi July 2017 -->
+<!-- Updated July 2019 -->
+<html>
+<head>
+<style type="text/css" media="print">
+	@page 
+	{ 
+		size: auto; 
+		margin: 10mm; 
+	}
+	.DoNotPrint {
+		display: none;
+	}
+	.noborder {
+		border : 0px;
+		background: transparent;
+		scrollbar-3dlight-color: transparent;
+		scrollbar-3dlight-color: transparent;
+		scrollbar-arrow-color: transparent;
+		scrollbar-base-color: transparent;
+		scrollbar-darkshadow-color: transparent;
+		scrollbar-face-color: transparent;
+		scrollbar-highlight-color: transparent;
+		scrollbar-shadow-color: transparent;
+		scrollbar-track-color: transparent;
+		background: transparent;
+		overflow: hidden;
+	}
+</style>
+</head>
+
+<title> MD Notice of Appointment Form </title>
+
+<body>
+<script type="text/javascript">
+	function printForm(){
+		window.print();
+	}
+</script>
+
+<script type="text/javascript">
+	//keypress events trigger dirty flag
+	var confirmClose = false;
+	document.onkeyup=setDirtyFlag;
+
+	function setDirtyFlag(){
+		confirmClose = true;
+	}
+	function releaseDirtyFlag(){
+		confirmClose = false; // call to prevent an alert // call when submit buttom clicked
+	}
+	window.onbeforeunload = confirmExit;
+	function confirmExit(){
+		if (confirmClose){
+			return "You have made changes to this form without submitting. If you leave, your changes will be lost. Are you sure you want to exit?";
+		}
+	}
+</script>
+
+<!--<script type="text/javascript">
+	//function formatElements(){
+		//date = document.getElementById("appointmentDate");
+		//time = document.getElementById("appointmentTime");
+
+		//filledDate = document.getElementById("appointmentDateFill");
+		//filledTime = document.getElementById("appointmentTimeFill");
+
+		//document.getElementById("appointmentDateFill").value=date.value;
+		//document.getElementById("appointmentTimeFill").value=time.value;
+
+		//date.remove();
+		//time.remove();
+	//}
+</script> -->
+
+<!-- use the top one for testing on local machine. Use bottom for Oscar -->
+<!-- <img id="PCNoticeImg" src="MD_Notice_of_Appointment.png" style="position: absolute;left: 0px; top:0px; width: 750px"> -->
+<img id="PCNoticeImg" src="${oscar_image_path}MD_Notice_of_Appointment.png" style="position: absolute;left: 0px; top:0px; width: 750px">
+
+<form method="POST" action="" name="MD_NOA" id="MD_NOA">
+
+<div id="page1">
+
+<input name="patientName" id= "patietnName" type="text" class="noborder" style="position: absolute; left: 36px; top: 245px; width: 557px; height: 28px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=patient_name>
+
+<input name="patientGender" id= "patientGender" type="text" class="noborder" style="position: absolute; left: 596px; top: 245px; width: 108px; height: 28px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=sex>
+
+<input name="patientPHN" id= "patientPHN" type="text" class="noborder" style="position: absolute; left: 36px; top: 289px; width: 227px; height: 28px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=hinc>
+
+<input name="patientDOB" id= "patientDOB" type="text" class="noborder" style="position: absolute; left: 265px; top: 289px; width: 218px; height: 28px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=dob>
+
+<input name="patientPhone" id= "patientPhone" type="text" class="noborder" style="position: absolute; left: 486px; top: 289px; width: 218px; height: 28px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=phone>
+
+<input name="appointmentDateFill" id= "appointmentDateFill" type="text" class="noborder" display="none" style="position: absolute; left: 36px; top: 333px; width: 308px; height: 28px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: #FFFFFF;">
+
+<!--<input name="appointmentDate" id= "appointmentDate" type="date" class="DoNotPrint" style="position: absolute; left: 36px; top: 333px; width: 308px; height: 28px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;"> -->
+
+<input name="appointmentTimeFill" id= "appointmentTimeFill" type="text" class="noborder" display="none" style="position: absolute; left: 345px; top: 333px; width: 360px; height: 28px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: #FFFFFF;">
+
+<!--<input name="appointmentTime" id= "appointmentTime" type="time" class="DoNotPrint" style="position: absolute; left: 345px; top: 333px; width: 360px; height: 28px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;"> -->
+
+	 
+</div>
+
+<div class="DoNotPrint" style="position: absolute; top:950px; left:0px;" id="BottomButtons" >
+	<table>
+	 	<tr>
+	 		<td class="subjectline">
+		 		Subject: <input type="text" name="subject"  value="MD NOA" size="40">&nbsp;
+				<input value="Save" name="SubmitButton" id="SubmitButton" type="submit" onclick="releaseDirtyFlag();">
+				<input name="saveAsEdoc" type="hidden" id="saveAsEdoc" value="false">
+				<input value="eDocument" name="eDocument" type="button" onclick="document.getElementById('saveAsEdoc').value='true'; releaseDirtyFlag(); SubmitButton.click();">
+				<input value="Reset" name="ResetButton" id="ResetButton" type="reset" onclick="">
+				<input value="Print" name="PrintButton" id="PrintButton" type="button" onclick="printForm();">
+				<input value="Print & Save" name="PrintSubmitButton" id="PrintSubmitButton" type="button" onclick="releaseDirtyFlag();printForm();setTimeout('SubmitButton.click()',1000);">
+			</td>
+		</tr>
+	</table> 
+
+</div>
+</form>
+</body>
+</html>
