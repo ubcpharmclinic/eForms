@@ -1,436 +1,365 @@
-<!--E-FORM DISCLAIMER: As is: E-Forms are shared as-is, free of charge on a share-alike basis with absolutely no guarantee or warranty. 
-No Quality Control: The author does not vet any E-Forms and does not purport to apply any manner of quality control. Responsibility: 
-The responsibility for the clinical and medical-legal consequences of any and all E-Forms, rest with the clinical OSCAR end-users themselves, 
-not with the author of the E-Form. This applies to both E-Forms shared by others, and those created by users themselves. Attribution: 
-E-Forms are shared freely among the user community, with attribution to the original author of the E-Form. Free: E-Forms so shared 
-may not be sold or purchased. Provincial validation:  E-Forms are optional and non-essential add-ons, separate from OSCAR, and with 
-their own license terms.E-Forms  are not part of the OSCAR core program functionality and code base. For this reason E-Forms are not 
+<!--E-FORM DISCLAIMER: As is: E-Forms are shared as-is, free of charge on a share-alike basis with absolutely no guarantee or warranty.
+No Quality Control: The author does not vet any E-Forms and does not purport to apply any manner of quality control. Responsibility:
+The responsibility for the clinical and medical-legal consequences of any and all E-Forms, rest with the clinical OSCAR end-users themselves,
+not with the author of the E-Form. This applies to both E-Forms shared by others, and those created by users themselves. Attribution:
+E-Forms are shared freely among the user community, with attribution to the original author of the E-Form. Free: E-Forms so shared
+may not be sold or purchased. Provincial validation:  E-Forms are optional and non-essential add-ons, separate from OSCAR, and with
+their own license terms.E-Forms  are not part of the OSCAR core program functionality and code base. For this reason E-Forms are not
 subject to provincial validation testing and conformance criteria. E-Forms are also not subject to the ISO production process for OSCAR. -->
 <!DOCTYPE html>
 <html>
-<title>Community Pharmacy Request Form</title>
 <head>
-<!-- Xbox styling -->
-<style type="text/css">
-	.box1 {
-		width: 23px;
-		height: 16px;
-		cursor: pointer;
-		
-	}
+    <title>Community Pharmacy Request Form</title>
+    <!-- Xbox styling -->
+    <style media="all">
+        textarea {
+            overflow: hidden;
+            resize: none;
+        }
 
-	.box2 {
-		position: absolute;
-		border: 1px solid #000000;
-		cursor: pointer;
-		font-weight: bold;
-		text-align: center;
-		background: yellow;
-		font-size: 8px;
-		width:14px;
-		height:14px;
-	}
-</style>
+        .box1 {
+            width: 23px;
+            height: 16px;
+            cursor: pointer;
 
-<!-- Text styling -->
-<style type="text/css">
-p.title{
-	text-transform: uppercase;
-	font-size: 16;
-	font-family: Arial;
-	font-weight: bolder;
-	text-align: left;
-	color: black;
-}
-p.heading{
-	font-weight: bolder;
-	text-decoration: underline;
-}
-p.normaltext{
-	width: 100%;
-	font-size: 12;
-	font-family: Arial;
-	font-weight: normal;
-	text-align: left;
-	vertical-align: top;
-	color: black;
-	background-color: white;
-	border-width: 0;
-}
-td.heading1{
-	font-size: 12;
-	font-family: Arial;
-	font-weight: bold;
-	text-align: left;
-	vertical-align: top;
-	color: white;
-	background:black ;
-	border-width: 1;
-}
-    
-td.heading2{
-	font-size: 12;
-	font-family: Arial;
-	font-weight: bold;
-	text-align: left;
-	vertical-align: top;
-	color: white;
-	background: #444444;
-	border-width: 1;
-}
+        }
 
-tr.even{
-	background-color: #ffffff;
-}
-tr.odd{
-	background-color: #ffffff;
-}
-td.question{
-	font-size: 12;
-	font-family: Arial;
-	font-weight: normal;
-	text-align: left;
-	vertical-align: top;
-	color: black;
-	border-width: 1;
-}
-td.question2{
-	font-size: 12;
-	font-family: Arial;
-	font-weight: normal;
-	text-align: left;
-	vertical-align: top;
-	color: black;
-	border-width: 1;
-    background-color: #dddddd;
-}
-td.answer{
-	font-size: 12;
-	font-family: Arial;
-	font-weight: normal;
-	text-align: center;
-	vertical-align: top;
-	color: black;
-	border-width: 1;
-}
-    
-td.answer2{
-	font-size: 12;
-	font-family: Arial;
-	font-weight: normal;
-	text-align: center;
-	vertical-align: top;
-	color: black;
-	border-width: 1;
-    background-color: #dddddd;
-}
-td.normaltext{
-	width: 100%;
-	font-size: 12;
-	font-family: Arial;
-	font-weight: normal;
-	text-align: left;
-	vertical-align: top;
-	color: black;
-	background-color: white;
-	border-width: 0;
-}
-input.formtext{
-	width: 100%;
-	height: 100%;
-	font-size: 12;
-	font-family: Arial;
-	font-weight: normal;
-	text-align: left;
-	vertical-align: top;
-	color: black;
-	background-color: white;
-	border-width: 1;
-	border-style: solid; 
-}
-textarea.formtext{
-	width: 100%;
-	height: auto;
-	font-size: 12;
-	font-family: Arial;
-	font-weight: normal;
-	text-align: left;
-	vertical-align: top;
-	color: black;
-	background-color: white;
-	border-width: 1;
-	border-style: solid;
-}
+        p.title{
+            text-transform: uppercase;
+            font-size: 16px;
+            font-family: Arial,sans-serif;
+            font-weight: bolder;
+            text-align: left;
+            color: black;
+        }
 
-</style>
+        p.normaltext{
+            width: 100%;
+            font-size: 12px;
+            font-family: Arial,sans-serif;
+            font-weight: normal;
+            text-align: left;
+            vertical-align: top;
+            color: black;
+            background-color: white;
+            border-width: 0;
+        }
 
-<!-- CSS Script that removes textarea and textbox borders when printing ---(put this inbetween <header></header>)----------------->
-<style type="text/css" media="print">
-div.DoNotPrint {
-	display: none;
-}
+        td.heading2{
+            font-size: 12px;
+            font-family: Arial,sans-serif;
+            font-weight: bold;
+            text-align: left;
+            vertical-align: top;
+            color: white;
+            background: #444444;
+            border-width: 1px;
+        }
 
-input.noborder {
-	border : 0px;
-	background: transparent;
-}
-textarea.noborder {
-	scrollbar-3dlight-color: transparent;
-	scrollbar-3dlight-color: transparent;
-	scrollbar-arrow-color: transparent;
-	scrollbar-base-color: transparent;
-	scrollbar-darkshadow-color: transparent;
-	scrollbar-face-color: transparent;
-	scrollbar-highlight-color: transparent;
-	scrollbar-shadow-color: transparent;
-	scrollbar-track-color: transparent;
-	background: transparent;
-	overflow: hidden;
-	border : 0px;
-    white-space: pre-wrap;
-}
+        tr.odd{
+            background-color: #ffffff;
+        }
+        td.question{
+            font-size: 12px;
+            font-family: Arial,sans-serif;
+            font-weight: normal;
+            text-align: left;
+            vertical-align: top;
+            color: black;
+            border-width: 1px;
+        }
 
-</style>
+        td.answer{
+            font-size: 12px;
+            font-family: Arial,sans-serif;
+            font-weight: normal;
+            text-align: center;
+            vertical-align: top;
+            color: black;
+            border-width: 1px;
+        }
 
-<!-- Standard form functions -->
-<script language="javascript" type="text/javascript">
-	/****************************
-	startup functions 
-	****************************/
-	function startUp() {			
-		// shows the forms on development machine from notepad ++ - saves you from uploading to the server to input alignments
-		var strLoc = window.location.href.toLowerCase();
-		if(strLoc.indexOf("https") == -1) {
-			// page1
-			//var src = document.getElementById('BGImage').src;
-			//document.getElementById('BGImage').src = src.replace('$%7Boscar_image_path%7D','');
-		}
-		setDocumentTitle('CommunityPharmRequestForm',document.getElementById('PatientName').value);
-		setDefaults();			
-	//optimize window size/width
-	top.window.resizeTo(910, screen.availHeight);
-	}
-	
-	function setDocumentTitle(Title,PatientName) {
-		// set document title
-		document.title = Title + ' - ' + PatientName;					
-	}
-	
-	function setDefaults() {	            
-		// check the newform flag to ensure this is the initial load of the form
-		if (document.getElementById("newForm").value == 'True') {
-			//document.getElementById('').value = 'X';	
-		}   
-	}
+        td.normaltext{
+            width: 100%;
+            font-size: 12px;
+            font-family: Arial,sans-serif;
+            font-weight: normal;
+            text-align: left;
+            vertical-align: top;
+            color: black;
+            background-color: white;
+            border-width: 0;
+        }
 
-	/****************************
-		submit and print functions 
-	****************************/
-	function printSubmit() {
-		printLetter();
-		releaseDirtyFlag();			
-		submission();
-	}
+    </style>
 
-	function printLetter() {
-		// print the letter
-		window.print();
-	} 
+    <style media="print">
+        @page
+        {
+            size: auto;
+            margin: 10mm;
+        }
 
-	function submission() {
-		setFlag();
-		setTimeout('document.FormName.submit()',1000);			
-	}
+        .DoNotPrint {
+            display: none;
+        }
 
-	function setFlag() {
-	// indicate that the form has been submitted
-	if (document.getElementById("newForm").value == 'True')
-		document.getElementById("newForm").value = 'False';
-	}
-	
-	function showButtons() {
-		//show the bottom buttons if they are hidden
-		if (document.getElementById('BottomButtons').style.display == 'none')
-			document.getElementById('BottomButtons').style.display = '';
-	}
-	
-	/****************************
-		checkbox functions 
-	****************************/
-	function changeValue(x) {
-		if (document.getElementById(x).value == '')
-			document.getElementById(x).value = 'X';
-		else
-			document.getElementById(x).value = '';
-	}
+        .noborder {
+            border : 0;
+            background: transparent;
+            scrollbar-3dlight-color: transparent;
+            scrollbar-arrow-color: transparent;
+            scrollbar-base-color: transparent;
+            scrollbar-darkshadow-color: transparent;
+            scrollbar-face-color: transparent;
+            scrollbar-highlight-color: transparent;
+            scrollbar-shadow-color: transparent;
+            scrollbar-track-color: transparent;
+            overflow: hidden;
+        }
 
-	function displayKeyCode(evt,x) {
-		var charCode = (evt.which) ? evt.which :event.keyCode
-		// any key press except tab will constitute a value change to the checkbox
-		if (charCode != 9) {
-			changeValue(x);
-			return false;
-		}
-	}
+    </style>
 
-	/****************************
-		scripts to confirm closing of window if it has not been saved yet 
-	****************************/
-		//keypress events trigger dirty flag
-		var needToConfirm = false;
-		document.onkeyup=setDirtyFlag;
-	function setDirtyFlag() {
-		needToConfirm = true;
-	}
+    <!-- Standard form functions -->
+    <script type="text/javascript">
+        /****************************
+         startup functions
+         ****************************/
+        function startUp() {
+            // shows the forms on development machine from notepad ++ - saves you from uploading to the server to input alignments
+            var strLoc = window.location.href.toLowerCase();
+            if(strLoc.indexOf("https") == -1) {
+                // page1
+                //var src = document.getElementById('BGImage').src;
+                //document.getElementById('BGImage').src = src.replace('$%7Boscar_image_path%7D','');
+            }
+            setDocumentTitle('CommunityPharmRequestForm',document.getElementById('PatientName').value);
+            setDefaults();
+            //optimize window size/width
+            top.window.resizeTo(910, screen.availHeight);
+        }
 
-	function releaseDirtyFlag() {
-		needToConfirm = false; 
-		//Call this function if does not require an alert.
-		//this could be called when save button is clicked
-	}
-		window.onbeforeunload = confirmExit;
+        function setDocumentTitle(Title,PatientName) {
+            // set document title
+            document.title = Title + ' - ' + PatientName;
+        }
 
-	function confirmExit() {
-		if (needToConfirm) {
-		return "You have attempted to leave this page. If you have made any changes to the fields without clicking the Save button, your changes will be lost. Are you sure you want to exit this page?";
-		}
-	}
-</script>
+        function setDefaults() {
+            // check the newform flag to ensure this is the initial load of the form
+            if (document.getElementById("newForm").value == 'True') {
+                //document.getElementById('').value = 'X';
+            }
+        }
 
-<!--Checkbox calculation functions-->
-<script type="text/javascript" language="javascript">
-function getCheckedValue(checkboxObj) {
-			if(!checkboxObj)
-				return parseInt(0);
-			var checkboxLength = checkboxObj.length;
-			if(checkboxLength == undefined)
-				if(checkboxObj.checked)
-					return parseInt(checkboxObj.value);
-				else
-					return parseInt(value);
-			for(var i = 0; i < checkboxLength; i++) {
-				if(checkboxObj[i].checked) {
-					return parseInt(checkboxObj[i].value);
-				}
-			}
-			return parseInt(0);
-		}
+        /****************************
+         submit and print functions
+         ****************************/
+        function printSubmit() {
+            printLetter();
+            releaseDirtyFlag();
+            submission();
+        }
+
+        function printLetter() {
+            // print the letter
+            window.print();
+        }
+
+        function submission() {
+            setFlag();
+            setTimeout('document.FormName.submit()',1000);
+        }
+
+        function setFlag() {
+            // indicate that the form has been submitted
+            if (document.getElementById("newForm").value == 'True')
+                document.getElementById("newForm").value = 'False';
+        }
+
+        function showButtons() {
+            //show the bottom buttons if they are hidden
+            if (document.getElementById('BottomButtons').style.display == 'none')
+                document.getElementById('BottomButtons').style.display = '';
+        }
+
+        /****************************
+         checkbox functions
+         ****************************/
+        function changeValue(x) {
+            if (document.getElementById(x).value == '')
+                document.getElementById(x).value = 'X';
+            else
+                document.getElementById(x).value = '';
+        }
+
+        function displayKeyCode(evt,x) {
+            var charCode = (evt.which) ? evt.which :event.keyCode
+            // any key press except tab will constitute a value change to the checkbox
+            if (charCode != 9) {
+                changeValue(x);
+                return false;
+            }
+        }
+
+        /****************************
+         scripts to confirm closing of window if it has not been saved yet
+         ****************************/
+            //keypress events trigger dirty flag
+        var needToConfirm = false;
+        document.onkeyup=setDirtyFlag;
+        function setDirtyFlag() {
+            needToConfirm = true;
+        }
+
+        function releaseDirtyFlag() {
+            needToConfirm = false;
+            //Call this function if does not require an alert.
+            //this could be called when save button is clicked
+        }
+        window.onbeforeunload = confirmExit;
+
+        function confirmExit() {
+            if (needToConfirm) {
+                return "You have attempted to leave this page. If you have made any changes to the fields without clicking the Save button, your changes will be lost. Are you sure you want to exit this page?";
+            }
+        }
+    </script>
+
+    <!--Checkbox calculation functions-->
+    <script type="text/javascript" language="javascript">
+        function getCheckedValue(checkboxObj) {
+            if(!checkboxObj)
+                return parseInt(0);
+            var checkboxLength = checkboxObj.length;
+            if(checkboxLength == undefined)
+                if(checkboxObj.checked)
+                    return parseInt(checkboxObj.value);
+                else
+                    return parseInt(value);
+            for(var i = 0; i < checkboxLength; i++) {
+                if(checkboxObj[i].checked) {
+                    return parseInt(checkboxObj[i].value);
+                }
+            }
+            return parseInt(0);
+        }
 
 
-</script>
+    </script>
 
 
 </head>
 
 <body onload="startUp();" onMouseDown="showButtons();">
 <form method="post" action="" name="FormName" id="" >
-   <div name="logo"> 
-<table width="100%";>
-	<tr>
-    <td rowspan="3"><img id="logo" src="${oscar_image_path}pcn_logo.png"></td>
-    <td></td>
-    <td>Phone: <input name="MOAPhone" id= "MOAPhone" type="text" class="noborder" style="left: 560px; top: 87px; width: 98px; height: 13px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB="current_user_phone"></td> 
-</tr>
-<tr>
-    <td></td>
-    <td>Fax: <input name="MOAFax" id= "MOAFax" type="text" class="noborder" style="left: 560px; top: 87px; width: 98px; height: 13px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB="current_user_fax"></td>
-</tr>
-    <tr><td></td><td>Email: pcn.moa  <input name="MOAEmail" id= "MOAEmail" type="text" class="noborder" style="left: 560px; top: 87px; width: 12px; height: 13px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;">@ubc.ca</td></tr>
-    
-</table>
-   </div>
+    <div name="logo">
+        <table width="100%";>
+            <tr>
+                <td rowspan="3"><img id="logo" src="${oscar_image_path}pcn_logo.png"></td>
+                <td></td>
+                <td>Phone: <input name="MOAPhone" id= "MOAPhone" type="text" class="noborder" style="left: 560px; top: 87px; width: 98px; height: 13px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB="current_user_phone"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Fax: <input name="MOAFax" id= "MOAFax" type="text" class="noborder" style="left: 560px; top: 87px; width: 98px; height: 13px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB="current_user_fax"></td>
+            </tr>
+            <tr><td></td><td>Email: pcn.moa  <input name="MOAEmail" id= "MOAEmail" type="text" class="noborder" style="left: 560px; top: 87px; width: 12px; height: 13px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;">@ubc.ca</td></tr>
+
+        </table>
+    </div>
     <p class="title">Request Form - Time Sensitive</p>
-<div name="demographics">
-    <table width="100%">
-        <tr>
-            <td class="heading2" style="width:50%">Date</td>
-            <td><input name="Date" id="Date" type="text" class="noborder" style="width: 200px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;"  oscarDB=today></td>
-            <td class="heading2" style="width:50%">Patient Name</td>
-            <td><input name="PatientName" id="PatientName" type="text" class="noborder" style="width: 200px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=patient_name></td>
-        </tr>
-        <tr>
-            <td class="heading2" style="width:50%">To</td>
-            <td><input name="SendTo" id="SendTo" type="text" class="noborder" style="width: 200px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;"></td>
-            <td class="heading2" style="width:50%">PHN</td>
-            <td><input name="PHN" id="PHN" type="text" class="noborder" style="width: 200px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=hinc></td>
-        </tr>
-        <tr>
-            <td class="heading2" style="width:50%">Fax #</td>
-            <td><input name="FaxNumber" id="FaxNumber" type="text" class="noborder" style="width: 200px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;"></td>
-            <td class="heading2" style="width:50%">DOB</td>
-            <td><input name="DOB" id="DOB" type="text" class="noborder" style="width: 200px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=dob></td>
-        </tr>
-    </table>
-</div>
-<div name="Context">
-	
-				<p class="normaltext"> Hello, I am a Primary Care Clinical Pharmacist participating in the care of this mutual patient. As we are both in this patient&#39;s circle of care, sharing information supports safe and effective pharmacy care.
-                <br>
-                <br>May I please receive the following from you for this patient by <input name="WantDate" id= "WantDate" type="text" class="noborder" style="left: 560px; top: 87px; width: 98px; height: 13px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=today>    
-                </p>
-		
-			
-	</div>
+    <div name="demographics">
+        <table width="100%">
+            <tr>
+                <td class="heading2" style="width:50%">Date</td>
+                <td><input name="Date" id="Date" type="text" class="noborder" style="width: 200px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;"  oscarDB=today></td>
+                <td class="heading2" style="width:50%">Patient Name</td>
+                <td><input name="PatientName" id="PatientName" type="text" class="noborder" style="width: 200px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=patient_name></td>
+            </tr>
+            <tr>
+                <td class="heading2" style="width:50%">To</td>
+                <td><input name="SendTo" id="SendTo" type="text" class="noborder" style="width: 200px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;"></td>
+                <td class="heading2" style="width:50%">PHN</td>
+                <td><input name="PHN" id="PHN" type="text" class="noborder" style="width: 200px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=hinc></td>
+            </tr>
+            <tr>
+                <td class="heading2" style="width:50%">Fax #</td>
+                <td><input name="FaxNumber" id="FaxNumber" type="text" class="noborder" style="width: 200px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;"></td>
+                <td class="heading2" style="width:50%">DOB</td>
+                <td><input name="DOB" id="DOB" type="text" class="noborder" style="width: 200px; height: 25px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=dob></td>
+            </tr>
+        </table>
+    </div>
+    <div name="Context">
 
-<div name="questionnaire">
-<table width="100%" border="1" style="border-collapse: collapse">
-	<tr class="odd">
-        <td class="answer" width=10%><input name="Q1" id="Q1" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
-		<td class="question" width=90%>Most recent Best Possible Medication History/Medication Review notes</td>
-	</tr>
-	<tr class="odd">
-        <td class="answer"><input name="Q2" id="Q2" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
-        <td class="question">Pharmanet Clarification</td>
-    </tr>
-	<tr class="odd">
-        <td class="answer"><input name="Q3" id="Q3" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
-        <td class="question">Allergy details noted on file</td>
-    </tr>
-    <tr class="odd">
-        <td class="answer"><input name="Q4" id="Q4" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
-        <td class="question">Health measurements (blood pressure, blood glucose, weights)</td>
-    </tr>
-    <tr class="odd">
-        <td class="answer"><input name="Q5" id="Q5" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
-        <td class="question">Compliance information (e.g., early refill requests, medication adminitration record)</td>
-    </tr>
-    <tr class="odd">
-        <td class="answer"><input name="Q6" id="Q6" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
-        <td class="question">Details of past medication use</td>
-    </tr>
-    <tr class="odd">
-        <td class="answer"><input name="Q7" id="Q7" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
-        <td class="question">Other (Enter below)</td>
-    </tr>      
-    </table>
-</div>
-<p>Additional Information<br></p>
-<textarea name="PrescriberAdd" id= "PrescriberAdd" class="noborder" rows="5" maxlength="1000" style="left: 91px; top: 610px; width: 740px; height: 118px;font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;"> </textarea>
-<p>I look forward to working together, <br></p>            
-    <textarea name="SignatureAdd" id= "SignatureAdd" class="noborder" style="left: 91px; top: 755px; width: 565px; height: 115px;font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscardb="current_user_signature"></textarea> 
-<p><i>This document contains patient personal information and is intended for the receiver only. If you have received this facsimile in error, please notify the sender immediately and destroy this document.</i></p>
+        <p class="normaltext"> Hello, I am a Primary Care Clinical Pharmacist participating in the care of this mutual patient. As we are both in this patient&#39;s circle of care, sharing information supports safe and effective pharmacy care.
+            <br>
+            <br>May I please receive the following from you for this patient by <input name="WantDate" id= "WantDate" type="text" class="noborder" style="left: 560px; top: 87px; width: 98px; height: 13px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=today>
+        </p>
 
-<br>
-<br>
-<!-- The submit/print/reset buttons ------------------------------------------------------------->
-<div name="FunctionButtons" class="DoNotPrint">
-    <table>
-    <tr>
-        <td class="subjectline">
-			<input type="hidden" id="newForm" name="newForm" value="True" />				
-			Subject: <input type="text" value="CommunityPharmRequest" name="subject" value="CommunityPharmRequest" size="40">&nbsp;
-            <input value="Submit" name="SubmitButton" type="submit">
-            <input value="Reset" name="ResetButton" type="reset">
-            <input value="Print" name="PrintButton" onclick="javascript:window.print()" type="button">
-            <input id="saveAsEdoc" type="hidden" name="saveAsEdoc" value="false"> 
-             <input id="eDocument" name="eDocument" type="button" value="eDocument" onclick="document.getElementById('saveAsEdoc').value='true'; needToConfirm=false; SubmitButton.click();">
-        </td>
-    </tr>
-    </table>
+
+    </div>
+
+    <div name="questionnaire">
+        <table width="100%" border="1" style="border-collapse: collapse">
+            <tr class="odd">
+                <td class="answer" width=10%><input name="Q1" id="Q1" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+                <td class="question" width=90%>Most recent Best Possible Medication History/Medication Review notes</td>
+            </tr>
+            <tr class="odd">
+                <td class="answer"><input name="Q2" id="Q2" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+                <td class="question">Pharmanet clarification</td>
+            </tr>
+            <tr class="odd">
+                <td class="answer"><input name="Q3" id="Q3" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+                <td class="question">Allergy details noted on file</td>
+            </tr>
+            <tr class="odd">
+                <td class="answer"><input name="Q4" id="Q4" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+                <td class="question">Health measurements (e.g., blood pressure, blood glucose, weights - please see additional information)</td>
+            </tr>
+            <tr class="odd">
+                <td class="answer"><input name="Q5" id="Q5" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+                <td class="question">Compliance information (e.g., early refill requests, medication administration record - please see additional information)</td>
+            </tr>
+            <tr class="odd">
+                <td class="answer"><input name="Q6" id="Q6" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+                <td class="question">Details of past medication use</td>
+            </tr>
+            <tr class="odd">
+                <td class="answer"><input name="Q7" id="Q7" type="text" class="box1" onkeypress="javascript:return displayKeyCode(event,this.id);" onmousedown="changeValue(this.id);"></td>
+                <td class="question">Other (Enter below)</td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <p>Additional Information</p>
+        <textarea name="PrescriberAdd" id="PrescriberAdd" class="noborder" rows="5" maxlength="1000" style="left: 91px; top: 610px; width: 740px; height: 118px;font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; background-color: transparent;"></textarea>
+        <p>I look forward to working together, </p>
+        <!-- <div name="SignatureAdd" id="SignatureAdd" contentEditable="true" class="editable" style="left: 91px; top: 755px; width: 565px; height: 115px;font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; oscardb="current_user_signature"></div>-->
+<textarea name="SignatureAdd" id="SignatureAdd" class="noborder" style="left: 91px; top: 755px; width: 565px; height: 115px;font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; background-color: transparent;" oscardb="current_user_signature"></textarea>
+        <p><i>This document contains patient personal information and is intended for the receiver only. If you have received this facsimile in error, please notify the sender immediately and destroy this document.</i></p>
+    </div>
+
+
+    <!-- The submit/print/reset buttons ------------------------------------------------------------->
+    <div name="FunctionButtons" class="DoNotPrint">
+        <table>
+            <tr>
+                <td class="subjectline">
+                    <input type="hidden" id="newForm" name="newForm" value="True" />
+                    Subject: <input type="text" value="CommunityPharmRequest" name="subject" value="CommunityPharmRequest" size="40">&nbsp;
+                    <input value="Submit" name="SubmitButton" type="submit">
+                    <input value="Reset" name="ResetButton" type="reset">
+                    <input value="Print" name="PrintButton" onclick="javascript:window.print()" type="button">
+                    <input id="saveAsEdoc" type="hidden" name="saveAsEdoc" value="false">
+                    <input id="eDocument" name="eDocument" type="button" value="eDocument" onclick="document.getElementById('saveAsEdoc').value='true'; needToConfirm=false; SubmitButton.click();">
+                </td>
+            </tr>
+        </table>
     </div>
 
 </form>
-<!-- ------End of submit/print/reset buttons----------------------------------------------------->
 
 </body>
 </html>
