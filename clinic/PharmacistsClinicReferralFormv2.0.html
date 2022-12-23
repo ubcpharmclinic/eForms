@@ -1,0 +1,130 @@
+<!-- E-FORM DISCLAIMER: As is: E-Forms are shared as-is, free of charge on a share-alike basis with absolutely no guarantee or warranty. No Quality Control: The author does not vet any E-Forms and does not purport to apply any manner of quality control. Responsibility: The responsibility for the clinical and medical-legal consequences of any and all E-Forms, rest with the clinical OSCAR end-users themselves, not with the author of the eForm. This applies to both E-Forms shared by others, and those created by users themselves. Attribution: E-Forms are shared freely among the user community, with attribution to the original author of the eForm. Free: E-Forms so shared may not be sold or purchased. Provincial validation:  E-Forms are optional and non-essential add-ons, separate from OSCAR, and with their own license terms.E-Forms  are not part of the OSCAR core program functionality and code base. For this reason E-Forms are not subject to provincial validation testing and conformance criteria. E-Forms are also not subject to the ISO production process for OSCAR. -->
+<!-- Created by Jamil Devsi July 2017 -->
+<!-- Updated Aug 2018 By Brad Adams-->
+<html>
+<head>
+<style type="text/css" media="print">
+	.DoNotPrint {
+		display: none;
+	}
+	.noborder {
+		border : 0px;
+		background: transparent;
+		scrollbar-3dlight-color: transparent;
+		scrollbar-3dlight-color: transparent;
+		scrollbar-arrow-color: transparent;
+		scrollbar-base-color: transparent;
+		scrollbar-darkshadow-color: transparent;
+		scrollbar-face-color: transparent;
+		scrollbar-highlight-color: transparent;
+		scrollbar-shadow-color: transparent;
+		scrollbar-track-color: transparent;
+		background: transparent;
+		overflow: hidden;
+	}
+</style>
+</head>
+
+<title> Pharmacists Clinic Referral Form </title>
+
+<body>
+<script type="text/javascript">
+	function printForm(){
+		window.print();
+	}
+</script>
+
+<script type="text/javascript">
+	//keypress events trigger dirty flag
+	var confirmClose = false;
+	document.onkeyup=setDirtyFlag;
+
+	function setDirtyFlag(){
+		confirmClose = true;
+	}
+	function releaseDirtyFlag(){
+		confirmClose = false; // call to prevent an alert // call when submit buttom clicked
+	}
+	window.onbeforeunload = confirmExit;
+	function confirmExit(){
+		if (confirmClose){
+			return "You have made changes to this form without submitting. If you leave, your changes will be lost. Are you sure you want to exit?";
+		}
+	}
+</script>
+
+<!-- use the top one for testing on local machine. Use bottom for Oscar -->
+<!-- <img id="PCRefferalImg" src="pc_referral_form_all_2018_08_01v3.png" style="position: absolute;left: 8px; top:8px; width: 750px"> -->
+<img id="PCRefferalImg" src="${oscar_image_path}pc_referral_form_all_2018_08_01v3.png" style="position: absolute;left: 8px; top:8px; width: 750px"> 
+
+<form method="POST" action="" name="PCReferralForm" id="PCReferralForm">
+
+<div id="page1">
+
+<input name="patientName" id= "patietnName" type="text" class="noborder" style="position: absolute; left: 95px; top: 225; width: 482; height: 32; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=patient_name>
+
+<input name="patienGender" id= "patietGender" type="text" class="noborder" style="position: absolute; left: 581px; top: 225; width: 92; height: 32; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=sex>
+
+<input name="patientAddress" id= "patietAddress" type="text" class="noborder" style="position: absolute; left: 95px; top: 277; width: 577; height: 32; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=addressline>
+
+<input name="patientPHN" id= "patientPHN" type="text" class="noborder" style="position: absolute; left: 95px; top: 328; width: 287; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=hinc>
+
+<input name="patientDOB" id= "patientDOB" type="text" class="noborder" style="position: absolute; left: 385px; top: 328; width: 287; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=dob>
+
+<input name="patientPhone" id= "patientPhone" type="text" class="noborder" style="position: absolute; left: 95px; top: 382; width: 287; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=phone>
+
+<input name="patientEmail" id= "patientEmail" type="text" class="noborder" style="position: absolute; left: 385px; top: 382; width: 287; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=email>
+
+<input name="patientDrugStore" id= "patientDrugStore" type="text" class="noborder" style="position: absolute; left: 95px; top: 433; width: 557; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+<input name="clinicianName" id= "clinicianName" type="text" class="noborder" style="position: absolute; left: 95px; top: 516; width: 329; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=current_user>
+
+<input name="clinicianClinicName" id= "clinicianClinicName" type="text" class="noborder" style="position: absolute; left: 429px; top: 516; width: 243; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=clinic_name>
+
+<input name="clinicianPhone" id= "clinicianPhone" type="text" class="noborder" style="position: absolute; left: 95px; top: 569; width: 329; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=clinic_phone>
+
+<input name="clinicianFax" id= "clinicianFax"  type="text" class="noborder" style="position: absolute; left: 429px; top: 569; width: 243; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=clinic_fax>
+
+<input name="reasonConsult" id="reasonConsult" type="checkbox" class="noborder" style="position: absolute; left: 90px; top: 655; width: 20; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+<input name="reasonEducation" id="reasonEducation" type="checkbox" class="noborder" style="position: absolute; left:192px; top: 655; width: 20; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+<input name="reasonOther" id="reasonOther" type="checkbox" class="noborder" style="position: absolute; left: 353px; top: 655; width: 20; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+<input name="clinicianReasonOth" id= "clinicianReasonOth" type="text" class="noborder" style="position: absolute; left: 415px; top: 655; width: 254; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+<!--  These next four boxes are attached to nothing.  Do they need a proper input name and id?? --!>
+<input name="Consulttype IN PERSON" id="Consulttype IN PERSON" type="checkbox" class="noborder" style="position: absolute; left: 90px; top: 717; width: 20; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+<input name="Consulttype TELEPHONE" id="Consulttype TELEPHONE" type="checkbox" class="noborder" style="position: absolute; left: 208px; top: 717; width: 20; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+<input name="Consulttype VIDEO" id="Consulttype VIDEO" type="checkbox" class="noborder" style="position: absolute; left: 320px; top: 717; width: 20; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+<input name="Consulttype TBD" id="Consulttype TBD" type="checkbox" class="noborder" style="position: absolute; left: 455px; top: 717; width: 20; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+<input name="copyName" id= "copyName" type="text" class="noborder" style="position: absolute; left: 95px; top: 810; width: 191; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+<input name="copyPhone" id= "copyPhone" type="text" class="noborder" style="position: absolute; left: 290px; top: 810; width: 190; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+<input name="copyFax" id= "copyFax" type="text" class="noborder" style="position: absolute; left: 485px; top: 810; width: 188; height: 30; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+
+
+</div>
+
+<div class="DoNotPrint" style="position: absolute; top:929px; left:0px;" id="BottomButtons" >
+	<table>
+	 	<tr>
+	 		<td class="subjectline">
+		 		Subject: <input type="text" name="subject" size="40">&nbsp;
+				<input value="Submit" name="SubmitButton" id="SubmitButton" type="submit" onclick="releaseDirtyFlag();"> 
+				<input value="Reset" name="ResetButton" id="ResetButton" type="reset"> 
+				<input value="Print" name="PrintButton" id="PrintButton" type="button" onclick="printForm();"> 
+				<input value="Print & Submit" name="PrintSubmitButton" id="PrintSubmitButton" type="button" onclick="releaseDirtyFlag();printForm();setTimeout('SubmitButton.click()',1000);">
+			</td>
+		</tr>
+	</table> 
+</div>
+	<!--  <a  href="https://medinetmail.ca/ubcpharmclinic.htm" target="_blank" style="position: absolute; left:166px; top: 733; width: 600; height: 22; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 15px; text-align: left; background-color: #FFFFFF;">https://medinetmail.ca/ubcpharmclinic.htm </a> -->
+
+	<!--  <a  href="https://pharmsci.ubc.ca/pharmacists-clinic/location" target="_blank" style="position: absolute; left:227px; top: 840; width: 400; height: 22; font-family:sans-serif;font-style: normal; font-weight: normal;font-size: 15px; text-align: left; background-color: #FFFFFF;">https://pharmsci.ubc.ca/pharmacists-clinic/location</a> -->
+</form>
+</body>
+</html>

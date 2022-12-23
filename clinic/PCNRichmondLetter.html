@@ -1,0 +1,155 @@
+<!-- Created by Jamil Devsi, Colcamex Resources Inc. -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css" media="print">
+@page 
+	{ 
+		size: auto;
+		margin: 10mm;
+	}
+
+div.DoNotPrint {
+	display: none;
+}
+
+input.noborderinfo {
+	border : 0px;
+    width : 100px;
+	background: transparent;
+}
+input.noborder {
+	border : 0px;
+	background: transparent;
+}
+textarea.noborder {
+	scrollbar-3dlight-color: transparent;
+	scrollbar-3dlight-color: transparent;
+	scrollbar-arrow-color: transparent;
+	scrollbar-base-color: transparent;
+	scrollbar-darkshadow-color: transparent;
+	scrollbar-face-color: transparent;
+	scrollbar-highlight-color: transparent;
+	scrollbar-shadow-color: transparent;
+	scrollbar-track-color: transparent;
+	background: transparent;
+	overflow: hidden;
+	border : 0px;
+}
+td{
+	font-size: 12;
+	font-family: Arial;
+}
+</style>
+
+    
+</head>
+
+<title> PCN Richmond</title>
+<body>
+<script type="text/javascript">
+	function printForm(){
+		window.print();
+	}
+</script>
+
+<script type="text/javascript">
+	//keypress events trigger dirty flag
+	var confirmClose = false;
+	document.onkeyup=setDirtyFlag;
+
+	function setDirtyFlag(){
+		confirmClose = true;
+	}
+	function releaseDirtyFlag(){
+		confirmClose = false; // call to prevent an alert // call when submit buttom clicked
+	}
+	window.onbeforeunload = confirmExit;
+	function confirmExit(){
+		if (confirmClose){
+			return "You have made changes to this form without submitting. If you leave, your changes will be lost. Are you sure you want to exit?";
+		}
+	}
+</script>
+    
+    <!-- <img id="PCNoticeImg" src="${oscar_image_path}notice_of_appointment_fax_template.png" style="position: absolute;left: 0px; top:0px; width: 750px">  -->
+
+    <form method="post" action="" name="pcnRichmond" id="pcnRichmond" >    
+        <div id="page1">
+            <img id="BGPage1" src="${oscar_image_path}Richmond-PARIS-note.png" style="position: absolute;left: 0px; top:0px; width: 750px"> 
+
+            <input name="client" id= "client" type="text" class="noborder" style="position: absolute; left: 124px; top: 126px; width: 240px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=patient_name>
+
+            <input name="parisId" id= "parisId" type="text" class="noborder" style="position: absolute; left: 420px; top: 126px; width: 274px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;">
+
+            <input name="dob" id= "dob" type="text" class="noborder" style="position: absolute; left:120px; top: 144px; width:138px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=dobc>
+
+            <input name="age" id= "age" type="text" class="noborder" style="position: absolute; left:286px; top: 144px; width: 78px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=age>
+
+            <input name="phn" id= "phn" type="text" class="noborder" style="position: absolute; left: 398px; top: 144px; width: 296px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=hinc>
+
+            <input name="sex" id= "sex" type="text" class="noborder" style="position: absolute; left: 130px; top: 162px; width: 20px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=sex>
+
+            <input name="phone" id= "phone" type="text" class="noborder" style="position: absolute; left: 406px; top: 162px; width: 288px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=phone>
+
+            <input name="phone" id= "phone" type="text" class="noborder" style="position: absolute; left: 162px; top: 173px; width: 236px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=addressline>
+
+            <input name="caseNoteDate" id= "caseNoteDate" type="text" class="noborder" style="position: absolute; left: 162px; top: 202px; width: 228px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;">
+
+            <input name="teamName" id= "teamName" type="text" class="noborder" style="position: absolute; left: 452px; top: 202px; width: 242px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;">
+
+            <input name="caseNoteReason" id= "caseNoteReason" type="text" class="noborder" style="position: absolute; left: 174px; top: 222px; width: 216px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;">
+
+            <input name="staff" id= "staff" type="text" class="noborder" style="position: absolute; left: 458px; top: 222px; width: 236px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;">
+
+            <input name="actionYes" id="actionYes" type="checkbox" class="noborder" style="position: absolute; left:90px; top:304px; background-color: transparent;">
+
+            <input name="actionNo" id="actionNo" type="checkbox" class="noborder" style="position: absolute; left:356px; top:304px; background-color: transparent;">
+
+            <input name="date" id= "date" type="text" class="noborder" style="position: absolute; left: 116px; top: 330px; width: 105px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;" oscarDB=today>
+
+            <input name="noPages" id= "noPages" type="text" class="noborder" style="position: absolute; left: 282px; top: 330px; width: 105px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;">
+
+            <input name="toName" id= "toName" type="text" class="noborder" style="position: absolute; left: 116px; top: 348px; width: 105px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;">
+
+            <input name="fromName" id= "fromName" type="text" class="noborder" style="position: absolute; left: 316px; top: 348px; width: 105px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;">
+
+            <input name="fax" id= "fax" type="text" class="noborder" style="position: absolute; left: 116px; top: 364px; width: 105px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;">
+
+            <input name="pcnPhone" id= "pcnPhone" type="text" class="noborder" style="position: absolute; left: 376px; top: 366px; width: 60px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;">
+
+            <input name="pcnFax" id= "pcnFax" type="text" class="noborder" style="position: absolute; left: 466px; top: 366px; width: 60px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;">
+
+            <input name="seenBy" id= "seenBy" type="text" class="noborder" style="position: absolute; left: 136px; top: 400px; width: 102px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;">
+
+            <input name="dateSeen" id= "dateSeen" type="text" class="noborder" style="position: absolute; left: 264px; top: 400px; width: 102px; height: 12px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;">
+
+            <textarea name="famDr" id= "famDr" class="noborder" style="position: absolute; left: 88px; top: 450px; width: 618px; height: 225px;font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;"></textarea> 
+
+            <textarea name="pcnClinician" id= "pcnClinician" class="noborder" style="position: absolute; left: 88px; top: 702px; width: 618px; height: 78px;font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;"></textarea>
+
+            <textarea name="followup" id= "followup" class="noborder" style="position: absolute; left: 88px; top: 802px; width: 618px; height: 20px;font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 12px; text-align: left; background-color: transparent;"></textarea> 
+
+        </div>
+        <div class="DoNotPrint" style="position: absolute; top:950px; left:0px;" id="BottomButtons">
+            <table>
+             <tr>
+                 <td class="subjectline">
+                 Subject: <input type="text" name="subject"  value="PCN Richmond Letter" size="40">&nbsp;
+                    <input value="Save" name="SubmitButton" id="SubmitButton" type="submit" onclick="releaseDirtyFlag();">
+                    <input name="saveAsEdoc" type="hidden" id="saveAsEdoc" value="false">
+                    <!-- <input value="eDocument" name="eDocument" type="button" onclick="document.getElementById('saveAsEdoc').value='true'; releaseDirtyFlag(); SubmitButton.click();"> -->
+                    <input value="Reset" name="ResetButton" id="ResetButton" type="reset" onclick="">
+                    <input value="Print" name="PrintButton" id="PrintButton" type="button" onclick="printForm();">
+                <!-- <input value="Print & Save" name="PrintSubmitButton" id="PrintSubmitButton" type="button" onclick="releaseDirtyFlag();printForm();setTimeout('SubmitButton.click()',1000);"> -->
+                </td>
+            </tr>
+        </div>
+
+    </table> 
+
+    </form>
+    
+    </body>
+</html>

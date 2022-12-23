@@ -1,0 +1,224 @@
+<!-- Created by Jamil Devsi, Colcamex Resources Inc. -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css" media="print">
+
+	@page 
+	{ 
+		size: auto;
+		margin: 10mm;
+	}
+
+div.DoNotPrint {
+	display: none;
+}
+
+input.noborderinfo {
+	border : 0px;
+    width : 100px;
+	background: transparent;
+}
+input.noborder {
+	border : 0px;
+	background: transparent;
+}
+textarea.noborder {
+	scrollbar-3dlight-color: transparent;
+	scrollbar-3dlight-color: transparent;
+	scrollbar-arrow-color: transparent;
+	scrollbar-base-color: transparent;
+	scrollbar-darkshadow-color: transparent;
+	scrollbar-face-color: transparent;
+	scrollbar-highlight-color: transparent;
+	scrollbar-shadow-color: transparent;
+	scrollbar-track-color: transparent;
+	background: transparent;
+	overflow: hidden;
+	border : 0px;
+}
+
+</style>
+
+    
+</head>
+
+<title> PCN Kootenay Boundary Referral</title>
+<body>
+<script type="text/javascript">
+	function printForm(){
+		window.print();
+	}
+</script>
+
+<script type="text/javascript">
+	//keypress events trigger dirty flag
+	var confirmClose = false;
+	document.onkeyup=setDirtyFlag;
+
+	function setDirtyFlag(){
+		confirmClose = true;
+	}
+	function releaseDirtyFlag(){
+		confirmClose = false; // call to prevent an alert // call when submit buttom clicked
+	}
+	window.onbeforeunload = confirmExit;
+	function confirmExit(){
+		if (confirmClose){
+			return "You have made changes to this form without submitting. If you leave, your changes will be lost. Are you sure you want to exit?";
+		}
+	}
+</script>
+
+    <form method="post" action="" name="KootenayBoundary" id="KootenayBoundary" >    
+        <div id="page1">
+            <img id="BGPage1" src="${oscar_image_path}PCN-Referral-Kootenay-Boundary-Interior-Health-835107-1.png" style="position: absolute;left: 0px; top:0px; width: 750px"> 
+
+            <input name="patientNameL" id= "patientNameL" type="text" class="noborder" style="position: absolute; left: 496px; top: 21px; width: 226px; height: 17px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=patient_nameL>
+
+            <input name="patientNameF" id= "patientNameF" type="text" class="noborder" style="position: absolute; left: 496px; top: 44px; width: 226px; height: 17px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=patient_nameF>
+
+            <input name="dateOfBirth" id= "dateOfBirth" type="text" class="noborder" style="position: absolute; left: 496px; top: 67px; width: 226px; height: 17px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=dobc>
+
+            <input name="PHN" id="PHN" type="text" class="noborder" style="position: absolute; left: 428px; top: 92px; width: 115px; height: 16px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=hinc>
+
+            <input name="MRN" id="MRN" type="text" class="noborder" style="position: absolute; left: 590px; top: 92px; width: 132px; height: 16px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+            <input name="accountVisit" id= "accountVisit" type="text" class="noborder" style="position: absolute; left: 480px; top: 115px; width: 242px; height: 16px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+            <input name="primaryCareProvider" id= "primaryCareProvider" type="text" class="noborder" style="position: absolute; left: 178px; top: 150px; width: 190px; height: 16px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+            <input name="clinicName" id= "clinicName" type="text" class="noborder" style="position: absolute; left: 454px; top: 150px; width: 270px; height: 16px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+            <input name="client" id= "client" type="text" class="noborder" style="position: absolute; left: 210px; top: 172px; width: 204px; height: 16px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=patient_name>
+
+            <input name="dob" id= "dob" type="text" class="noborder" style="position: absolute; left: 525px; top: 172px; width: 80px; height: 16px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=dobc>
+
+            <input name="phn" id= "phn" type="text" class="noborder" style="position: absolute; left: 650px; top: 172px; width: 74px; height: 16px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=hinc>
+
+            <input name="preferredName" id= "preferredName" type="text" class="noborder" style="position: absolute; left: 148px; top:194px; width: 177px; height: 14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+            <input name="preferredPronoun" id= "preferredPronoun" type="text" class="noborder" style="position: absolute; left:437px; top:194px; width:34px; height: 14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+            <input name="email" id= "email" type="text" class="noborder" style="position: absolute; left:565px; top:194px; width:159px; height: 14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=email>
+
+           <!--  <input name="addressFull" id= "addressFull" type="text" class="noborder" style="position: absolute; left:110px; top:216px; width:260px; height: 14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=addressline> -->
+
+            <input name="address" id= "address" type="text" class="noborder" style="position: absolute; left:110px; top:216px; width:260px; height: 14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=address_street_number_and_name>
+
+            <input name="city" id= "city" type="text" class="noborder" style="position: absolute; left:410px; top:216px; width:180px; height: 14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=city>
+
+            <input name="postalCode" id= "postalCode" type="text" class="noborder" style="position: absolute; left:672px; top:216px; width:52px; height: 14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=postal>
+
+            <input name="homePhone" id= "homePhone" type="text" class="noborder" style="position: absolute; left:132px; top:238px; width:106px; height: 14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=phone>
+
+            <input name="cellPhone" id= "cellPhone" type="text" class="noborder" style="position: absolute; left:312px; top:238px; width:102px; height: 14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=cell>
+
+            <input name="referralSource" id="referralSource" type="text" class="noborder" style="position: absolute; left:560px; top:238px; width:164px; height: 14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=current_user_fname_lname>
+
+            <input name="alternateContact" id="alternateContact" type="text" class="noborder" style="position: absolute; left:307px; top:258px; width:417px; height:14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+            <input name="firstNationsStatus" id="firstNationsStatus" type="checkbox" class="noborder" style="position: absolute; left:61px; top:307px; background-color: transparent;">
+
+            <input name="firstNationsNonStatus" id="firstNationsNonStatus" type="checkbox" class="noborder" style="position: absolute; left:188px; top:307px; background-color: transparent;">
+
+            <input name="metis" id="metis" type="checkbox" class="noborder" style="position: absolute; left:339px; top:307px; background-color: transparent;">
+
+            <input name="inuit" id="inuit" type="checkbox" class="noborder" style="position: absolute; left:397px; top:307px; background-color: transparent;">
+
+            <input name="other" id="other" type="checkbox" class="noborder" style="position: absolute; left:449px; top:307px; background-color: transparent;">
+
+            <input name="otherText" id="otherText" type="text" class="noborder" style="position: absolute; left:503px; top:305px; width:220px; height:14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+            <!-- referral To -->
+            <input name="regDiet" id="regDiet" type="checkbox" class="noborder" style="position: absolute; left:73px; top:365px; background-color: transparent;">
+
+            <input name="respTherapist" id="respTherapist" type="checkbox" class="noborder" style="position: absolute; left:73px; top:380px; background-color: transparent;">
+
+            <input name="clinPharm" id="clinPharm" type="checkbox" class="noborder" style="position: absolute; left:73px; top:396px; background-color: transparent;">
+
+            <input name="abHealthCoordin" id="abHealthCoordin" type="checkbox" class="noborder" style="position: absolute; left:73px; top:412px; background-color: transparent;">
+
+            <input name="routine" id="routine" type="checkbox" class="noborder" style="position: absolute; left:404px; top:365px; background-color: transparent;">
+
+            <input name="urgent" id="urgent" type="checkbox" class="noborder" style="position: absolute; left:404px; top:380px; background-color: transparent;">
+
+            <input name="urgencyText" id="urgencyText" type="text" class="noborder" style="position: absolute; left:425px; top:396px; width:288px; height:14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+            <!-- Reason for Referral -->
+            <input name="groupVisit" id="groupVisit" type="checkbox" class="noborder" style="position: absolute; left:73px; top:472px; background-color: transparent;">
+
+            <input name="groupVisitText" id= "groupVisitText" type="text" class="noborder" style="position: absolute; left:245px; top:468px; width:467px; height:14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+            <input name="staffEducation" id="staffEducation" type="checkbox" class="noborder" style="position: absolute; left:73px; top:491px; background-color: transparent;">
+
+            <input name="staffEducationText" id= "staffEdicationText" type="text" class="noborder" style="position: absolute; left:224px; top:487px; width:488px; height:14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+            <input name="teachingResources" id="teachingResources" type="checkbox" class="noborder" style="position: absolute; left:73px; top:511px; background-color: transparent;">
+
+            <input name="teachingResourcesText" id= "teachingResourcesText" type="text" class="noborder" style="position: absolute; left:248px; top:507px; width:464px; height:14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+            <input name="clinicConsult" id="clinicConsult" type="checkbox" class="noborder" style="position: absolute; left:73px; top:530px; background-color: transparent;">
+
+            <input name="clinicConsultText" id= "clinicConsultText" type="text" class="noborder" style="position: absolute; left:220px; top:526px; width:492px; height:14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+            <input name="communityPharm" id="communityPharm" type="checkbox" class="noborder" style="position: absolute; left:73px; top:550px; background-color: transparent;">
+
+            <input name="communityPharmText" id= "communityPharmText" type="text" class="noborder" style="position: absolute; left:256px; top:546px; width:456px; height:14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+            <input name="referralOther" id="referralOther" type="checkbox" class="noborder" style="position: absolute; left:73px; top:570px; background-color: transparent;">
+
+            <input name="referralOtherText" id= "referralOtherText" type="text" class="noborder" style="position: absolute; left:178px; top:566px; width:534px; height:14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+            <input name="barriers" id= "barriers" type="text" class="noborder" style="position: absolute; left:252px; top:587px; width:460px; height:14px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+        </div>
+
+        <div id="page2">
+            <img id="BGPage2" src="${oscar_image_path}PCN-Referral-Kootenay-Boundary-Interior-Health-835107-2.png" style="position: absolute;left: 0px; top:950px; width: 750px">
+
+            <input name="patientNameL2" id= "patientNameL2" type="text" class="noborder" style="position: absolute; left: 452px; top: 971px; width: 226px; height: 17px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=patient_nameL>
+
+            <input name="patientNameF2" id= "patientNameF2" type="text" class="noborder" style="position: absolute; left: 452px; top: 994px; width: 226px; height: 17px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=patient_nameF>
+
+            <input name="dateOfBirth2" id= "dateOfBirth2" type="text" class="noborder" style="position: absolute; left: 452px; top: 1017px; width: 226px; height: 17px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=dobc>
+
+            <input name="PHN2" id= "PHN2" type="text" class="noborder" style="position: absolute; left: 384px; top: 1042px; width: 115px; height: 16px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=hinc>
+
+            <input name="MRN2" id= "MRN2" type="text" class="noborder" style="position: absolute; left: 546px; top: 1042px; width: 132px; height: 16px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+            <input name="accountVisit2" id= "accountVisit2" type="text" class="noborder" style="position: absolute; left: 436px; top: 1065px; width: 242px; height: 16px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+            <input name="date" id= "date" type="text" class="noborder" style="position: absolute; left: 22px; top: 1223px; width: 153px; height: 16px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+            <input name="time" id= "time" type="text" class="noborder" style="position: absolute; left: 181px; top: 1223px; width: 82px; height: 16px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=time>
+
+            <input name="referringProvider" id= "referringProvider" type="text" class="noborder" style="position: absolute; left: 270px; top: 1223px; width: 258px; height: 16px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;" oscarDB=current_user_fname_lname>
+
+            <input name="collegeId" id= "collegeId" type="text" class="noborder" style="position: absolute; left: 534px; top: 1223px; width:144px; height: 16px; font-family:sans-serif;font-style: normal;font-weight: normal;font-size: 16px; text-align: left; background-color: transparent;">
+
+
+        </div>
+
+        <div class="DoNotPrint" style="position: absolute; top:1900px; left:0px;" id="BottomButtons">
+            <table>
+             <tr>
+                 <td class="subjectline">
+                 Subject: <input type="text" name="subject"  value="PCN Kootenay Referral" size="40">&nbsp;
+                    <input value="Save" name="SubmitButton" id="SubmitButton" type="submit" onclick="releaseDirtyFlag();">
+                    <!-- <input name="saveAsEdoc" type="hidden" id="saveAsEdoc" value="false"> -->
+                    <!-- <input value="eDocument" name="eDocument" type="button" onclick="document.getElementById('saveAsEdoc').value='true'; releaseDirtyFlag(); SubmitButton.click();"> -->
+                    <input value="Reset" name="ResetButton" id="ResetButton" type="reset" onclick="">
+                    <input value="Print" name="PrintButton" id="PrintButton" type="button" onclick="printForm();">
+                <!-- <input value="Print & Save" name="PrintSubmitButton" id="PrintSubmitButton" type="button" onclick="releaseDirtyFlag();printForm();setTimeout('SubmitButton.click()',1000);"> -->
+                </td>
+            </tr>
+        </div>
+
+    </table> 
+
+    </form>
+    
+    </body>
+</html>

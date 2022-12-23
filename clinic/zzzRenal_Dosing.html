@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+.capitalize {
+  text-transform: capitalize;
+}
+div.refreshMedList {
+   column-gap: 35px;
+}
+
+ul {
+    margin-top: 0px;
+    margin-bottom:0px;
+    list-style-type:disc;
+    list-style-position: outside;
+    columns: 2;
+    column-gap: 35px;
+    width:650px;
+}
+
+li+ul {padding-left: 20px;}
+
+
+th input[type="text"] { 
+background: lightblue;
+border: none;
+text-align: center;
+}
+
+td, th {
+border-style : hidden!important;
+}
+
+td input[type="text"] { 
+border-top: none;
+border-right: none;
+border-left: none;
+text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+.col1 {
+//  visibility: hidden; }
+
+
+@media print{
+   div.DoNotPrint {
+                display: none;
+        visibility: hidden;
+        height: 0;
+}
+
+   .collapsible {
+                display: none;
+        visibility: hidden;
+        height: 0;
+}
+
+    .noShowColumn{
+                display: none;
+        visibility: hidden;
+        height: 0;
+}
+
+}
+
+.width-machine {
+  /*   Sort of a magic number to add extra space for number spinner */
+  padding: 0 1rem;
+}
+
+.grow-wrap {
+  /* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
+  display: grid;
+}
+.grow-wrap::after {
+  /* Note the weird space! Needed to preventy jumpy behavior */
+  content: attr(data-replicated-value) " ";
+
+  /* This is how textarea text behaves */
+  white-space: pre-wrap;
+
+  /* Hidden from view, clicks, and screen readers */
+  visibility: hidden;
+}
+.grow-wrap > textarea {
+  /* You could leave this, but after a user resizes, then it ruins the auto sizing */
+   resize: none;
+
+  /* Firefox shows scrollbar on growth, you can hide like this. */
+  overflow: hidden;
+}
+.grow-wrap > textarea,
+.grow-wrap::after {
+  /* Identical styling required!! */
+  border: 1px solid black;
+  padding: 0.5rem;
+  font: inherit;
+
+  /* Place on top of each other */
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.collapsible {
+  background-color: #99ccff;
+  color: black;
+  cursor: pointer;
+  padding: 2px;
+  width: 60%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 14px;
+}
+
+.active, .collapsible:hover {
+  background-color: #0066ff;
+    color: white;
+}
+
+.content_collapsibles {
+  padding: 0 4px;
+  display: none;
+  overflow: hidden;
+}
+
+.content_collapsibles_Open {
+  padding: 0 4px;
+  display: visible;
+  overflow: hidden;
+}
+
+
+.gw > textarea {
+  /* You could leave this, but after a user resizes, then it ruins the auto sizing */
+   resize: none;
+   border: none;
+}
+
+.tg_Rec  {border-collapse:collapse;border-spacing:0;}
+.tg_Rec td{border-style:none;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:0px 0px;word-break:normal;}
+.tg_Rec th{border-style:none;font-family:Arial, sans-serif;font-size:14px; font-weight:normal;overflow:hidden;padding:0px 0px;word-break:normal;}
+.tg_Rec .tg-1wig{font-weight:bold;text-align:left;vertical-align:top}
+.tg_Rec .tg-0lax{text-align:left;vertical-align:top}
+.tg_Rec .tg-amwm{font-weight:bold;text-align:left;vertical-align:top}
+
+
+</style>
+
+</head>
+
+<title>Dosing of Renal Medications</title>
+
+<body onload="viewRDRRows()">
+
+<form method="post" action="" name="zzzRenal_Dosing" id="zzzRenal_Dosing">
+
+<input name="drugList" id="drugList" type="text" style="display: none" oscarDB=druglist_line></input>
+
+
+<h1 style="font-family: arial, sans-serif; font-size: 24px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Renal Dosing of Medications</h1>
+<br>
+<label>Date of Birth:</label> <input type="text" name="patientDOB" id="patientDOB" style="position:relative; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent; border: none; width: 80px" oscarDB=dob>
+<label>Age:</label> <input type="text" name="age" id="age" value="66" style="position:relative; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent; border: none; width: 26px " oscarDB=ageComplex>
+<label>Sex:</label> <input type="text" name="sex" id="sex" value="M" style="position:relative; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent; border: none; width: 26px" oscarDB=sex>
+<br><br>
+
+<label style= "font-family: arial, sans-serif; font-size: 16px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Medications</label> 
+<div id="refreshMedList" name="refreshMedList">
+<div id="meds" class="capitalize">
+<textarea name="drugList" id="drugList" type="text" style="display: none" oscarDB=druglist_line></textarea>
+</div>
+</div>
+<div class="DoNotPrint"><button type= "button" onclick="reloadMedList()">Refresh</button> </div>
+<br>
+
+<label>Height</label>
+<input id="inchesHT" name="inchesHT" input type="text" inputmode="numeric" style="width: 30px; text-align: right " placeholder="in" oninput="heightConverter_cm(this.value)" onchange="heightConverter_cm(this.value)" oscarDB=e$last#inchesHT />
+<label>in</label>
+&nbsp;&nbsp;    
+<input id="cmHT" name="cmHT" type="text" inputmode="numeric" style="width: 30px; text-align: right" placeholder="cm" value= "" oninput="heightConverter_in(this.value)" onchange="heightConverter_in(this.value)" oscarDB=e$last#cmHT />
+<label>cm</label>
+&nbsp;&nbsp;
+<label>Weight</label>
+<input id="poundsWT" name="poundsWT"  type="text" inputmode="numeric" style="width: 30px; text-align: right" placeholder="lbs" oninput="weightConverter(this.value)" onchange="weightConverter(this.value)" />
+<label>lbs</label>
+&nbsp;
+<input id="kiloWT" name="kiloWT"  type="text" inputmode="numeric" style="width: 30px; text-align: right" placeholder="Kilo" oninput="weightConverter_lbs(this.value)" onchange="weightConverter_lbs(this.value)" /><label> Kg</label>
+&nbsp;&nbsp;
+<label>BMI </label><input id="bmi" type="text" inputmode="numeric" style="width: 30px; border: none; outline: none; font-size: 16px"></input>
+
+<br><br>
+    <label style="font-family: arial, sans-serif; font-size: 14px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Renal Function</label>
+    <br>
+    <label for="egfr">Creatinine: </label><input name="creatinine" id="creatinine" type="text" onchange="gradeCKD()" style="font-family:sans-serif; font-size:14px; text-align:left; width: 30px" oscarDB=m$creatinine#value />&nbsp<input name="creatinineDate" id="creatinineDate" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 75px" oscarDB=m$creatinine#dateObserved />&nbsp; &nbsp
+    <label for="egfr">eGFR: </label><input name="egfr" id="egfr" type="text" onchange="gradeCKD()" style="font-family:sans-serif; font-size:14px; text-align:left; width: 30px" oscarDB=m$EGFR#value />&nbsp<input name="egfrDate" id="egfrDate" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 75px" oscarDB=m$EGFR#dateObserved />&nbsp; &nbsp
+    <label>Clcr: </label><input name="calculated_Clcr" id="calculated_Clcr" type="text" style="font-family:sans-serif; font-size:14px; text-align:right; width: 25px; border: none" oscarDB=e$last#clcr />&nbsp<label>mL/min</label>&nbsp;&nbsp
+    <label for="acr">ACR: </label><input name="acr" id="acr" type="text" onchange="gradeCKD()" style="font-family:sans-serif; font-size:14px; text-align:left; width: 30px" oscarDB=m$ACR#value />&nbsp<input name="acrDate" id="acrDate" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 75px" oscarDB=m$ACR#dateObserved />&nbsp;&nbsp
+    <label for="classCKDG">KDIGO Class: </label><input name="classCKDG" id="classCKDG" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 20px; border: none" />
+    <input name="classCKDA" id="classCKDA" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 20px; border: none" />&nbsp
+    <input name="txtRemarks" id="txtRemarks" type="text" style="font-family:sans-serif; font-size:14px; text-align:left; width: 50px; border: none" />&nbsp
+    <br>
+    <br>
+    <button type="button" id="btnAnalyseMeds" onClick="renalDosingCheck()">Verify dosing for renal function</button>
+    <br>
+    <br>
+    <label style="font-family: arial, sans-serif; font-size: 14px; font-weight: bold; margin-top: 1 px; margin-bottom: 0px;">Recommendations</label>
+  <br>
+      <table class="tg_Rec" id="tblRenalDosing" name="tblRenalDosing" style="table-layout: fixed; width: 525px">
+      <colgroup>
+        <col style="width:0px">
+        <col style="width: 200px">
+        <col style="width: 600px">
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="tg-0lax"></th>
+          <th class="tg-amwm">Drug</th>
+          <th class="tg-amwm">Dosing Recommendation</th>
+          <th class="tg-amwm"></th>
+          <th class="tg-1wig"></th>
+          <th class="tg-1wig"></th>
+          <th class="tg-1wig"></th>
+        </tr>
+      </thead>
+<tbody>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_1" name="chkRD_1" unchecked /></td>
+      <td class="tg-0lax"><textarea id="drug_1" name="drug_1"  style="width: 200px; border: none; resize: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_1" name="renalDoseRec_1" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_2" name="chkRD_2" unchecked /></td>
+      <td class="tg-0lax"><textarea id="drug_2" name="drug_2" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_2" name="renalDoseRec_2" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_3" name="chkRD_3" unchecked /></td>
+     <td class="tg-0lax"><textarea id="drug_3" name="drug_3" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_3" name="renalDoseRec_3" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_4" name="chkRD_4" unchecked /></td>
+      <td class="tg-0lax"><textarea id="drug_4" name="drug_4" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_4" name="renalDoseRec_4" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_5" name="chkRD_5" unchecked /></td>
+      <td class="tg-0lax"><textarea id="drug_5" name="drug_5" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_5" name="renalDoseRec_5" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_6" name="chkRD_6" unchecked /></td>
+      <td class="tg-0lax"><textarea id="drug_6" name="drug_6" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_6" name="renalDoseRec_6" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_7" name="chkRD_7" unchecked /></td>
+      <td class="tg-0lax"><textarea id="drug_7" name="drug_7" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_7" name="renalDoseRec_7" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_8" name="chkRD_8" unchecked /></td>
+      <td class="tg-0lax"><textarea id="drug_8" name="drug_8" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_8" name="renalDoseRec_8" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_9" name="chkRD_9" unchecked /></td>
+     <td class="tg-0lax"><textarea id="drug_9" name="drug_9" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_9" name="renalDoseRec_9" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_10" name="chkRD_10" unchecked /></td>
+      <td class="tg-0lax"><textarea id="drug_10" name="drug_10" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_10" name="renalDoseRec_10" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_11" name="chkRD_11" unchecked /></td>
+      <td class="tg-0lax"><textarea id="drug_11" name="drug_11" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_11" name="renalDoseRec_11" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_12" name="chkRD_12" unchecked /></td>
+      <td class="tg-0lax"><textarea id="drug_12" name="drug_12" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_12" name="renalDoseRec_12" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_13" name="chkRD_13" unchecked /></td>
+      <td class="tg-0lax"><textarea id="drug_13" name="drug_13" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_13" name="renalDoseRec_13" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_14" name="chkRD_14" unchecked /></td>
+      <td class="tg-0lax"><textarea id="drug_14" name="drug_14" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_14" name="renalDoseRec_14" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_15" name="chkRD_15" unchecked /></td>
+      <td class="tg-0lax"><textarea id="drug_15" name="drug_15" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_15" name="renalDoseRec_15" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_16" name="chkRD_16" unchecked /></td>
+      <td class="tg-0lax"><textarea id="drug_16" name="drug_16" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_16" name="renalDoseRec_16" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_17" name="chkRD_17" unchecked /></td>
+      <td class="tg-0lax"><textarea id="drug_17" name="drug_17" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_17" name="renalDoseRec_17" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_18" name="chkRD_18" unchecked /></td>
+      <td class="tg-0lax"><textarea id="drug_18" name="drug_18" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_18" name="renalDoseRec_18" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_19" name="chkRD_19" unchecked /></td>
+      <td class="tg-0lax"><textarea id="drug_19" name="drug_19" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_19" name="renalDoseRec_19" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+    <tr>
+      <td class="col1"><input type="checkbox" id="chkRD_20" name="chkRD_20" unchecked /></td>
+      <td class="tg-0lax"><textarea id="drug_20" name="drug_20" style="width: 200px; border: none; resize: none"></textarea></td>
+      <td class="tg-0lax"><textarea id="renalDoseRec_20" name="renalDoseRec_20" style="width: 600px; border: none; resize: none"></textarea></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+
+<div class="DoNotPrint" id="BottomButtons">
+    <table>
+      <tr>
+         <td class="subjectline">
+<!--          Subject: <input type="text" name="subject"  value="Diabetes Review" size="40">&nbsp; -->
+            <input value="Save" name="SubmitButton" id="SubmitButton" type="submit" onclick="releaseDirtyFlag();">
+            <input name="saveAsEdoc" type="hidden" id="saveAsEdoc" value="false">
+<!-- <input value="eDocument" name="eDocument" type="button" onclick="document.getElementById('saveAsEdoc').value='true'; releaseDirtyFlag(); SubmitButton.click();"> -->
+             <input value="Reset" name="ResetButton" id="ResetButton" type="reset" onclick="">
+             <input value="Print" name="PrintButton" id="PrintButton" type="button" onclick="printForm();">
+<!-- <input value="Print & Save" name="PrintSubmitButton" id="PrintSubmitButton" type="button" onclick="releaseDirtyFlag();printForm();setTimeout('SubmitButton.click()',1000);"> -->
+         </td>
+    </tr>
+</table>
+</div>
+
+</form>
+
+</body>
+
+<script type="text/javascript">
+function renalDosingCheck(){
+var eGFR = document.getElementById("egfr").value;
+var clcr = document.getElementById("calculated_Clcr").value;
+var mediText = document.getElementById("drugList").value;
+mediText = mediText.toLowerCase();
+  
+//Metformin
+if (mediText.includes('metformin')) {
+var drug = "Metformin";
+if (eGFR >= 30 && eGFR < 45){ 
+ var renalDosingRec = "500 mg BID";
+writeRDR(drug, renalDosingRec);
+} else if (eGFR >= 25 && eGFR < 30){
+var renalDosingRec = "500 mg once daily. Use with caution and only if renal function is stable. Teach SADMANS.";
+writeRDR(drug, renalDosingRec);  
+ } else if (eGFR < 25){
+var renalDosingRec = "Contraindicated";
+writeRDR(drug, renalDosingRec);  
+ }
+}
+  
+  
+}
+//renalDosingCheck();
+
+function medicationList(array, element) {
+var ul = document.createElement('ul');
+var prev;
+for (var item in array) {
+if (Array.isArray(array[item])) {
+    displayArrayAsHtmlList(array[item], prev);
+} else {
+    var li = document.createElement('li');
+    li.innerHTML = array[item];
+    prev = li;
+}
+ul.appendChild(li);
+}
+element.appendChild(ul);
+}
+var meds = document.getElementById("drugList").value;
+var noQty = meds.replace(/Qty:0 Repeats:0/g, ',');
+var lowerCaseMeds = noQty.toLowerCase();
+var deleteLastCharacter = lowerCaseMeds.slice(0, -1);
+var arrMeds = deleteLastCharacter.split(',');
+medicationList(arrMeds, document.getElementById("meds"));
+
+function reloadMedList() {
+window.location.reload();
+}
+
+function heightConverter_in(valNum) {
+  let num = valNum * 0.3937;
+  let n = num.toFixed(0);
+  let k = document.getElementById("inchesHT");
+  let kg = document.getElementById("kiloWT").value;
+  k.value = n;
+  bmi.value = Math.round((kg / Math.pow(valNum, 2)) * 10000);
+}
+
+function heightConverter_cm(valNum) {
+  let num = valNum / 0.3937;
+  let n = num.toFixed(0);
+  let k = document.getElementById("cmHT");
+  let kg = document.getElementById("kiloWT").value;
+  let bmi = document.getElementById("bmi");
+  k.value = n;
+  bmi.value = Math.round((kg / Math.pow(num, 2)) * 10000);
+}
+
+function weightConverter(valNum) {
+  let num = valNum / 2.2046;
+  let n = num.toFixed(0);
+  let k = document.getElementById("kiloWT");
+  let h = document.getElementById("cmHT").value;
+  let bmi = document.getElementById("bmi");
+  k.value = n;
+  bmi.value = Math.round((num / Math.pow(h, 2)) * 10000);
+}
+
+function weightConverter_lbs(valNum) {
+  let num = valNum * 2.2046;
+  let n = num.toFixed(0);
+  let k = document.getElementById("poundsWT");
+  let kg = document.getElementById("kiloWT");
+  let h = document.getElementById("cmHT").value;
+  let bmi = document.getElementById("bmi");
+  k.value = n;
+  bmi.value = Math.round((valNum / Math.pow(h, 2)) * 10000);
+}
+
+function get(fName) {
+   return document.getElementById(fName);
+}
+
+function getVal(fName) {
+    return get(fName).value;
+}
+
+function gradeCKD(eGFR,ACR) {
+
+var eGFR = document.getElementById("egfr").value;
+var ACR = document.getElementById("acr").value;
+var G= document.getElementById("classCKDG");
+var A= document.getElementById("classCKDA");
+var R= document.getElementById("txtRemarks");
+  
+    if (eGFR >= 90) {
+      if (ACR > 30) {
+        A.value = "A3";
+        R.value = "Refer";
+        R.style="width: 50px; border: none; background-color:#ff0000";
+        R.style.color = "#ffffff";
+        R.style.textAlign = "center";
+      } else if (ACR >=3)  {
+        A.value = "A2";
+        R.value = "Monitor";
+        R.style="width: 50px; border: none; background-color:#ffc299";
+        R.style.textAlign = "center";
+      } else if (ACR <3 && ACR >0.1)  {
+        A.value = "A1";
+       R.value = " ";
+        R.style="width: 50px; border: none; background-color: none";
+      } else {
+        A.value = " ";
+        R.value = " ";
+        R.style="width: 50px; border: none; background-color: none";
+      }
+      G.value = "G1";
+    } else if (eGFR > 59) {
+      if (ACR > 30) {
+        A.value = "A3";
+        R.value = "Refer";
+        R.style="width: 50px; border: none; background-color:#ff0000";
+        R.style.color = "#ffffff";
+        R.style.textAlign = "center";
+      } else if (ACR >=3)  {
+        A.value = "A2";
+        R.value = "Monitor";
+        R.style="width: 50px; border: none; background-color:#ffc299";
+        R.style.textAlign = "center";
+      } else if (ACR <3 && ACR >0.1)  {
+        A.value = "A1";
+        R.value = " ";
+        R.style="width: 50px; border: none; background-color: none";
+      } else if (ACR <.1 ) {
+        A.value = " ";
+        R.value = " ";
+        R.style="width: 50px; border: none; background-color: none";
+      }      
+      G.value = "G2";
+    } else if (eGFR > 44) {
+      if (ACR > 30) {
+        A.value = "A3";
+        R.value = "Refer";
+        R.style="width: 50px; border: none; background-color:#ff0000";
+        R.style.color = "#ffffff";
+        R.style.textAlign = "center";
+      } else if (ACR >=3)  {
+        A.value = "A2";
+        R.value = "Monitor";
+        R.style="width: 50px; border: none; background-color:#ffc299";
+        
+      } else if (ACR <3 && ACR >0.1)  {
+        A.value = "A1";
+        R.value = "Monitor";
+       R.style="width: 50px; border: none; background-color:#ffc299";
+        R.style.textAlign = "center";
+      } else if (ACR <.1 ) {
+        A.value = " ";
+        R.value = " ";
+      }
+        G.value = "G3a";
+    } else if (eGFR > 29) {
+       if (ACR > 30) {
+        A.value = "A3";
+        R.value = "Refer";
+        R.style="width: 50px; border: none; background-color:#ff0000";
+        R.style.color = "#ffffff";
+        R.style.textAlign = "center";
+      } else if (ACR >=3)  {
+        A.value = "A2";
+        R.value = "Monitor";
+        R.style="width: 50px; border: none; background-color:#ffc299";
+        R.style.textAlign = "center";
+      } else if (ACR <3 && ACR >0.1)  {
+        A.value = "A1";
+        R.value = "Monitor";
+        R.style="width: 50px; border: none; background-color:#ffc299";
+        R.style.textAlign = "center";
+      } else if (ACR <.1 ) {
+        A.value = " ";
+        R.value = " ";
+        R.style="width: 50px; border: none; background-color: none";
+      }
+        G.value = "G3b";
+    }  else if (eGFR >14) {
+       if (ACR > 30) {
+        A.value = "A3";
+        R.value = "Refer";
+        R.style="width: 50px; border: none; background-color:#ff0000";
+        R.style.color = "#ffffff";
+        R.style.textAlign = "center";
+      } else if (ACR >=3)  {
+        A.value = "A2";
+        R.value= "Refer";
+        R.style="width: 50px; border: none; background-color:#ff0000";
+        R.style.color = "#ffffff";
+        R.style.textAlign = "center";
+      } else if (ACR <3 && ACR >.1)  {
+        A.value = "A1";
+        R.value = "Refer";
+        R.style="width: 50px; border: none; background-color:#ff0000";
+        R.style.color = "#ffffff";
+        R.style.textAlign = "center";
+      } else if (ACR <.1 ) {
+        A.value = " ";
+        R.value = " ";
+        R.style="width: 50px; border: none; background-color: none";
+      }
+        G.value = "G4";
+    } else if (eGFR < 15){
+      if (ACR > 30) {
+        A.value = "A3";
+        R.value = "Refer";
+        R.style="width: 50px; border: none; background-color:#ff0000";
+        R.style.color = "#ffffff";
+        R.style.textAlign = "center";
+      } else if (ACR >=3)  {
+        A.value = "A2";
+        R.value = "Refer";
+        R.style="width: 50px; border: none; background-color:#ff0000";
+        R.style.color = "#ffffff";
+        R.style.textAlign = "center";
+      } else if (ACR <3 && ACR >0.1)  {
+        A.value = "A1";
+        R.value = "Refer";
+        R.style="width: 50px; border: none; background-color:#ff0000";
+        R.style.color = "#ffffff";
+        R.style.textAlign = "center";
+      } else if (ACR <.1 ) {
+        A.value = " ";
+        R.value = " ";
+        R.style="width: 50px; border: none; background-color: none";
+      }
+        G.value = "G5";
+   }
+clcr();
+}
+gradeCKD();
+
+function clcr() {
+var age = document.getElementById("age").value;
+var wt = document.getElementById("kiloWT").value;
+var sex = document.getElementById("sex").value;
+var creatinine = document.getElementById("creatinine").value;
+var calculated_Clcr = document.getElementById("calculated_Clcr");
+var Clcr = 0;
+
+Clcr = (1.2 * (140 - age) * wt) / creatinine;
+Clcr = Clcr.toFixed(0);
+
+
+if (wt.length != 0 && creatinine.length != 0 && sex == "M"){
+  calculated_Clcr.value = Clcr;
+} else if (wt.length != 0 && creatinine.length != 0 && sex == "F"){
+  calculated_Clcr.value = (Clcr * 0.85).toFixed(0);
+}
+clcr();
+}
+
+
+
+function writeRDR(drug, renalDoseRec){
+
+var chkRD_ = [];
+var drug_ = [];
+var renalDoseRec_ = [];
+
+chkRD_[1] = document.getElementById("chkRD_1");
+chkRD_[2] = document.getElementById("chkRD_2");
+chkRD_[3] = document.getElementById("chkRD_3");
+chkRD_[4] = document.getElementById("chkRD_4");
+chkRD_[5] = document.getElementById("chkRD_5");
+chkRD_[6] = document.getElementById("chkRD_6");
+chkRD_[7] = document.getElementById("chkRD_7");
+chkRD_[8] = document.getElementById("chkRD_8");
+chkRD_[9] = document.getElementById("chkRD_9");
+chkRD_[10] = document.getElementById("chkRD_10");
+chkRD_[11] = document.getElementById("chkRD_11");
+chkRD_[12] = document.getElementById("chkRD_12");
+chkRD_[13] = document.getElementById("chkRD_13");
+chkRD_[14] = document.getElementById("chkRD_14");
+chkRD_[15] = document.getElementById("chkRD_15");
+chkRD_[16] = document.getElementById("chkRD_16");
+chkRD_[17] = document.getElementById("chkRD_17");
+chkRD_[18] = document.getElementById("chkRD_18");
+chkRD_[19] = document.getElementById("chkRD_19");
+chkRD_[20] = document.getElementById("chkRD_20");  
+
+drug_[1] = document.getElementById("drug_1");
+drug_[2] = document.getElementById("drug_2");
+drug_[3] = document.getElementById("drug_3");
+drug_[4] = document.getElementById("drug_4");
+drug_[5] = document.getElementById("drug_5");
+drug_[6] = document.getElementById("drug_6");
+drug_[7] = document.getElementById("drug_7");
+drug_[8] = document.getElementById("drug_8");
+drug_[9] = document.getElementById("drug_9");
+drug_[10] = document.getElementById("drug_10");
+drug_[11] = document.getElementById("drug_11");
+drug_[12] = document.getElementById("drug_12");
+drug_[13] = document.getElementById("drug_13");
+drug_[14] = document.getElementById("drug_14");
+drug_[15] = document.getElementById("drug_15");
+drug_[16] = document.getElementById("drug_16");
+drug_[17] = document.getElementById("drug_17");
+drug_[18] = document.getElementById("drug_18");
+drug_[19] = document.getElementById("drug_19");
+drug_[20] = document.getElementById("drug_20");
+  
+renalDoseRec_[1] = document.getElementById("renalDoseRec_1");
+renalDoseRec_[2] = document.getElementById("renalDoseRec_2");
+renalDoseRec_[3] = document.getElementById("renalDoseRec_3");
+renalDoseRec_[4] = document.getElementById("renalDoseRec_4");
+renalDoseRec_[5] = document.getElementById("renalDoseRec_5");
+renalDoseRec_[6] = document.getElementById("renalDoseRec_6");
+renalDoseRec_[7] = document.getElementById("renalDoseRec_7");
+renalDoseRec_[8] = document.getElementById("renalDoseRec_8");
+renalDoseRec_[9] = document.getElementById("renalDoseRec_9");
+renalDoseRec_[10] = document.getElementById("renalDoseRec_10");
+renalDoseRec_[11] = document.getElementById("renalDoseRec_11");
+renalDoseRec_[12] = document.getElementById("renalDoseRec_12");
+renalDoseRec_[13] = document.getElementById("renalDoseRec_13");
+renalDoseRec_[14] = document.getElementById("renalDoseRec_14");
+renalDoseRec_[15] = document.getElementById("renalDoseRec_15");
+renalDoseRec_[16] = document.getElementById("renalDoseRec_16");
+renalDoseRec_[17] = document.getElementById("renalDoseRec_17");
+renalDoseRec_[18] = document.getElementById("renalDoseRec_18");
+renalDoseRec_[19] = document.getElementById("renalDoseRec_19");
+renalDoseRec_[20] = document.getElementById("renalDoseRec_20");
+  
+  
+let total = 0;
+let count = 0;
+
+for (let i = 1; i < 21; i++) {
+  
+//if(previousdrug_[i].value.length != 0){
+//  chkRD_[i].checked = true;
+//  drug_[i].value = previousdrug_[i].value;
+//  renalDoseRec__[i].value = previousRec_[i].value;
+//  dtpID_[i].value = previousRDRID_[i].value;
+//} else {
+//}
+  
+
+if(chkRD_[i].checked) {
+      count++;
+    } else{
+      chkRD_[i].checked = true;
+      drug_[i].value = drug;
+      drug_[i].style.visibility = "visible";
+      renalDoseRec_[i].value = renalDoseRec;
+      renalDoseRec_[i].style.visibility = "visible";
+      break;
+    }
+}
+viewRDRRows();
+}
+
+function viewRDRRows(){
+
+var table = document.getElementById("tblRenalDosing");
+var chkRD_ = [];
+    
+chkRD_[1] = document.getElementById("chkRD_1");
+chkRD_[2] = document.getElementById("chkRD_2");
+chkRD_[3] = document.getElementById("chkRD_3");
+chkRD_[4] = document.getElementById("chkRD_4");
+chkRD_[5] = document.getElementById("chkRD_5");
+chkRD_[6] = document.getElementById("chkRD_6");
+chkRD_[7] = document.getElementById("chkRD_7");
+chkRD_[8] = document.getElementById("chkRD_8");
+chkRD_[9] = document.getElementById("chkRD_9");
+chkRD_[10] = document.getElementById("chkRD_10");
+chkRD_[11] = document.getElementById("chkRD_11");
+chkRD_[12] = document.getElementById("chkRD_12");
+chkRD_[13] = document.getElementById("chkRD_13");
+chkRD_[14] = document.getElementById("chkRD_14");
+chkRD_[15] = document.getElementById("chkRD_15");
+chkRD_[16] = document.getElementById("chkRD_16");
+chkRD_[17] = document.getElementById("chkRD_17");
+chkRD_[18] = document.getElementById("chkRD_18");
+chkRD_[19] = document.getElementById("chkRD_19");
+chkRD_[20] = document.getElementById("chkRD_20");  
+
+let total = 0;
+let count = 0;
+
+for (var i = 1; i <21; i++) {
+  
+var r = chkRD_[i].parentNode.parentNode.rowIndex;
+
+var rowSelected = table.rows[r];
+  
+if (chkRD_[i].checked) {
+  rowSelected.style.display = "";
+} else
+  rowSelected.style.display = "none";
+  count++;
+}
+}
+viewRDRRows();
+
+
+function start(){
+medicationList();
+}
+
+</script>
+
+</body>
+</html>

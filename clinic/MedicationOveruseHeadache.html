@@ -1,0 +1,83 @@
+<!-- E-FORM DISCLAIMER: As is: E-Forms are shared as-is, free of charge on a share-alike basis with absolutely no guarantee or warranty. No Quality Control: The author does not vet any E-Forms and does not purport to apply any manner of quality control. Responsibility: The responsibility for the clinical and medical-legal consequences of any and all E-Forms, rest with the clinical OSCAR end-users themselves, not with the author of the eForm. This applies to both E-Forms shared by others, and those created by users themselves. Attribution: E-Forms are shared freely among the user community, with attribution to the original author of the eForm. Free: E-Forms so shared may not be sold or purchased. Provincial validation:  E-Forms are optional and non-essential add-ons, separate from OSCAR, and with their own license terms.E-Forms  are not part of the OSCAR core program functionality and code base. For this reason E-Forms are not subject to provincial validation testing and conformance criteria. E-Forms are also not subject to the ISO production process for OSCAR. -->
+<!-- Created by Jamil Devsi September 2018 -->
+<html>
+<head>
+<style type="text/css" media="print">
+	.DoNotPrint {
+		display: none;
+	}
+	.noborder {
+		border : 0px;
+		background: transparent;
+		scrollbar-3dlight-color: transparent;
+		scrollbar-3dlight-color: transparent;
+		scrollbar-arrow-color: transparent;
+		scrollbar-base-color: transparent;
+		scrollbar-darkshadow-color: transparent;
+		scrollbar-face-color: transparent;
+		scrollbar-highlight-color: transparent;
+		scrollbar-shadow-color: transparent;
+		scrollbar-track-color: transparent;
+		background: transparent;
+		overflow: hidden;
+	}
+</style>
+</head>
+
+<title> Pharmacists Clinic Medication Overuse Headache Form </title>
+
+<body>
+<script type="text/javascript">
+	function printForm(){
+		window.print();
+	}
+</script>
+
+<script type="text/javascript">
+	//keypress events trigger dirty flag
+	var confirmClose = false;
+	document.onkeyup=setDirtyFlag;
+
+	function setDirtyFlag(){
+		confirmClose = true;
+	}
+	function releaseDirtyFlag(){
+		confirmClose = false; // call to prevent an alert // call when submit buttom clicked
+	}
+	window.onbeforeunload = confirmExit;
+	function confirmExit(){
+		if (confirmClose){
+			return "You have made changes to this form without submitting. If you leave, your changes will be lost. Are you sure you want to exit?";
+		}
+	}
+</script>
+
+<!-- use the top one for testing on local machine. Use bottom for Oscar -->
+<!-- <img id="PCMOHImg" src="pc_moh_2018.jpg" style="position: absolute;left: 0px; top:0px; width: 1140px"> -->
+<img id="PCMOHImg" src="${oscar_image_path}pc_moh_2018.jpg" style="position: absolute;left:0px; top:0px; width:1140px">
+
+
+<form method="POST" action="" name="PCMOHForm" id="PCMOHForm">
+
+<div id="page1">
+
+</div>
+
+<div class="DoNotPrint" style="position: absolute; top:1400px; left:0px;" id="BottomButtons" >
+	<table>
+	 	<tr>
+	 		<td class="subjectline">
+		 		Subject: <input type="text" name="subject" value="Medication overuse headache" size="40">&nbsp;
+				<input value="Submit" name="SubmitButton" id="SubmitButton" type="submit" onclick="releaseDirtyFlag();"> 
+				<input name="saveAsEdoc" type="hidden" id="saveAsEdoc" value="false">
+				<input value="eDocument" name="eDocument" type="button" onclick="document.getElementById('saveAsEdoc').value='true'; releaseDirtyFlag(); SubmitButton.click();">
+				<input value="Reset" name="ResetButton" id="ResetButton" type="reset"> 
+				<input value="Print" name="PrintButton" id="PrintButton" type="button" onclick="printForm();"> 
+				<input value="Print & Submit" name="PrintSubmitButton" id="PrintSubmitButton" type="button" onclick="releaseDirtyFlag();printForm();setTimeout('SubmitButton.click()',1000);">
+			</td>
+		</tr>
+	</table> 
+</div>
+	
+</body>
+</html>
