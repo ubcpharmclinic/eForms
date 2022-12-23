@@ -1,0 +1,433 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<title>Rich Text Letter</title>
+<style type="text/css">
+.butn {width: 140px;}
+</style>
+
+<style type="text/css" media="print">
+.DoNotPrint {display: none;}
+
+</style>
+<script type="text/javascript" src="../eform/displayImage.do?imagefile=letter.js" ></script>
+<script language="javascript">
+var needToConfirm = false;
+
+//keypress events trigger dirty flag for the iFrame and the subject line
+document.onkeyup=setDirtyFlag
+
+
+function setDirtyFlag() 
+{
+	needToConfirm = true; 
+}
+
+function releaseDirtyFlag() 
+{
+	needToConfirm = false; //Call this function if dosent requires an alert.
+	//this could be called when save button is clicked
+}
+
+
+window.onbeforeunload = confirmExit;
+
+function confirmExit() 
+{
+	if (needToConfirm)
+	return "You have attempted to leave this page. If you have made any changes without clicking the Submit button, your changes will be lost. Are you sure you want to exit this page?";
+}
+
+</script>
+
+</head>
+<body onload="Start()" bgcolor="FFFFFF">
+
+
+<!-- START OF EDITCONTROL CODE --> 
+
+<script language="javascript" type="text/javascript" src="${oscar_image_path}editControl15-3.js"></script>
+      
+<script language="javascript">
+
+    //put any of the optional configuration variables that you want here
+    cfg_width = '900';                    //editor control width in pixels
+    cfg_height = '640';                   //editor control height in pixels
+    cfg_editorname = 'edit';                //the handle for the editor                  
+    cfg_isrc = '${oscar_image_path}';         //location of the button icon files
+    cfg_filesrc = '${oscar_image_path}';         //location of the html files
+    cfg_template = 'blank.html';	    //default style and content template
+    cfg_formattemplate = '<option value="">&mdash; template &mdash;</option><option value="genericv1">Generic</option><option value="pc_cpc_letterv1">CPC Letter</option><option value="pc_doctor_letter4v4">Doctor Letter</option><option value="pc_headache_clinic_letterv4">Headache Clinic</option>';   
+    //cfg_formattemplate = '<option value="">&mdash; template &mdash;</option>  <option value="blank">blank</option>  <option value="consult">consult</option> <option value="certificate">work note</option> <option value="narcotic">narcotic contract</option> <option value="MissedAppointment">missed appt</option> <option value="custom">custom</option></select>';
+    //cfg_layout = '[all]';             //adjust the format of the buttons here
+    cfg_layout = '<table style="background-color:#ccccff; width:900px"><tr id=control1><td>[bold][italic][underlined][strike][subscript][superscript]|[left][center][full][right]|[unordered][ordered][rule]|[undo][redo]|[indent][outdent][select-all][clean]|[table]</td></tr><tr id=control2><td>[select-block][select-face][select-size][select-template]|[image][clock][date][spell][help]</td></tr></table>[edit-area]';
+    insertEditControl(); // Initialise the edit control and sets it at this point in the webpage
+
+    function Start() 
+    {
+        // set eventlistener for the iframe to flag changes in the text displayed 
+		var agent=navigator.userAgent.toLowerCase(); //for non IE browsers
+        if ((agent.indexOf("msie") == -1) || (agent.indexOf("opera") != -1)) {
+			document.getElementById(cfg_editorname).contentWindow.addEventListener('keypress',setDirtyFlag, true);
+}
+	//	if (document.getElementById('recent_rx').value.length<1) {
+		//	document.getElementById('RecentMedications').style.display = "none"; //document.RichTextLetter.RecentMedications.style.visibility="hidden";
+//}
+        // reformat values of multiline database values from \\\n lines to <br>
+        htmlLine('label');
+        htmlLine('reminders');
+        htmlLine('ongoingconcerns');
+        htmlLine('medical_history');
+        htmlLine('other_medications_history');  //family history  ... don't ask
+        htmlLine('social_family_history');  //social history
+		htmlLine('family_history');
+        htmlLine('address');
+        htmlLine('NameAddress');
+        htmlLine('clinic_label');
+        htmlLine('clinic_address');
+       htmlLine('druglist_generic');
+       // htmlLine('druglist_trade');
+       // htmlLine('recent_rx');
+
+
+		var gender=document.getElementById('sex').value; 
+		if (gender=='F')
+		{
+			document.getElementById('he_she').value='she'; 
+			document.getElementById('his_her').value='her';
+			document.getElementById('gender').value='female';
+		}
+		
+		var mySplitResult = document.getElementById('referral_name').value.toString().split(','); 
+		
+		document.getElementById('referral_nameL').value=mySplitResult[0];
+		document.getElementById('letterhead').value= genericLetterhead();
+		
+	    // set the HTML contents of this edit control from the value saved in Oscar (if any)
+		var contents=document.getElementById('Letter').value
+		
+		if (contents.length==0)
+			parseTemplate();
+		else 
+			seteditControlContents(cfg_editorname,contents);
+    }
+ 
+    function htmlLine(theelement) 
+    { 
+		var temp = new Array();
+		if (document.getElementById(theelement).value.length>0)
+		{
+			temp=document.getElementById(theelement).value.split('\\\n'); 
+			contents='';
+			var x;
+			for (x in temp) 
+				contents += temp[x]+'<br>';
+				
+			document.getElementById(theelement).value=contents;
+		}
+    }
+
+    function genericLetterhead() 
+    {
+        // set the HTML contents of the letterhead
+		var address = '<table border=0><tbody><tr><td><font size=6>'+document.getElementById('clinic_name').value+'</font></td></tr><tr><td><font size=2>'+ document.getElementById('clinic_addressLineFull').value+ ' Fax: '+document.getElementById('clinic_fax').value+' Phone: '+document.getElementById('clinic_phone').value+'</font><hr></td></tr></tbody></table><br>';
+		
+		if ((document.getElementById('clinic_name').value.toLowerCase()).indexOf('amily health team',0)>-1)
+			address=fhtLetterhead();
+			
+		return address;
+    }
+
+    function fhtLetterhead() 
+    {
+        // set the HTML contents of the letterhead using FHT colours
+		var address = document.getElementById('clinic_addressLineFull').value+ '<br>Fax:'+document.getElementById('clinic_fax').value+' Phone:'+document.getElementById('clinic_phone').value;
+		
+		if (document.getElementById('doctor').value.indexOf('zapski')>0)
+			address='293 Meridian Avenue, Haileybury, ON P0J 1K0<br> Tel 705-672-2442 Fax 705-672-2384';
+		else
+			address='<table style=\'text-align: right;\' border=\'0\'><tbody><tr style=\'font-style: italic; color: rgb(71, 127, 128);\'><td><font size=\'+2\'>'+document.getElementById('clinic_name').value+'</font> <hr style=\'width: 100%; height: 3px; color: rgb(212, 118, 0); background-color: rgb(212, 118, 0);\'></td> </tr> <tr style=\'color: rgb(71, 127, 128);\'> <td><font size=\'+1\'>Family Health Team<br> &Eacute;quipe Sant&eacute; Familiale</font></td> </tr> <tr style=\'color: rgb(212, 118, 0); \'> <td><small>'+address+'</small></td> </tr> </tbody> </table>';
+			
+		return address;
+    }
+    
+</script>
+
+<!-- END OF EDITCONTROL CODE -->
+
+
+<form method="post" action="" name="RichTextLetter" >
+
+<!-- START OF DATABASE PLACEHOLDERS -->
+
+<input type="hidden" name="clinic_name" id="clinic_name" oscarDB=clinic_name>
+<input type="hidden" name="clinic_address" id="clinic_address" oscarDB=clinic_address>
+<input type="hidden" name="clinic_addressLine" id="clinic_addressLine" oscarDB=clinic_addressLine>
+<input type="hidden" name="clinic_addressLineFull" id="clinic_addressLineFull" oscarDB=clinic_addressLineFull>
+<input type="hidden" name="clinic_label" id="clinic_label" oscarDB=clinic_label>
+<input type="hidden" name="clinic_fax" id="clinic_fax" oscarDB=clinic_fax>
+<input type="hidden" name="clinic_phone" id="clinic_phone" oscarDB=clinic_phone>
+<input type="hidden" name="clinic_city" id="clinic_city" oscarDB=clinic_city>
+<input type="hidden" name="clinic_province" id="clinic_province" oscarDB=clinic_province>
+<input type="hidden" name="clinic_postal" id="clinic_postal" oscarDB=clinic_postal>
+
+<input type="hidden" name="patient_name" id="patient_name" oscarDB=patient_name>
+<input type="hidden" name="first_last_name" id="first_last_name" oscarDB=first_last_name>
+<input type="hidden" name="patient_nameF" id="patient_nameF" oscarDB=patient_nameF >
+<input type="hidden" name="patient_nameL" id="patient_nameL" oscarDB=patient_nameL >
+<input type="hidden" name="label" id="label" oscarDB=label>
+<input type="hidden" name="NameAddress" id="NameAddress" oscarDB=NameAddress>
+<input type="hidden" name="address" id="address" oscarDB=address>
+<input type="hidden" name="addressline" id="addressline" oscarDB=addressline>
+<input type="hidden" name="phone" id="phone" oscarDB=phone>
+<input type="hidden" name="phone2" id="phone2" oscarDB=phone2>
+<input type="hidden" name="province" id="province" oscarDB=province>
+<input type="hidden" name="city" id="city" oscarDB=city>
+<input type="hidden" name="postal" id="postal" oscarDB=postal>
+<input type="hidden" name="dob" id="dob" oscarDB=dob>
+<input type="hidden" name="dobc" id="dobc" oscarDB=dobc>
+<input type="hidden" name="dobc2" id="dobc2" oscarDB=dobc2>
+<input type="hidden" name="hin" id="hin" oscarDB=hin>
+<input type="hidden" name="hinc" id="hinc" oscarDB=hinc>
+<input type="hidden" name="hinversion" id="hinversion" oscarDB=hinversion>
+<input type="hidden" name="ageComplex" id="ageComplex" oscarDB=ageComplex >
+<input type="hidden" name="age" id="age" oscarDB=age >
+<input type="hidden" name="sex" id="sex" oscarDB=sex >
+<input type="hidden" name="chartno" id="chartno" oscarDB=chartno >
+
+<input type="hidden" name="medical_history" id="medical_history" oscarDB=medical_history>
+<!--
+<input type="hidden" name="recent_rx" id="recent_rx" oscarDB=recent_rx>
+<input type="hidden" name="druglist_trade" id="druglist_trade" oscarDB=druglist_trade>
+-->
+<input type="hidden" name="druglist_generic" id="druglist_generic" oscarDB=druglist_generic>
+<input type="hidden" name="druglist_line" id="druglist_line" oscarDB=druglist_line>
+<input type="hidden" name="social_family_history" id="social_family_history" oscarDB=social_family_history>
+<input type="hidden" name="family_history" id="family_history" oscarDB=family_history>
+<input type="hidden" name="other_medications_history" id="other_medications_history" oscarDB=other_medications_history>
+<input type="hidden" name="reminders" id="reminders" oscarDB=reminders>
+<input type="hidden" name="ongoingconcerns" id="ongoingconcerns" oscarDB=ongoingconcerns >
+
+<input type="hidden" name="provider_name_first_init" id="provider_name_first_init" oscarDB=provider_name_first_init >
+<input type="hidden" name="current_user" id="current_user" oscarDB=current_user >
+<input type="hidden" name="current_user_signature" id="current_user_signature" oscarDB=current_user_signature >
+<input type="hidden" name="current_user_phone" id="current_user_phone" oscarDB=current_user_phone>
+<input type="hidden" name="current_user_workphone" id="current_user_workphone" oscarDB=current_user_workphone>
+<input type="hidden" name="current_user_fax" id="current_user_fax" oscarDB=current_user_fax>
+<input type="hidden" name="doctor_work_phone" id="doctor_work_phone" oscarDB=doctor_work_phone >
+<input type="hidden" name="doctor" id="doctor" oscarDB=doctor >
+<input type="hidden" name="doctor" id="family_doctor" oscarDB=familyDrName >
+
+<input type="hidden" name="today" id="today" oscarDB=today>
+
+<input type="hidden" name="allergies_des" id="allergies_des" oscarDB=allergies_des >
+
+<!-- PLACE REFERRAL PLACEHOLDERS HERE WHEN BC APCONFIG FIXED -->
+<input type="hidden" name="referral_name" id="referral_name" oscarDB=referral_name>
+<input type="hidden" name="referral_address" id="referral_address" oscarDB=referral_address>
+<input type="hidden" name="referral_phone" id="referral_phone" oscarDB=referral_phone>
+<input type="hidden" name="referral_fax" id="referral_fax" oscarDB=referral_fax>
+
+<!-- END OF DATABASE PLACEHOLDERS -->
+
+
+<!-- START OF MEASUREMENTS PLACEHOLDERS -->
+
+<input type="hidden" name="BP" id="BP" oscarDB=m$BP#value>
+<input type="hidden" name="WT" id="WT" oscarDB=m$WT#value>
+<input type="hidden" name="smoker" id="smoker" oscarDB=m$SMK#value>
+<input type="hidden" name="dailySmokes" id="dailySmokes" oscarDB=m$NOSK#value>
+<input type="hidden" name="A1C" id="A1C" oscarDB=m$A1C#value>
+
+<!-- END OF MEASUREMENTS PLACEHOLDERS -->
+
+
+<!-- START OF DERIVED PLACEHOLDERS -->
+
+<input type="hidden" name="he_she" id="he_she" value="he">
+<input type="hidden" name="his_her" id="his_her" value="his">
+<input type="hidden" name="gender" id="gender" value="male">
+<input type="hidden" name="referral_nameL" id="referral_nameL" value="Referring Doctor">
+<input type="hidden" name="letterhead" id="letterhead" value="Letterhead">
+
+<!-- END OF DERIVED PLACEHOLDERS -->
+
+<script>
+	// converts the format of "today" from YYYY-MM-DD to Month D, Yr
+
+	const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	var old_date = document.getElementById("today").value;
+
+	const [year, month, day] = old_date.split('-');
+	const new_date = months[month-1] + " " + day + ", " + year;
+	
+	document.getElementById("today").value = new_date; 
+
+</script>
+
+
+<textarea name="Letter" id="Letter" style="width:900px; display: none;"></textarea>
+
+<div class="DoNotPrint" id="control3" style="position:absolute; top:20px; left: 920px;">
+
+<!--Contact info buttons-->
+<!-- <input type="button" class="butn" name="current_user_workphone" id="current_user_workphone" value="User Phone" 
+	onclick="doHtml(document.getElementById('current_user_workphone').value);">
+
+<br>
+<input type="button" class="butn" name="current_user_fax" id="current_user_fax" value="User Fax" 
+	onclick="doHtml(document.getElementById('current_user_fax').value);">
+
+<br> -->
+<!-- <br>
+
+	<input type="button" class="butn" name="AddLetterhead" id="AddLetterhead" value="Letterhead" 
+	onclick="doHtml(document.getElementById('letterhead').value);">
+
+<br> -->
+<!--
+<input type="button" class="butn" name="certificate" value="Work Note" 
+	onclick="document.RichTextLetter.AddLetterhead.click();
+ 	doHtml('<p>'+doDate()+'<p>This is to certify that I have today examined <p>');
+	document.RichTextLetter.AddLabel.click();
+	doHtml('In my opinion, '+document.getElementById('he_she').value+' will be unfit for '+document.getElementById('his_her').value+' normal work from today to * inclusive.');
+	document.RichTextLetter.Closing.click();">
+<br>
+
+<input type="button" class="butn" name="consult" value="Consult Letter" 
+	onclick="  var ref=document.getElementById('referral_name').value.toString(); var mySplitResult = ref.split(',');
+	var gender=document.getElementById('sex').value; if (gender=='M'){gender='male';}; if (gender=='F'){gender='female';};
+	var years=document.getElementById('ageComplex').value; if (years==''){years=document.getElementById('age').value + 'yo';};
+	document.RichTextLetter.AddLetterhead.click();
+	doHtml('<p>'+doDate()+'<p>');
+	document.RichTextLetter.AddReferral.click();
+	doHtml('<p>RE:&nbsp');
+	document.RichTextLetter.AddLabel.click();
+	doHtml('<p>Dear Dr. '+mySplitResult[0]+'<p>Thank you for asking me to see this '+years+ ' ' +gender);
+	document.RichTextLetter.Closing.click(); ">
+<br>
+-->
+<!-- Date Section -->
+<input type="button" class="butn" name="CurrentDate" value="Date"
+	onclick="doHtml(document.getElementById('today').value);">
+<br>
+<!-- <input type="button" class="butn" name="AddReferral" id="AddReferral" value="Referring Block" 
+	onclick="doHtml(document.getElementById('referral_name').value+'<br>'+ document.getElementById('referral_address').value +'<br>CANADA<br> Tel: '+ document.getElementById('referral_phone').value+'<br>Fax:  '+document.getElementById('referral_fax').value);">
+
+<br> -->
+<br>
+
+<!--
+<br>
+<input type="button"  class="butn" name="MedicalHistory" value="Recent History" width=30
+	onclick="var hist=parseText(document.getElementById('medical_history').value); doHtml(hist);">
+<br>
+<input type="button"  class="butn" name="AddMedicalHistory" value="Full History" width=30
+	onclick="doHtml(document.getElementById('medical_history').value); ">
+<br>
+<input type="button" class="butn" name="RecentMedications" id="RecentMedications" value="Recent Prescriptions"
+	onclick="doHtml(document.getElementById('recent_rx').value);">
+-->
+<!-- Patient Information Section -->
+<input type="button" class="butn" name="AddLabel" id="AddLabel" value="Patient Block" 
+	onclick="doHtml(document.getElementById('label').value);">
+<br>
+<input type="button" class="butn" name="label" value="Patient Label"
+	onclick="var hist=document.getElementById('first_last_name').value + ' (' + document.getElementById('hinc').value + ')'; doHtml(hist);">
+<br>
+<input type="button" class="butn" name="Patient" value="Patient Name"
+	onclick=" doHtml(document.getElementById('first_last_name').value);">
+
+<br>
+<input type="button" class="butn" name="PatientAge" value="Patient Age"
+	onclick="var hist=document.getElementById('ageComplex').value; if (hist==''){hist=document.getElementById('age').value;}; doHtml(hist);">
+<br>
+<input type="button" class="butn" name="PatientSex" value="Patient Gender"
+	onclick="doHtml(document.getElementById('sex').value);">
+<br>
+
+<input type="button" class="butn" name="PatientPHN" value="Patient PHN"
+	onclick="doHtml(document.getElementById('hinc').value);">
+<br>
+<br>
+
+<!-- Medical History Section -->
+<input type="button" class="butn" name="Prescriptions" id="Prescriptions" value="Prescriptions"
+	onclick="doHtml(document.getElementById('druglist_line').value);">
+<br>
+<input type="button" class="butn" name="Medlist" id="Medlist" value="Medication List"
+	onclick="doHtml(document.getElementById('druglist_generic').value);">
+<br>
+<input type="button" class="butn" name="Allergies" id="Allergies" value="Allergies"
+	onclick="var allergy=document.getElementById('allergies_des').value; doHtml(allergy);">
+<br>
+
+<input type="button" class="butn" name="MedicalHistory" id="MedicalHistory" value="Medical History" 
+onclick="var hist=parseText(document.getElementById('medical_history').value); doHtml(hist);">
+
+<br>
+<input type="button" class="butn" name="FamilyHistory" value="Family History"
+	onclick="var hist=parseText(document.getElementById('family_history').value); doHtml(hist);">
+<!--
+<br>
+<input type="button" class="butn" name="AddOtherMedicationsHistory" value="Full Family Hx"
+	onclick="doHtml(document.getElementById('other_medications_history').value); doHtml(hist);">
+-->
+<br>
+<input type="button" class="butn" name="AddSocialFamilyHistory" value="Social History" 
+	onclick="var hist=parseText(document.getElementById('social_family_history').value); doHtml(hist);">
+<br>
+<input type="button" class="butn" name="AddReminders" value="Reminders"
+	onclick="var hist=parseText(document.getElementById('reminders').value); doHtml(hist);">
+<br>
+<input type="button" class="butn" name="AddOngoingConcerns" value="Ongoing Concerns"
+	onclick="var hist=parseText(document.getElementById('ongoingconcerns').value); doHtml(hist);">
+<br>
+<br>
+
+<!-- Closing Section -->
+<input type="button" class="butn" name="Closing" value="Closing Salutation" 
+	onclick=" doHtml('<p>Yours Sincerely<p>&nbsp;<p>'+ document.getElementById('provider_name_first_init').value+', MD');">
+<br>
+
+<!-- <input type="button" class="butn" name="MRP" value="Attending Doctor" 
+		onclick="var hist=parseText(document.getElementById('doctor').value); doHtml(hist);">
+<br> -->
+
+<input type="button" class="butn" name="Pharmacist" value="Pharmacist Signature"
+	onclick="var hist=document.getElementById('current_user_signature').value; doHtml(hist);">
+<br> 
+<br>
+<!-- <input type="button" class="butn" name="Pharmacist" value="Pharmacist"
+	onclick="doHtml(document.getElementById('doctor').value);"> -->
+
+
+</div>
+
+<div class="DoNotPrint" >
+<input onclick="viewsource(this.checked)" type="checkbox">
+HTML Source
+<input onclick="usecss(this.checked)" type="checkbox">
+Use CSS
+	<table><tr><td>
+		Subject: <input type="text" value="Clinic Letter Head" name="subject" value="Clinic Letter Head" size="40">&nbsp;
+		<input value="Save" name="SubmitButton" type="submit" onclick="needToConfirm=false;document.getElementById('Letter').value=editControlContents('edit');  document.RichTextLetter.submit()">
+
+<input type="hidden" id="saveAsEdoc" name="saveAsEdoc" value="false" />
+<input value="eDocument" name="eDocument" type="button" 
+onclick="document.getElementById('saveAsEdoc').value='true';
+needToConfirm=false;
+document.getElementById('Letter').value=editControlContents('edit');  
+document.RichTextLetter.submit()" /> 	
+	 
+		 <input value="Print & Save" name="PrintSaveButton" type="button" onclick="document.getElementById('edit').contentWindow.print();needToConfirm=false;document.getElementById('Letter').value=editControlContents('edit');  setTimeout('document.RichTextLetter.submit()',1000);"> 
+		 <input value="Print" name="PrintButton" type="button" onclick="document.getElementById('edit').contentWindow.print();">
+<input value="Reset" name="ResetButton" type="reset">
+
+</td></tr></table>
+ </div>
+ </form>
+
+</body>
+</html>
