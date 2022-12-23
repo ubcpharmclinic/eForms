@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+
+</style>
+
+</head>
+
+<title>Age_Calculator</title>
+
+ 
+<body>
+
+<form method="post" action="" name="ageCalc" id="ageCalc" >   
+
+<label for="patientDOB">Date of Birth:</label> <input type="text"  name="patientDOB" id="patientDOB" type="text" style="position:relative; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; background-color:transparent; border: none" oscarDB=dob>
+<input name="dob_year" id="dob_year" oscarDB=dob_year ></>
+<input name="dob_month" id="dob_month" oscarDB=dob_month ></>
+<input name="dob_day" id="dob_day" oscarDB=dob_day ></>
+<label>Age:</label><input name="patientAge" id="patientAge" style="position:relative; font-family:sans-serif; font-style:normal; font-weight:normal; font-size:14px; text-align:left; width: 25px;" />
+<input type="button" value="Calculate Age" onclick="ageCalculator()" />
+
+</form>
+
+<script type="text/javascript">
+
+function ageCalculator() {
+var dobYear = document.getElementById("dob_year").value;
+var dobMonth = document.getElementById("dob_month").value;
+var dobDay = document.getElementById("dob_day").value;
+var currentYear = Date().getFullYear();
+var patientAge = document.getElementById("patientAge");
+
+var calcAge.value = "0";
+
+patientAge = "0";
+
+}
+ageCalculator();
+
+function start(){
+
+ageCalculator();
+
+}
+
+</script>
+
+</body>
+</html>
